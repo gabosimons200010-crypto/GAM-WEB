@@ -30,8 +30,8 @@
             ┌────────────────────┘       │       │       │       └──────────────────────┐
             ▼                            ▼       ▼       ▼                               ▼
    ┌─────────────────┐        ┌──────────────┐ ┌──────────┐ ┌─────────────────┐  ┌────────────────┐
-   │ Yape / Plin      │        │ Culqi/Niubiz │ │ Couriers │ │ OpenAI / Claude  │  │ WhatsApp (BSP) │
-   │ (QR + webhook)   │        │ (tarjetas)   │ │ (envíos) │ │ Vision (IA)      │  │ + Email (SES)  │
+   │ Yape / Plin      │        │ Culqi/Niubiz │ │ Couriers │ │ Google Gemini    │  │ WhatsApp (BSP) │
+   │ (QR + webhook)   │        │ (tarjetas)   │ │ (envíos) │ │ Vision (IA)*     │  │ + Email (SES)  │
    └─────────────────┘        └──────────────┘ └──────────┘ └─────────────────┘  └────────────────┘
                                        │                              │
                                        ▼                              ▼
@@ -42,7 +42,8 @@
 ```
 
 **Actores:** Comprador, Vendedor (dueño de tienda), Administrador, Super Admin.
-**Sistemas externos:** pasarelas Yape/Plin/Culqi/Niubiz, couriers, proveedores de IA (Claude/OpenAI Vision),
+**Sistemas externos:** pasarelas Yape/Plin/Culqi/Niubiz, couriers, proveedor de IA primario Google Gemini
+Vision (*free tier*; Claude/OpenAI Vision como fallback opcional —marcado con `*`),
 servicio de remoción de fondo, WhatsApp BSP (p.ej. Twilio/Meta Cloud API), email (AWS SES), OSE/SUNAT
 para comprobantes electrónicos.
 

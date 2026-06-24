@@ -7,10 +7,11 @@ que lo aborda.
 
 | # | Riesgo | Impacto | Prob. | Mitigación |
 |---|--------|---------|-------|------------|
-| R-01 | **Costo de IA se dispara** con cargas masivas (500 fotos × miles de tiendas) | Alto | Media | Enrutamiento por costo/confianza (ADR-05), Batch API −50 %, prompt caching del esquema, umbral de confianza, telemetría `costUsd` y alertas de costo/producto |
+| R-01 | **Límite de cuota / costo de IA** — el *free tier* de Gemini no sostiene cargas masivas (500 fotos × cientos de tiendas) y produce HTTP 429 | Alto | Alta | Cola con *back-off* y concurrencia limitada; enrutamiento a modelos *flash-lite* (ADR-05); telemetría de cuota/costo en Grafana; **plan de migración a Gemini pagado / Vertex AI** cuando el volumen lo exija (solo config del puerto) |
+| R-01b | **Privacidad del *free tier*** — el contenido enviado puede usarse para entrenar productos de Google | Medio | Alta | *Free tier* solo en dev/MVP; producción en *tier* pagado / Vertex AI (no usan datos para entrenamiento); avisar a tiendas en términos |
 | R-02 | **Calidad de catalogación insuficiente** (atributos errados) frustra al vendedor | Alto | Media | Human-in-the-loop obligatorio (borradores), structured outputs contra taxonomía fija, métricas de tasa de corrección, ajuste iterativo de prompts |
 | R-03 | **Remoción de fondo de baja calidad** si se delega al LLM | Medio | Alta | Modelo especializado (Bria/BiRefNet), no el LLM (ADR-06); revisión visual en el borrador |
-| R-04 | **Dependencia de un único proveedor de IA** (caída, cambio de precio, rate limit) | Alto | Media | Multi-proveedor tras `VisionPort`, fallback automático, idempotencia por `imageHash` |
+| R-04 | **Dependencia de un único proveedor de IA** (Gemini: caída, cambio de cuota/precio, rate limit) | Alto | Media | Abstracción `VisionPort` con fallback a Claude/OpenAI, conmutación con *backoff*, idempotencia por `imageHash` |
 | R-05 | **Dedupe falla** y se publican productos repetidos | Bajo | Media | pHash + embedding + sugerencia (no auto-merge), el vendedor decide (IA-005) |
 
 ## 9.2 Riesgos de transacciones / pagos

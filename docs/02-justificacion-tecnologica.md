@@ -46,18 +46,25 @@ outbox es la mejora que evita pérdida de eventos ante caídas.
 `prisma.$transaction` + bloqueo a nivel de fila (`SELECT … FOR UPDATE` vía Prisma) o lock en Redis, para
 evitar sobreventa bajo concurrencia (`RNF-PERF-004`: 1.000 compradores simultáneos).
 
-## 2.4 IA — OpenAI Vision + Claude Vision
+## 2.4 IA — Google Gemini (primario) + Claude/OpenAI Vision (fallback)
 
 | Pieza | Por qué |
 |-------|---------|
-| **Claude Vision / OpenAI Vision** | Extracción estructurada de atributos de prenda con *tool use / structured outputs* (JSON Schema garantizado). Multi-proveedor para resiliencia y arbitraje de costo/calidad. |
+| **Google Gemini Vision** (primario) | **Nivel gratuito** que abarata el MVP. Extracción estructurada de atributos de prenda con salida JSON garantizada (`responseSchema`). Familia *flash/pro* para arbitrar costo/calidad, y embeddings propios para búsqueda semántica. |
+| **Claude / OpenAI Vision** (fallback) | Detrás de la misma interfaz `VisionPort`; resiliencia y mejor calidad puntual si se necesita. |
 
 **Decisión propia (ADR-05): enrutamiento por costo y confianza.** No todas las imágenes necesitan el
-modelo más caro. Estrategia en cascada (detalle y precios en doc 06):
-1. **Bulk económico** para el primer pase de catalogación masiva.
-2. **Escalado a modelo superior** solo cuando la confianza es baja o el atributo es crítico.
-3. **Batch API** (50 % de descuento) para cargas masivas no urgentes (`IA-003`: hasta 500 fotos).
-4. **Structured outputs / strict tool use** para que la salida siempre valide contra el esquema de producto.
+modelo más capaz. Estrategia en cascada (detalle en doc 06):
+1. **Bulk económico** (`gemini-2.5-flash-lite` / `2.0-flash`) para el primer pase de catalogación masiva.
+2. **Escalado a modelo superior** (`gemini-2.5-flash` → `gemini-2.5-pro`) solo cuando la confianza es baja
+   o el atributo es crítico.
+3. **Cuota como recurso gestionado:** la cola `ai` respeta los *rate limits* del *free tier* con *back-off*;
+   ante mayor volumen se migra al *tier* pagado de Gemini o a **Vertex AI** (solo configuración del puerto).
+4. **Salida estructurada** (`responseSchema`) para que la respuesta siempre valide contra el esquema de producto.
+
+> **Aviso sobre el *free tier* (detalle en doc 06 §6.7):** las cuotas gratuitas no sostienen el volumen de
+> producción de `IA-003`/Año 3, y el contenido del *free tier* puede usarse para mejorar productos de Google.
+> Plan: gratis en dev/MVP; *tier* pagado / Vertex AI en producción (no usa datos para entrenamiento).
 
 **Decisión propia (ADR-06): la remoción de fondo (`IA-004`) NO la hace el LLM de visión.** Se usa un
 modelo/servicio especializado (Bria RMBG, BiRefNet self-hosted en GPU, o `remove.bg`). Los LLM describen,
@@ -109,7 +116,7 @@ estar listos cuando los módulos se vuelvan servicios.
 | 02 | Dos apps móviles separadas (buyer / seller) | Aceptada |
 | 03 | BullMQ + patrón Outbox para event-driven confiable | Aceptada |
 | 04 | Locks de fila/Redis para stock bajo concurrencia | Aceptada |
-| 05 | Enrutamiento IA por costo/confianza + Batch API | Aceptada |
+| 05 | Gemini como IA primaria (free tier) + enrutamiento por costo/confianza; Claude/OpenAI como fallback | Aceptada |
 | 06 | Remoción de fondo con modelo especializado, no LLM | Aceptada |
 | 07 | Postgres fuente de verdad; OpenSearch índice derivado | Aceptada |
 | 08 | OpenTelemetry para trazas distribuidas | Aceptada |

@@ -70,9 +70,10 @@ abiertas.
 2. `AIBatch` + carga masiva (`IA-003`): subida directa, jobs en cola `ai`, progreso `processed/total`.
 
 **Sprint 5 — Visión y contenido (IA-001/002/006):**
-3. `VisionPort` multi-proveedor (Claude/OpenAI) con structured outputs; extracción de atributos (`IA-001`).
+3. `VisionPort` con adaptador **Gemini** (`@google/genai`, `responseSchema`) como primario y Claude/OpenAI
+   como fallback; extracción de atributos (`IA-001`).
 4. Generación de copy comercial (`IA-002`); SKU automático (`IA-006`).
-5. Enrutamiento por costo/confianza + Batch API; telemetría `costUsd`.
+5. Enrutamiento por costo/confianza (modelos *flash*/*pro*) + manejo de cuota/back-off; telemetría `costUsd`.
 6. Creación de `Product` DRAFT + evento `AIDraftReady` + notificación; revisión/edición/publicación
    (human-in-the-loop).
 
@@ -115,7 +116,9 @@ concurrentes.
 ## 12.11 Pre-requisitos antes de codificar (qué necesitamos del negocio)
 
 1. Cuentas/sandbox de **Yape, Plin, Culqi/Niubiz** y proveedor **OSE** para comprobantes.
-2. Claves de **proveedores de IA** (Claude/OpenAI) y, si se self-hostea remoción de fondo, GPU.
+2. Clave de **Google Gemini** (Google AI Studio, *free tier* para empezar; prever cuenta de facturación /
+   Vertex AI para producción); opcionalmente claves de Claude/OpenAI como fallback; y, si se self-hostea
+   remoción de fondo, GPU.
 3. **WhatsApp BSP** (Twilio/Meta Cloud API) y dominio + correo (SES).
 4. Datos reales de **galerías de Gamarra** y taxonomía de categorías de ropa.
 5. Definición de **comisión** de plataforma y reglas de **liquidación** (`RF-PAY-007`).

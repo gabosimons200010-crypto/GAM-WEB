@@ -52,9 +52,10 @@ El orden sigue exactamente lo solicitado en *ENTREGA ESPERADA*:
 - **Datos:** PostgreSQL + Prisma, Redis (caché + colas), OpenSearch (búsqueda léxica + semántica + por imagen),
   S3/Cloudflare R2 (imágenes), todo servido por CDN.
 - **IA (el núcleo):** pipeline asíncrono de visión que extrae atributos estructurados, genera copy comercial,
-  quita fondo, deduplica y crea borradores de producto. Modelos Claude/OpenAI Vision enrutados por costo:
-  bulk con modelos económicos + escalado a modelos superiores ante baja confianza, con **revisión humana**
-  obligatoria antes de publicar.
+  quita fondo, deduplica y crea borradores de producto. Proveedor primario **Google Gemini** (*free tier*
+  para el MVP; Claude/OpenAI Vision como fallback), enrutado por costo: bulk con modelos *flash* económicos
+  + escalado a modelos superiores ante baja confianza, con **revisión humana** obligatoria antes de publicar.
+  Nota: el *free tier* cubre dev/MVP; producción migra al *tier* pagado/Vertex AI (ver doc 06 §6.7).
 - **Pagos:** Yape y Plin (QR dinámico + webhook), tarjetas vía Culqi/Niubiz (3DS, PCI fuera de nuestro alcance),
   carrito multi-tienda con pago único y división de liquidaciones.
 - **No funcionales clave:** LCP < 2.5 s, búsqueda < 500 ms, autocompletado < 200 ms, disponibilidad 99.5 %,
