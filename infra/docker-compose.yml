@@ -1,0 +1,62 @@
+# Topología local/staging de GAMARRA GO.
+# Levanta la infraestructura de soporte. Las apps (api, workers, web) se añaden
+# a medida que se construyen; en dev se ejecutan con `pnpm dev` contra estos servicios.
+name: gamarra-go
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16 # PostgreSQL 16 con la extensión vector (pgvector)
+    environment:
+      POSTGRES_USER: gamarra
+      POSTGRES_PASSWORD: gamarra
+      POSTGRES_DB: gamarra
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.volumes/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gamarra"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine # caché + colas BullMQ + locks de stock
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./.volumes/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  opensearch:
+    image: opensearchproject/opensearch:2.17.1 # búsqueda léxica/semántica/imagen
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - DISABLE_SECURITY_PLUGIN=true # solo en dev local
+      - DISABLE_INSTALL_DEMO_CONFIG=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+    volumes:
+      - ./.volumes/opensearch:/usr/share/opensearch/data
+
+  minio:
+    image: minio/minio:latest # S3 local en dev (en prod: Cloudflare R2 / AWS S3)
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ./.volumes/minio:/data
