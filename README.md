@@ -85,12 +85,31 @@ en cookie HttpOnly. En desarrollo, los códigos de email/OTP/reset se imprimen e
 
 Usuario admin de prueba creado por la semilla: **admin@gamarra.go / Admin123**.
 
+**Sprint 2 — tiendas y administración (`RF-SHOP-001`, `RF-ADM-001`)**
+
+| Método | Ruta | Rol | Descripción |
+|--------|------|-----|-------------|
+| POST | `/api/v1/seller/stores` | autenticado | Registrar tienda (3 pasos) → IN_REVIEW (RF-SHOP-001) |
+| GET | `/api/v1/seller/stores` | autenticado | Mis tiendas |
+| PATCH | `/api/v1/seller/stores/:id` | VENDEDOR | Editar logo/banner/descripción/redes/categorías |
+| PATCH | `/api/v1/seller/stores/:id/settings` | VENDEDOR | Horario, prep., política, umbral stock (RF-SHOP-010) |
+| GET | `/api/v1/stores/:slug` | público | Perfil público de tienda aprobada (RF-CAT-006) |
+| GET | `/api/v1/admin/stores` | ADMIN | Listar/buscar tiendas (RF-ADM-001) |
+| POST | `/api/v1/admin/stores/:id/approve` | ADMIN | Aprobar tienda (auditado) |
+| POST | `/api/v1/admin/stores/:id/reject` | ADMIN | Rechazar con motivo |
+| POST | `/api/v1/admin/stores/:id/suspend` | ADMIN | Suspender con motivo |
+| POST | `/api/v1/admin/stores/:id/verify` | ADMIN | Otorgar badge "verificada" |
+
+Toda acción de administración queda registrada en `AuditLog` (RF-ADM-006). El acceso de cada vendedor
+está aislado a sus propias tiendas (RF-AUTH-006).
+
 ## Ramas por sprint
 
 Cada sprint tiene una rama-snapshot acumulativa para que puedas probar cada avance por separado:
 
 - `sprint/0-fundaciones` — monorepo + API + módulo Galerías
 - `sprint/1-identidad-acceso` — + autenticación, RBAC, sesiones
+- `sprint/2-tiendas` — + onboarding de tiendas, perfil público, panel admin, auditoría
 - (la rama de integración acumula lo último)
 
 ## Scripts útiles

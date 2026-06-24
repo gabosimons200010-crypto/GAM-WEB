@@ -33,6 +33,7 @@ import { RequestPhoneOtpUseCase } from './application/use-cases/request-phone-ot
 import { VerifyPhoneOtpUseCase } from './application/use-cases/verify-phone-otp.use-case';
 import { RequestPasswordResetUseCase } from './application/use-cases/request-password-reset.use-case';
 import { ResetPasswordUseCase } from './application/use-cases/reset-password.use-case';
+import { GrantRoleUseCase } from './application/use-cases/grant-role.use-case';
 
 /**
  * Bounded context IDENTITY (auth, RBAC, sesiones). Sprint 1.
@@ -61,10 +62,11 @@ import { ResetPasswordUseCase } from './application/use-cases/reset-password.use
     VerifyPhoneOtpUseCase,
     RequestPasswordResetUseCase,
     ResetPasswordUseCase,
+    GrantRoleUseCase,
     // Guards
     JwtAuthGuard,
     RolesGuard,
   ],
-  exports: [TokenService, JwtAuthGuard, RolesGuard],
+  exports: [TokenService, JwtAuthGuard, RolesGuard, GrantRoleUseCase],
 })
 export class IdentityModule {}
