@@ -423,14 +423,19 @@ model AIAnalysis {
   productId  String?
   storeId    String
   imageUrl   String
-  status     AIAnalysisStatus             @default(PENDING)
-  provider   String?
-  model      String?
-  confidence Decimal?                     @db.Decimal(4, 3)
-  result     Json?
-  imageHash  String?
-  embedding  Unsupported("vector(1024)")?
-  costUsd    Decimal?                     @db.Decimal(10, 5)
+  status       AIAnalysisStatus             @default(PENDING)
+  provider     String?
+  model        String?
+  confidence   Decimal?                     @db.Decimal(4, 3)
+  result       Json?
+  imageHash    String?
+  embedding    Unsupported("vector(1024)")?
+  costUsd      Decimal?                     @db.Decimal(10, 5)
+  // IA-004: variantes procesadas de la imagen (se generan en worker-media).
+  noBgUrl      String?
+  optimizedUrl String?
+  mediaDone    Boolean                      @default(false)
+  error        String?
   createdAt  DateTime                     @default(now())
 
   batch   AIBatch? @relation(fields: [batchId], references: [id], onDelete: SetNull)

@@ -121,6 +121,27 @@ El SKU se genera por producto y por variante (adelanto de IA-006). Las imágenes
 S3/R2/MinIO con URL prefirmada (no pasan por el API). El evento `StockLow` se escribe en la tabla
 `OutboxEvent`; el relay y el worker de notificaciones que lo consumirán llegan en sprints siguientes.
 
+**Sprint 4 — pipeline base de IA: lotes e imágenes (`IA-003`, `IA-004`)**
+
+| Método | Ruta | Rol | Descripción |
+|--------|------|-----|-------------|
+| POST | `/api/v1/seller/stores/:storeId/ai/batches` | VENDEDOR | Carga masiva (1–500 imágenes): crea lote y encola el procesamiento (IA-003) |
+| GET | `/api/v1/seller/stores/:storeId/ai/batches/:batchId` | VENDEDOR | Estado del lote (processed/total) |
+
+El procesamiento ocurre **en segundo plano** con **BullMQ + Redis** (RNF-ESC-003): la petición vuelve de
+inmediato. Un **proceso worker separado** (`worker-media`) consume la cola `media` y por cada imagen:
+remueve el fondo (passthrough en el MVP; punto de extensión para Bria/BiRefNet — ADR-06), genera un **WebP
+optimizado < 200 KB** con `sharp` (RNF-PERF-003), calcula un hash perceptual (para deduplicación, IA-005) y
+sube las variantes a S3/R2/MinIO. El estado del lote avanza con cada imagen.
+
+> El worker comparte la imagen Docker del API con distinto comando. En desarrollo se levanta aparte:
+> ```bash
+> pnpm --filter @gamarra/api dev          # API (productor de jobs)
+> pnpm --filter @gamarra/api dev:worker   # worker-media (consumidor de la cola "media")
+> ```
+> En producción: `start:worker` (`node dist/workers/main.worker.js`). El API arranca aunque Redis no esté
+> disponible (conexión perezosa); el worker sí requiere Redis para consumir.
+
 ## Ramas por sprint
 
 Cada sprint tiene una rama-snapshot acumulativa para que puedas probar cada avance por separado:
@@ -129,6 +150,7 @@ Cada sprint tiene una rama-snapshot acumulativa para que puedas probar cada avan
 - `sprint/1-identidad-acceso` — + autenticación, RBAC, sesiones
 - `sprint/2-tiendas` — + onboarding de tiendas, perfil público, panel admin, auditoría
 - `sprint/3-catalogo` — + productos, variantes, inventario, categorías, subida de imágenes
+- `sprint/4-ia-pipeline` — + colas BullMQ, lotes de carga y worker de procesamiento de imágenes
 - (la rama de integración acumula lo último)
 
 ## Scripts útiles

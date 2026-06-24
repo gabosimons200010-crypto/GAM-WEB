@@ -6,12 +6,15 @@ import { validateEnv } from './config/env.validation';
 import { PrismaModule } from './shared/prisma/prisma.module';
 import { AuditModule } from './shared/audit/audit.module';
 import { OutboxModule } from './shared/events/outbox.module';
+import { StorageModule } from './shared/storage/storage.module';
+import { QueueModule } from './shared/queue/queue.module';
 import { HealthModule } from './shared/health/health.module';
 import { IdentityModule } from './modules/identity/identity.module';
 import { GamarraModule } from './modules/gamarra/gamarra.module';
 import { SellerModule } from './modules/seller/seller.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { CatalogModule } from './modules/catalog/catalog.module';
+import { AiCatalogingModule } from './modules/ai-cataloging/ai-cataloging.module';
 
 @Module({
   imports: [
@@ -25,6 +28,8 @@ import { CatalogModule } from './modules/catalog/catalog.module';
     PrismaModule,
     AuditModule,
     OutboxModule,
+    StorageModule,
+    QueueModule,
     HealthModule,
     // Bounded contexts (se añaden por sprint):
     IdentityModule, // Sprint 1
@@ -32,7 +37,8 @@ import { CatalogModule } from './modules/catalog/catalog.module';
     SellerModule, // Sprint 2
     AdminModule, // Sprint 2
     CatalogModule, // Sprint 3
-    // Sprints 4-6: AiCatalogingModule
+    AiCatalogingModule, // Sprint 4 (productor; el worker es un proceso aparte)
+    // Sprint 5: visión + copy (cola "ai")
     // Fase 2: SearchModule, CartModule, OrdersModule, PaymentsModule, ...
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

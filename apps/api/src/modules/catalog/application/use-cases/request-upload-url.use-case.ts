@@ -1,5 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
-import { StoragePort, UploadUrlResult } from '../ports/storage.port';
+import { StoragePort, UploadUrlResult } from '../../../../shared/storage/storage.port';
 import { StoreRepository } from '../../../seller/application/ports/store.repository';
 
 // RNF-SEC-007: solo se aceptan imágenes; el tipo real se revalida al procesar.

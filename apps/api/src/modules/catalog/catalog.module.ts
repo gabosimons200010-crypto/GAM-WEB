@@ -8,10 +8,8 @@ import { CategoriesController } from './interface/categories.controller';
 
 import { ProductRepository } from './application/ports/product.repository';
 import { CategoryRepository } from './application/ports/category.repository';
-import { StoragePort } from './application/ports/storage.port';
 import { PrismaProductRepository } from './infrastructure/prisma-product.repository';
 import { PrismaCategoryRepository } from './infrastructure/prisma-category.repository';
-import { S3StorageAdapter } from './infrastructure/s3-storage.adapter';
 
 import { CreateProductUseCase } from './application/use-cases/create-product.use-case';
 import { UpdateProductUseCase } from './application/use-cases/update-product.use-case';
@@ -34,7 +32,7 @@ import { RequestUploadUrlUseCase } from './application/use-cases/request-upload-
   providers: [
     { provide: ProductRepository, useClass: PrismaProductRepository },
     { provide: CategoryRepository, useClass: PrismaCategoryRepository },
-    { provide: StoragePort, useClass: S3StorageAdapter },
+    // StoragePort lo provee StorageModule (global).
     CreateProductUseCase,
     UpdateProductUseCase,
     ArchiveProductUseCase,
