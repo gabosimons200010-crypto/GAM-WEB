@@ -5,11 +5,13 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { validateEnv } from './config/env.validation';
 import { PrismaModule } from './shared/prisma/prisma.module';
 import { AuditModule } from './shared/audit/audit.module';
+import { OutboxModule } from './shared/events/outbox.module';
 import { HealthModule } from './shared/health/health.module';
 import { IdentityModule } from './modules/identity/identity.module';
 import { GamarraModule } from './modules/gamarra/gamarra.module';
 import { SellerModule } from './modules/seller/seller.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { CatalogModule } from './modules/catalog/catalog.module';
 
 @Module({
   imports: [
@@ -22,13 +24,14 @@ import { AdminModule } from './modules/admin/admin.module';
     ThrottlerModule.forRoot([{ name: 'default', ttl: 60_000, limit: 100 }]),
     PrismaModule,
     AuditModule,
+    OutboxModule,
     HealthModule,
     // Bounded contexts (se añaden por sprint):
     IdentityModule, // Sprint 1
     GamarraModule,
     SellerModule, // Sprint 2
     AdminModule, // Sprint 2
-    // Sprint 3: CatalogModule
+    CatalogModule, // Sprint 3
     // Sprints 4-6: AiCatalogingModule
     // Fase 2: SearchModule, CartModule, OrdersModule, PaymentsModule, ...
   ],

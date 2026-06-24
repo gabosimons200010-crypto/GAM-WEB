@@ -103,6 +103,24 @@ Usuario admin de prueba creado por la semilla: **admin@gamarra.go / Admin123**.
 Toda acción de administración queda registrada en `AuditLog` (RF-ADM-006). El acceso de cada vendedor
 está aislado a sus propias tiendas (RF-AUTH-006).
 
+**Sprint 3 — catálogo e inventario (`RF-SHOP-003`, `RF-SHOP-005`)**
+
+| Método | Ruta | Rol | Descripción |
+|--------|------|-----|-------------|
+| POST | `/api/v1/seller/stores/:storeId/products` | VENDEDOR | Crear producto con variantes talla/color (RF-SHOP-003) |
+| GET | `/api/v1/seller/stores/:storeId/products?lowStock=true` | VENDEDOR | Listar productos; filtro de stock bajo (RF-SHOP-005) |
+| PATCH | `/api/v1/seller/stores/:storeId/products/:productId` | VENDEDOR | Editar producto |
+| POST | `/api/v1/seller/stores/:storeId/products/:productId/archive` | VENDEDOR | Archivar |
+| DELETE | `/api/v1/seller/stores/:storeId/products/:productId` | VENDEDOR | Eliminar |
+| PATCH | `/api/v1/seller/stores/:storeId/products/variants/:variantId/inventory` | VENDEDOR | Ajustar stock → emite `StockLow` si baja del umbral |
+| POST | `/api/v1/seller/stores/:storeId/products/upload-url` | VENDEDOR | URL prefirmada para subir imagen (JPG/PNG/WebP, RNF-SEC-007) |
+| GET | `/api/v1/products/:slug` | público | Detalle de producto activo (RF-CAT-003) |
+| GET | `/api/v1/categories` | público | Árbol de categorías |
+
+El SKU se genera por producto y por variante (adelanto de IA-006). Las imágenes se suben directo a
+S3/R2/MinIO con URL prefirmada (no pasan por el API). El evento `StockLow` se escribe en la tabla
+`OutboxEvent`; el relay y el worker de notificaciones que lo consumirán llegan en sprints siguientes.
+
 ## Ramas por sprint
 
 Cada sprint tiene una rama-snapshot acumulativa para que puedas probar cada avance por separado:
@@ -110,6 +128,7 @@ Cada sprint tiene una rama-snapshot acumulativa para que puedas probar cada avan
 - `sprint/0-fundaciones` — monorepo + API + módulo Galerías
 - `sprint/1-identidad-acceso` — + autenticación, RBAC, sesiones
 - `sprint/2-tiendas` — + onboarding de tiendas, perfil público, panel admin, auditoría
+- `sprint/3-catalogo` — + productos, variantes, inventario, categorías, subida de imágenes
 - (la rama de integración acumula lo último)
 
 ## Scripts útiles
