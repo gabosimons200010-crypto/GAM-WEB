@@ -63,6 +63,20 @@ class FakeAnalyses extends AIAnalysisRepository {
   async markFailed(_id: string, error: string) {
     this.failedWith = error;
   }
+  async getImageHash() {
+    return null;
+  }
+  async findHashedProducts() {
+    return [];
+  }
+  async setDuplicateOf() {}
+  async listDuplicateSuggestions() {
+    return [];
+  }
+  async clearDuplicate() {}
+  async getSuggestion() {
+    return null;
+  }
 }
 
 class FakeVision extends VisionPort {
@@ -85,6 +99,9 @@ class FakeStorage extends StoragePort {
   putBytes(): never {
     throw new Error('n/a');
   }
+  publicUrl(key: string) {
+    return `https://cdn/${key}`;
+  }
 }
 
 class FakeCategories extends CategoryRepository {
@@ -95,6 +112,9 @@ class FakeCategories extends CategoryRepository {
     throw new Error('n/a');
   }
   exists(): never {
+    throw new Error('n/a');
+  }
+  idBySlug(): never {
     throw new Error('n/a');
   }
 }

@@ -8,6 +8,7 @@ import { CategoryRepository } from '../../../catalog/application/ports/category.
 import { CreateProductDraftUseCase } from '../../../catalog/application/use-cases/create-product-draft.use-case';
 import { VisionJob } from '../ports/vision-job-queue';
 import { BatchCounts } from '../../domain/ai';
+import { hammingDistance, DUPLICATE_THRESHOLD } from '../../domain/hamming';
 
 const CONFIDENCE_THRESHOLD = 0.6;
 
@@ -72,6 +73,9 @@ export class AnalyzeImageUseCase {
         lowConfidence: result.confidence < CONFIDENCE_THRESHOLD,
       });
 
+      // IA-005: detección de duplicados contra borradores/productos previos.
+      await this.detectDuplicate(job.analysisId, analysis.storeId, draft.id);
+
       await this.outbox.publish({
         aggregate: 'Product',
         aggregateId: draft.id,
@@ -92,6 +96,18 @@ export class AnalyzeImageUseCase {
       await this.analyses.markFailed(job.analysisId, message);
       const counts = await this.batches.incrementFailed(job.batchId);
       await this.maybeFinish(job.batchId, counts);
+    }
+  }
+
+  /** Marca el borrador como posible duplicado si hay una imagen muy parecida. */
+  private async detectDuplicate(analysisId: string, storeId: string, draftProductId: string): Promise<void> {
+    const hash = await this.analyses.getImageHash(analysisId);
+    if (!hash) return;
+    const candidates = await this.analyses.findHashedProducts(storeId, draftProductId);
+    const match = candidates.find((c) => hammingDistance(hash, c.imageHash) <= DUPLICATE_THRESHOLD);
+    if (match) {
+      this.logger.debug(`Borrador ${draftProductId} parece duplicado de ${match.productId}`);
+      await this.analyses.setDuplicateOf(analysisId, match.productId);
     }
   }
 

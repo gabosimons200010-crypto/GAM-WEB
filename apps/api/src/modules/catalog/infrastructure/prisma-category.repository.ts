@@ -34,4 +34,9 @@ export class PrismaCategoryRepository extends CategoryRepository {
   async flat(): Promise<{ id: string; name: string }[]> {
     return this.prisma.category.findMany({ select: { id: true, name: true }, orderBy: { name: 'asc' } });
   }
+
+  async idBySlug(slug: string): Promise<string | null> {
+    const row = await this.prisma.category.findUnique({ where: { slug }, select: { id: true } });
+    return row?.id ?? null;
+  }
 }

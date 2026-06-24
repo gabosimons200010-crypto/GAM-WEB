@@ -3,13 +3,16 @@ import { IdentityModule } from '../identity/identity.module';
 import { SellerModule } from '../seller/seller.module';
 
 import { SellerProductsController } from './interface/seller-products.controller';
+import { SellerImportController } from './interface/seller-import.controller';
 import { ProductsController } from './interface/products.controller';
 import { CategoriesController } from './interface/categories.controller';
 
 import { ProductRepository } from './application/ports/product.repository';
 import { CategoryRepository } from './application/ports/category.repository';
+import { ImportJobRepository } from './application/ports/import-job.repository';
 import { PrismaProductRepository } from './infrastructure/prisma-product.repository';
 import { PrismaCategoryRepository } from './infrastructure/prisma-category.repository';
+import { PrismaImportJobRepository } from './infrastructure/prisma-import-job.repository';
 
 import { CreateProductUseCase } from './application/use-cases/create-product.use-case';
 import { CreateProductDraftUseCase } from './application/use-cases/create-product-draft.use-case';
@@ -21,6 +24,8 @@ import { GetProductUseCase } from './application/use-cases/get-product.use-case'
 import { AdjustInventoryUseCase } from './application/use-cases/adjust-inventory.use-case';
 import { ListCategoriesUseCase } from './application/use-cases/list-categories.use-case';
 import { RequestUploadUrlUseCase } from './application/use-cases/request-upload-url.use-case';
+import { ImportProductsUseCase } from './application/use-cases/import-products.use-case';
+import { ProductModerationActions } from './application/use-cases/product-moderation.use-case';
 
 /**
  * Bounded context CATALOG (productos, variantes, inventario, categorías, media).
@@ -30,10 +35,16 @@ import { RequestUploadUrlUseCase } from './application/use-cases/request-upload-
  */
 @Module({
   imports: [IdentityModule, SellerModule],
-  controllers: [SellerProductsController, ProductsController, CategoriesController],
+  controllers: [
+    SellerProductsController,
+    SellerImportController,
+    ProductsController,
+    CategoriesController,
+  ],
   providers: [
     { provide: ProductRepository, useClass: PrismaProductRepository },
     { provide: CategoryRepository, useClass: PrismaCategoryRepository },
+    { provide: ImportJobRepository, useClass: PrismaImportJobRepository },
     // StoragePort lo provee StorageModule (global).
     CreateProductUseCase,
     CreateProductDraftUseCase,
@@ -45,8 +56,10 @@ import { RequestUploadUrlUseCase } from './application/use-cases/request-upload-
     AdjustInventoryUseCase,
     ListCategoriesUseCase,
     RequestUploadUrlUseCase,
+    ImportProductsUseCase,
+    ProductModerationActions,
   ],
-  // Exporta lo que AI Cataloging necesita para crear borradores (Sprint 5).
-  exports: [ProductRepository, CategoryRepository, CreateProductDraftUseCase],
+  // Exporta lo que AI Cataloging y Admin necesitan (Sprints 5-6).
+  exports: [ProductRepository, CategoryRepository, CreateProductDraftUseCase, ProductModerationActions],
 })
 export class CatalogModule {}

@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { IdentityModule } from '../identity/identity.module';
 import { SellerModule } from '../seller/seller.module';
+import { CatalogModule } from '../catalog/catalog.module';
 import { AdminStoresController } from './interface/admin-stores.controller';
+import { AdminProductsController } from './interface/admin-products.controller';
 
 /**
  * Bounded context ADMIN / PLATFORM. Sprint 2: gestión y moderación de tiendas.
@@ -11,7 +13,7 @@ import { AdminStoresController } from './interface/admin-stores.controller';
  * cupones globales, finanzas y logs.
  */
 @Module({
-  imports: [IdentityModule, SellerModule],
-  controllers: [AdminStoresController],
+  imports: [IdentityModule, SellerModule, CatalogModule],
+  controllers: [AdminStoresController, AdminProductsController],
 })
 export class AdminModule {}

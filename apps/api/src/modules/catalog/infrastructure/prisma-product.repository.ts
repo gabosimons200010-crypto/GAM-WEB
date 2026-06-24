@@ -97,6 +97,22 @@ export class PrismaProductRepository extends ProductRepository {
     };
   }
 
+  async listModeration(cursor: string | undefined, limit: number) {
+    const rows = await this.prisma.product.findMany({
+      where: { status: 'IN_REVIEW' },
+      include: productInclude,
+      orderBy: { createdAt: 'asc' }, // los más antiguos primero (FIFO de moderación)
+      take: limit + 1,
+      ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
+    });
+    const hasMore = rows.length > limit;
+    const page = hasMore ? rows.slice(0, limit) : rows;
+    return {
+      items: page.map((r) => this.toView(r)),
+      nextCursor: hasMore ? page[page.length - 1].id : null,
+    };
+  }
+
   async updateScalars(id: string, data: UpdateProductData): Promise<ProductView> {
     const row = await this.prisma.product.update({
       where: { id },

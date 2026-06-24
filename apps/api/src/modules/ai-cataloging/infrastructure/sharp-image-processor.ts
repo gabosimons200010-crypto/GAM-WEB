@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { createHash } from 'node:crypto';
 import sharp from 'sharp';
 import { ImageProcessor, OptimizedImage } from '../application/ports/image-processing';
 
@@ -36,16 +35,22 @@ export class SharpImageProcessor extends ImageProcessor {
   }
 
   async perceptualHash(input: Buffer): Promise<string> {
-    // aHash: gris 8x8 → bits según el promedio. Robusto a recompresión/escala.
+    // aHash: gris 8x8 → 64 bits según el promedio. Se empaqueta a 16 hex para
+    // poder comparar por distancia de Hamming (IA-005, deduplicación).
     const pixels = await sharp(input)
       .greyscale()
       .resize(8, 8, { fit: 'fill' })
       .raw()
       .toBuffer();
     const avg = pixels.reduce((s, p) => s + p, 0) / pixels.length;
-    let bits = '';
-    for (const p of pixels) bits += p >= avg ? '1' : '0';
-    // Compacta los 64 bits a hex.
-    return createHash('sha1').update(bits).digest('hex').slice(0, 16);
+    let hex = '';
+    for (let i = 0; i < 64; i += 4) {
+      let nibble = 0;
+      for (let b = 0; b < 4; b++) {
+        nibble = (nibble << 1) | (pixels[i + b] >= avg ? 1 : 0);
+      }
+      hex += nibble.toString(16);
+    }
+    return hex; // 16 caracteres = 64 bits
   }
 }

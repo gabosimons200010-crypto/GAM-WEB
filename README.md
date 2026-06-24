@@ -167,6 +167,33 @@ con SKU automático (`IA-006`) y la media ya procesada adjunta. Emite el evento 
 > `GEMINI_MODEL_ESCALATION`. El *free tier* sirve para dev/MVP; producción migra al tier pagado / Vertex AI
 > (ver `docs/06-ia.md` §6.7).
 
+**Sprint 6 — deduplicación, importación Excel y moderación (`IA-005`, `IA-007`, `RF-ADM-002`)**
+
+| Método | Ruta | Rol | Descripción |
+|--------|------|-----|-------------|
+| GET | `/api/v1/seller/stores/:storeId/ai/duplicates` | VENDEDOR | Borradores marcados como posibles duplicados (IA-005) |
+| POST | `/api/v1/seller/stores/:storeId/ai/duplicates/:analysisId/resolve` | VENDEDOR | Resolver: `merge` / `update_stock` / `ignore` |
+| POST | `/api/v1/seller/stores/:storeId/import/validate` | VENDEDOR | Validar filas sin crear (muestra errores antes de confirmar) |
+| POST | `/api/v1/seller/stores/:storeId/import` | VENDEDOR | Importar productos masivamente (≤200 filas, IA-007) |
+| GET | `/api/v1/admin/products/moderation` | ADMIN | Cola de productos en revisión (RF-ADM-002) |
+| POST | `/api/v1/admin/products/moderation/:productId/approve` | ADMIN | Aprobar → ACTIVE (auditado) |
+| POST | `/api/v1/admin/products/moderation/:productId/reject` | ADMIN | Rechazar → REJECTED con motivo |
+
+- **Dedup (IA-005):** al crear un borrador, se compara el hash perceptual (aHash de 64 bits) por distancia de
+  Hamming contra los productos de la tienda; si hay coincidencia se marca como posible duplicado y el
+  vendedor decide fusionar, sumar stock o ignorar.
+- **Importación (IA-007):** el frontend convierte el Excel a filas JSON; el backend valida fila por fila,
+  reporta errores y crea borradores para las válidas. `validate` es un dry-run.
+- **Moderación (RF-ADM-002):** los productos de tiendas no verificadas quedan en `IN_REVIEW`; el admin los
+  aprueba o rechaza, con auditoría.
+
+### ✅ Fase 1 (Portal de vendedores + IA) completa
+
+Un comerciante de Gamarra puede registrarse, crear su tienda, **subir fotos y obtener productos catalogados
+por IA** (atributos, copy, SKU), revisar duplicados, importar por Excel, y publicar; el admin aprueba
+tiendas y modera productos. Siguiente: **Fase 2 — marketplace para compradores** (búsqueda, carrito,
+checkout, pagos Yape/Plin/tarjeta).
+
 ## Ramas por sprint
 
 Cada sprint tiene una rama-snapshot acumulativa para que puedas probar cada avance por separado:
@@ -177,6 +204,7 @@ Cada sprint tiene una rama-snapshot acumulativa para que puedas probar cada avan
 - `sprint/3-catalogo` — + productos, variantes, inventario, categorías, subida de imágenes
 - `sprint/4-ia-pipeline` — + colas BullMQ, lotes de carga y worker de procesamiento de imágenes
 - `sprint/5-ia-vision` — + visión Gemini, generación de copy, borradores DRAFT y publicación
+- `sprint/6-ia-dedup-import` — + deduplicación, importación Excel, moderación de productos (**cierra Fase 1**)
 - (la rama de integración acumula lo último)
 
 ## Scripts útiles

@@ -58,6 +58,8 @@ export abstract class ProductRepository {
   abstract findById(id: string): Promise<ProductView | null>;
   abstract findActiveBySlug(slug: string): Promise<ProductView | null>;
   abstract listByStore(filter: ListProductsFilter): Promise<{ items: ProductView[]; nextCursor: string | null }>;
+  /** Productos en revisión, para la cola de moderación del admin (RF-ADM-002). */
+  abstract listModeration(cursor: string | undefined, limit: number): Promise<{ items: ProductView[]; nextCursor: string | null }>;
   abstract updateScalars(id: string, data: UpdateProductData): Promise<ProductView>;
   abstract setStatus(id: string, status: ProductStatus): Promise<void>;
   abstract archive(id: string): Promise<void>;

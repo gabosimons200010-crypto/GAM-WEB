@@ -6,6 +6,8 @@ import {
   ProcessedMedia,
   AnalysisRecord,
   VisionSave,
+  HashedProduct,
+  DuplicateSuggestion,
 } from '../application/ports/ai-analysis.repository';
 
 @Injectable()
@@ -71,5 +73,70 @@ export class PrismaAIAnalysisRepository extends AIAnalysisRepository {
       where: { id },
       data: { status: 'FAILED', error: error.slice(0, 500) },
     });
+  }
+
+  async getImageHash(analysisId: string): Promise<string | null> {
+    const row = await this.prisma.aIAnalysis.findUnique({
+      where: { id: analysisId },
+      select: { imageHash: true },
+    });
+    return row?.imageHash ?? null;
+  }
+
+  async findHashedProducts(storeId: string, excludeProductId: string): Promise<HashedProduct[]> {
+    const rows = await this.prisma.aIAnalysis.findMany({
+      where: {
+        storeId,
+        imageHash: { not: null },
+        productId: { not: null, notIn: [excludeProductId] },
+      },
+      select: { productId: true, imageHash: true },
+      take: 2000,
+    });
+    return rows
+      .filter((r): r is { productId: string; imageHash: string } => !!r.productId && !!r.imageHash)
+      .map((r) => ({ productId: r.productId, imageHash: r.imageHash }));
+  }
+
+  async setDuplicateOf(analysisId: string, productId: string): Promise<void> {
+    await this.prisma.aIAnalysis.update({
+      where: { id: analysisId },
+      data: { duplicateOfProductId: productId },
+    });
+  }
+
+  async listDuplicateSuggestions(storeId: string): Promise<DuplicateSuggestion[]> {
+    const rows = await this.prisma.aIAnalysis.findMany({
+      where: { storeId, duplicateOfProductId: { not: null }, productId: { not: null } },
+      select: { id: true, productId: true, duplicateOfProductId: true },
+      orderBy: { createdAt: 'desc' },
+    });
+    return rows
+      .filter((r) => r.productId && r.duplicateOfProductId)
+      .map((r) => ({
+        analysisId: r.id,
+        productId: r.productId as string,
+        duplicateOfProductId: r.duplicateOfProductId as string,
+      }));
+  }
+
+  async clearDuplicate(analysisId: string): Promise<void> {
+    await this.prisma.aIAnalysis.update({
+      where: { id: analysisId },
+      data: { duplicateOfProductId: null },
+    });
+  }
+
+  async getSuggestion(analysisId: string): Promise<DuplicateSuggestion | null> {
+    const row = await this.prisma.aIAnalysis.findUnique({
+      where: { id: analysisId },
+      select: { id: true, storeId: true, productId: true, duplicateOfProductId: true },
+    });
+    if (!row || !row.productId || !row.duplicateOfProductId) return null;
+    return {
+      analysisId: row.id,
+      productId: row.productId,
+      duplicateOfProductId: row.duplicateOfProductId,
+    };
   }
 }

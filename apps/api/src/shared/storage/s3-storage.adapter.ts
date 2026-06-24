@@ -70,8 +70,8 @@ export class S3StorageAdapter extends StoragePort {
     return { key, publicUrl: this.publicUrl(key) };
   }
 
-  private publicUrl(key: string): string {
-    return `${this.publicBase}/${key}`;
+  publicUrl(key: string): string {
+    return `${this.publicBase}/${this.stripBase(key)}`;
   }
 
   /** Acepta tanto una clave como una URL pública y devuelve la clave. */

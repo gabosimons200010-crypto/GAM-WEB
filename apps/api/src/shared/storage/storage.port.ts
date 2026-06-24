@@ -29,4 +29,6 @@ export abstract class StoragePort {
   abstract getBytes(key: string): Promise<Buffer>;
   /** Sube bytes generados en el servidor (variantes procesadas). */
   abstract putBytes(key: string, bytes: Buffer, contentType: string): Promise<PutResult>;
+  /** URL pública (CDN) para una clave ya existente. */
+  abstract publicUrl(key: string): string;
 }

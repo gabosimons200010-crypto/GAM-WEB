@@ -11,4 +11,6 @@ export abstract class CategoryRepository {
   abstract exists(id: string): Promise<boolean>;
   /** Lista plana {id, name} — se usa para acotar la taxonomía de la IA (IA-001). */
   abstract flat(): Promise<{ id: string; name: string }[]>;
+  /** Resuelve el id de una categoría por su slug (importación Excel, IA-007). */
+  abstract idBySlug(slug: string): Promise<string | null>;
 }

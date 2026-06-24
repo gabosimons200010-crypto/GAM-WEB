@@ -436,6 +436,8 @@ model AIAnalysis {
   optimizedUrl String?
   mediaDone    Boolean                      @default(false)
   error        String?
+  // IA-005: si se detecta como posible duplicado de un producto existente.
+  duplicateOfProductId String?
   createdAt  DateTime                     @default(now())
 
   batch   AIBatch? @relation(fields: [batchId], references: [id], onDelete: SetNull)

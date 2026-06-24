@@ -39,6 +39,20 @@ class FakeAnalyses extends AIAnalysisRepository {
   async markMediaDone(_id: string, _m: ProcessedMedia) {}
   async saveVision() {}
   async markFailed() {}
+  async getImageHash() {
+    return null;
+  }
+  async findHashedProducts() {
+    return [];
+  }
+  async setDuplicateOf() {}
+  async listDuplicateSuggestions() {
+    return [];
+  }
+  async clearDuplicate() {}
+  async getSuggestion() {
+    return null;
+  }
 }
 
 class FakeQueue extends MediaJobQueue {

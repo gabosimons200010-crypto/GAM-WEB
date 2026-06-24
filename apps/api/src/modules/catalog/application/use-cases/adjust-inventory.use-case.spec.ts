@@ -31,6 +31,9 @@ class FakeProducts extends ProductRepository {
   listByStore(): never {
     throw new Error('n/a');
   }
+  listModeration(): never {
+    throw new Error('n/a');
+  }
   updateScalars(): never {
     throw new Error('n/a');
   }
