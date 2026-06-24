@@ -40,6 +40,7 @@ export class PrismaProductRepository extends ProductRepository {
         price: data.price,
         salePrice: data.salePrice ?? null,
         tags: data.tags ?? [],
+        attributes: (data.attributes ?? undefined) as Prisma.InputJsonValue | undefined,
         status: 'DRAFT',
         variants: {
           create: data.variants.map((v) => ({

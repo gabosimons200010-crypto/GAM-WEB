@@ -20,6 +20,7 @@ export interface CreateProductData {
   price: number;
   salePrice?: number | null;
   tags?: string[];
+  attributes?: Record<string, unknown> | null;
   variants: NewVariant[];
 }
 

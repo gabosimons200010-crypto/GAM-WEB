@@ -30,4 +30,8 @@ export class PrismaCategoryRepository extends CategoryRepository {
     const count = await this.prisma.category.count({ where: { id } });
     return count > 0;
   }
+
+  async flat(): Promise<{ id: string; name: string }[]> {
+    return this.prisma.category.findMany({ select: { id: true, name: true }, orderBy: { name: 'asc' } });
+  }
 }

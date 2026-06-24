@@ -4,6 +4,8 @@ import { validateEnv } from '../config/env.validation';
 import { PrismaModule } from '../shared/prisma/prisma.module';
 import { StorageModule } from '../shared/storage/storage.module';
 import { QueueModule } from '../shared/queue/queue.module';
+import { OutboxModule } from '../shared/events/outbox.module';
+import { AuditModule } from '../shared/audit/audit.module';
 import { AiWorkerModule } from '../modules/ai-cataloging/ai-worker.module';
 
 /**
@@ -17,6 +19,8 @@ import { AiWorkerModule } from '../modules/ai-cataloging/ai-worker.module';
     PrismaModule,
     StorageModule,
     QueueModule,
+    OutboxModule, // AIDraftReady / ProductPublished
+    AuditModule, // requerido por Seller (store.register), arrastrado vía Catalog
     AiWorkerModule,
     // Sprint 5: AiVisionWorkerModule (cola "ai")
     // Sprint posterior: NotifyWorkerModule (cola "notify")

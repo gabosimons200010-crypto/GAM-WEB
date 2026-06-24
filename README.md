@@ -142,6 +142,31 @@ sube las variantes a S3/R2/MinIO. El estado del lote avanza con cada imagen.
 > En producción: `start:worker` (`node dist/workers/main.worker.js`). El API arranca aunque Redis no esté
 > disponible (conexión perezosa); el worker sí requiere Redis para consumir.
 
+**Sprint 5 — visión y generación de contenido (`IA-001`, `IA-002`, `IA-006`)**
+
+| Método | Ruta | Rol | Descripción |
+|--------|------|-----|-------------|
+| GET | `/api/v1/seller/stores/:storeId/products?status=DRAFT` | VENDEDOR | Listar borradores generados por IA (reusa el listado de productos) |
+| POST | `/api/v1/seller/stores/:storeId/products/:productId/publish` | VENDEDOR | Publicar un borrador (revisión humana) |
+
+El pipeline ahora se encadena: tras el procesamiento de imagen (cola `media`), el worker encola un job de
+**visión** (cola `ai`). El **worker-ai** analiza la imagen optimizada con **Gemini** detrás del `VisionPort`,
+extrae atributos (tipo de prenda, género, colores, material, estilo, temporada, corte, etiquetas SEO —
+`IA-001`), genera nombre/descripción/tags comerciales (`IA-002`), y crea un **producto en borrador (DRAFT)**
+con SKU automático (`IA-006`) y la media ya procesada adjunta. Emite el evento `AIDraftReady`.
+
+- **Enrutamiento por costo/confianza (ADR-05):** cataloga con un modelo `flash-lite` económico y solo escala
+  a `pro` si la confianza es baja; tolera fallos del modelo económico con degradación elegante.
+- **Sin `GEMINI_API_KEY`** (dev/CI): un proveedor *stub* devuelve un borrador placeholder para que el
+  pipeline completo (lote → imagen → visión → borrador) corra end-to-end sin llamar a la nube.
+- **Human-in-the-loop:** ningún producto se publica solo. El vendedor revisa el borrador, fija el **precio**
+  (obligatorio > 0) y publica. Si la tienda está verificada pasa a `ACTIVE`; si no, a `IN_REVIEW` (cola de
+  moderación del admin, `RF-ADM-002`).
+
+> Configura `GEMINI_API_KEY` en `.env` para usar Gemini real. Modelos en `GEMINI_MODEL_BULK` /
+> `GEMINI_MODEL_ESCALATION`. El *free tier* sirve para dev/MVP; producción migra al tier pagado / Vertex AI
+> (ver `docs/06-ia.md` §6.7).
+
 ## Ramas por sprint
 
 Cada sprint tiene una rama-snapshot acumulativa para que puedas probar cada avance por separado:
@@ -151,6 +176,7 @@ Cada sprint tiene una rama-snapshot acumulativa para que puedas probar cada avan
 - `sprint/2-tiendas` — + onboarding de tiendas, perfil público, panel admin, auditoría
 - `sprint/3-catalogo` — + productos, variantes, inventario, categorías, subida de imágenes
 - `sprint/4-ia-pipeline` — + colas BullMQ, lotes de carga y worker de procesamiento de imágenes
+- `sprint/5-ia-vision` — + visión Gemini, generación de copy, borradores DRAFT y publicación
 - (la rama de integración acumula lo último)
 
 ## Scripts útiles

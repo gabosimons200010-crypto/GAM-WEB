@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { AIBatchRepository } from '../ports/ai-batch.repository';
 import { AIAnalysisRepository } from '../ports/ai-analysis.repository';
 import { BackgroundRemover, ImageProcessor } from '../ports/image-processing';
+import { VisionJobQueue } from '../ports/vision-job-queue';
 import { StoragePort } from '../../../../shared/storage/storage.port';
 import { MediaJob, BatchCounts } from '../../domain/ai';
 
@@ -23,6 +24,7 @@ export class ProcessImageUseCase {
     private readonly storage: StoragePort,
     private readonly bgRemover: BackgroundRemover,
     private readonly images: ImageProcessor,
+    private readonly visionQueue: VisionJobQueue,
   ) {}
 
   async execute(job: MediaJob): Promise<void> {
@@ -43,8 +45,13 @@ export class ProcessImageUseCase {
         imageHash: hash,
       });
 
-      const counts = await this.batches.incrementProcessed(job.batchId);
-      await this.maybeFinish(job.batchId, counts);
+      // Encadena el paso de visión (cola "ai"): el contador del lote avanza al
+      // terminar la visión, no aquí, para que processed/total refleje el draft.
+      await this.visionQueue.enqueue({
+        analysisId: job.analysisId,
+        batchId: job.batchId,
+        storeId: job.storeId,
+      });
     } catch (e) {
       const message = e instanceof Error ? e.message : String(e);
       this.logger.error(`Fallo procesando imagen ${job.analysisId}: ${message}`);

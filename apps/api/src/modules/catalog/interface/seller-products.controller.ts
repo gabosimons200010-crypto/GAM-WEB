@@ -23,6 +23,7 @@ import { AuthUser } from '../../identity/domain/auth-user';
 import { CreateProductUseCase } from '../application/use-cases/create-product.use-case';
 import { UpdateProductUseCase } from '../application/use-cases/update-product.use-case';
 import { ArchiveProductUseCase } from '../application/use-cases/archive-product.use-case';
+import { PublishProductUseCase } from '../application/use-cases/publish-product.use-case';
 import { ListMyProductsUseCase } from '../application/use-cases/list-my-products.use-case';
 import { AdjustInventoryUseCase } from '../application/use-cases/adjust-inventory.use-case';
 import { RequestUploadUrlUseCase } from '../application/use-cases/request-upload-url.use-case';
@@ -43,6 +44,7 @@ export class SellerProductsController {
     private readonly createProduct: CreateProductUseCase,
     private readonly updateProduct: UpdateProductUseCase,
     private readonly archiveProduct: ArchiveProductUseCase,
+    private readonly publishProduct: PublishProductUseCase,
     private readonly listMyProducts: ListMyProductsUseCase,
     private readonly adjustInventory: AdjustInventoryUseCase,
     private readonly requestUploadUrl: RequestUploadUrlUseCase,
@@ -89,6 +91,13 @@ export class SellerProductsController {
   @HttpCode(200)
   archive(@CurrentUser() user: AuthUser, @Param('productId') productId: string) {
     return this.archiveProduct.archive(user.sub, productId).then(() => ({ archived: true }));
+  }
+
+  /** Publica un borrador: ACTIVE si la tienda está verificada, si no IN_REVIEW. */
+  @Post(':productId/publish')
+  @HttpCode(200)
+  publish(@CurrentUser() user: AuthUser, @Param('productId') productId: string) {
+    return this.publishProduct.execute(user.sub, productId);
   }
 
   @Delete(':productId')

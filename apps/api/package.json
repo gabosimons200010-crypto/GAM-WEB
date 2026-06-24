@@ -27,6 +27,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.658.1",
     "@aws-sdk/s3-request-presigner": "^3.658.1",
+    "@google/genai": "^2.10.0",
     "@nestjs/common": "^10.4.4",
     "@nestjs/bullmq": "^10.2.1",
     "@nestjs/config": "^3.2.3",

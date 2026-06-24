@@ -33,7 +33,11 @@ class FakeAnalyses extends AIAnalysisRepository {
     this.count += 1;
     return { id: `a${this.count}` };
   }
+  async get() {
+    return null;
+  }
   async markMediaDone(_id: string, _m: ProcessedMedia) {}
+  async saveVision() {}
   async markFailed() {}
 }
 

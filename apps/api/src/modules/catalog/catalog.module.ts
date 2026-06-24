@@ -12,8 +12,10 @@ import { PrismaProductRepository } from './infrastructure/prisma-product.reposit
 import { PrismaCategoryRepository } from './infrastructure/prisma-category.repository';
 
 import { CreateProductUseCase } from './application/use-cases/create-product.use-case';
+import { CreateProductDraftUseCase } from './application/use-cases/create-product-draft.use-case';
 import { UpdateProductUseCase } from './application/use-cases/update-product.use-case';
 import { ArchiveProductUseCase } from './application/use-cases/archive-product.use-case';
+import { PublishProductUseCase } from './application/use-cases/publish-product.use-case';
 import { ListMyProductsUseCase } from './application/use-cases/list-my-products.use-case';
 import { GetProductUseCase } from './application/use-cases/get-product.use-case';
 import { AdjustInventoryUseCase } from './application/use-cases/adjust-inventory.use-case';
@@ -34,14 +36,17 @@ import { RequestUploadUrlUseCase } from './application/use-cases/request-upload-
     { provide: CategoryRepository, useClass: PrismaCategoryRepository },
     // StoragePort lo provee StorageModule (global).
     CreateProductUseCase,
+    CreateProductDraftUseCase,
     UpdateProductUseCase,
     ArchiveProductUseCase,
+    PublishProductUseCase,
     ListMyProductsUseCase,
     GetProductUseCase,
     AdjustInventoryUseCase,
     ListCategoriesUseCase,
     RequestUploadUrlUseCase,
   ],
-  exports: [ProductRepository],
+  // Exporta lo que AI Cataloging necesita para crear borradores (Sprint 5).
+  exports: [ProductRepository, CategoryRepository, CreateProductDraftUseCase],
 })
 export class CatalogModule {}

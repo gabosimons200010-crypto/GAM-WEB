@@ -19,6 +19,9 @@ export const envSchema = z.object({
 
   AI_PROVIDER: z.enum(['gemini', 'anthropic', 'openai']).default('gemini'),
   GEMINI_API_KEY: z.string().optional(),
+  GEMINI_MODEL_BULK: z.string().default('gemini-2.5-flash-lite'),
+  GEMINI_MODEL_DEFAULT: z.string().default('gemini-2.5-flash'),
+  GEMINI_MODEL_ESCALATION: z.string().default('gemini-2.5-pro'),
 
   // Almacenamiento de objetos (S3 / Cloudflare R2 / MinIO en dev).
   STORAGE_ENDPOINT: z.string().url().optional(),
