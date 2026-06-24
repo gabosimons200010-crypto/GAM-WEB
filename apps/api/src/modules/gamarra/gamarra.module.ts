@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { IdentityModule } from '../identity/identity.module';
 import { GalleriesController } from './interface/galleries.controller';
 import { GalleryRepository } from './application/ports/gallery.repository';
 import { PrismaGalleryRepository } from './infrastructure/prisma-gallery.repository';
@@ -12,6 +13,7 @@ import { CreateGalleryUseCase } from './application/use-cases/create-gallery.use
  * El puerto GalleryRepository se enlaza aquí a su adaptador Prisma.
  */
 @Module({
+  imports: [IdentityModule], // guards JWT/roles para proteger la creación
   controllers: [GalleriesController],
   providers: [
     ListGalleriesUseCase,

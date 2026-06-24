@@ -1,4 +1,5 @@
 import { PrismaClient, RoleName } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -61,7 +62,30 @@ async function main(): Promise<void> {
     }
   }
 
-  console.log('Semilla aplicada: roles, permisos, categorías y galerías.');
+  // ── Usuario administrador de prueba (solo dev) ──
+  const adminRole = await prisma.role.findUnique({ where: { name: RoleName.ADMIN } });
+  if (adminRole) {
+    const passwordHash = await bcrypt.hash('Admin123', 12); // cumple la política
+    const admin = await prisma.user.upsert({
+      where: { email: 'admin@gamarra.go' },
+      update: {},
+      create: {
+        email: 'admin@gamarra.go',
+        passwordHash,
+        fullName: 'Admin Gamarra',
+        status: 'ACTIVE',
+        emailVerified: new Date(),
+      },
+    });
+    await prisma.userRole.upsert({
+      where: { userId_roleId: { userId: admin.id, roleId: adminRole.id } },
+      update: {},
+      create: { userId: admin.id, roleId: adminRole.id },
+    });
+    console.log('Usuario admin de prueba: admin@gamarra.go / Admin123');
+  }
+
+  console.log('Semilla aplicada: roles, permisos, categorías, galerías y admin.');
 }
 
 main()

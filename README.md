@@ -53,14 +53,45 @@ pnpm --filter @gamarra/api dev
 - Health: `http://localhost:4000/api/v1/health`
 - OpenAPI (Swagger): `http://localhost:4000/api/docs`
 
-### Endpoints disponibles (Sprint 0)
+### Endpoints disponibles
+
+**Sprint 0 — base**
 
 | Método | Ruta | Descripción |
 |--------|------|-------------|
 | GET | `/api/v1/health` | Estado del servicio y de la BD |
 | GET | `/api/v1/galleries` | Lista de galerías de Gamarra |
 | GET | `/api/v1/galleries/:id` | Detalle de una galería |
-| POST | `/api/v1/galleries` | Crear galería (se protegerá con rol ADMIN en Sprint 1) |
+| POST | `/api/v1/galleries` | Crear galería — **requiere rol ADMIN** (Bearer token) |
+
+**Sprint 1 — identidad y acceso (`RF-AUTH`)**
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| POST | `/api/v1/auth/register/email` | Registro email + contraseña (RF-AUTH-001) |
+| POST | `/api/v1/auth/confirm-email` | Confirmar email con token |
+| POST | `/api/v1/auth/register/phone` | Solicitar OTP por celular (RF-AUTH-002) |
+| POST | `/api/v1/auth/verify-otp` | Verificar OTP → auto-login |
+| POST | `/api/v1/auth/login` | Login (5/min/IP, bloqueo a los 5 fallos) |
+| POST | `/api/v1/auth/refresh` | Rotar refresh token (cookie HttpOnly) |
+| POST | `/api/v1/auth/logout` | Cerrar sesión server-side (RF-AUTH-005) |
+| POST | `/api/v1/auth/password/forgot` | Solicitar reset (RF-AUTH-004) |
+| POST | `/api/v1/auth/password/reset` | Establecer nueva contraseña |
+| GET | `/api/v1/auth/me` | Usuario autenticado (Bearer token) |
+
+El access token (JWT, 15 min) va en `Authorization: Bearer`. El refresh token (30 días, rotativo) viaja
+en cookie HttpOnly. En desarrollo, los códigos de email/OTP/reset se imprimen en el log del API
+(`CodeDelivery`); en sprints siguientes se enviarán por email/WhatsApp/SMS vía la cola de notificaciones.
+
+Usuario admin de prueba creado por la semilla: **admin@gamarra.go / Admin123**.
+
+## Ramas por sprint
+
+Cada sprint tiene una rama-snapshot acumulativa para que puedas probar cada avance por separado:
+
+- `sprint/0-fundaciones` — monorepo + API + módulo Galerías
+- `sprint/1-identidad-acceso` — + autenticación, RBAC, sesiones
+- (la rama de integración acumula lo último)
 
 ## Scripts útiles
 

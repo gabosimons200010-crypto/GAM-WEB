@@ -1,5 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { RoleName } from '@prisma/client';
+import { JwtAuthGuard } from '../../identity/interface/guards/jwt-auth.guard';
+import { RolesGuard } from '../../identity/interface/guards/roles.guard';
+import { Roles } from '../../identity/interface/decorators/roles.decorator';
 import { Gallery } from '../domain/gallery.entity';
 import { ListGalleriesUseCase } from '../application/use-cases/list-galleries.use-case';
 import { GetGalleryUseCase } from '../application/use-cases/get-gallery.use-case';
@@ -27,9 +31,11 @@ export class GalleriesController {
     return this.getGallery.execute(id);
   }
 
-  // TODO(auth): restringir a ADMIN/SUPER_ADMIN cuando esté el módulo Identity (Sprint 1).
   @Post()
-  @ApiCreatedResponse({ description: 'Galería creada.' })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(RoleName.ADMIN, RoleName.SUPER_ADMIN)
+  @ApiCreatedResponse({ description: 'Galería creada (solo ADMIN/SUPER_ADMIN).' })
   create(@Body() dto: CreateGalleryDto): Promise<Gallery> {
     return this.createGallery.execute(dto);
   }

@@ -154,6 +154,29 @@ model LoginAttempt {
   @@index([identifier, createdAt])
 }
 
+enum VerificationPurpose {
+  EMAIL_CONFIRM
+  PHONE_OTP
+  PASSWORD_RESET
+}
+
+// Tokens de un solo uso: confirmación de email (RF-AUTH-001), OTP de celular
+// (RF-AUTH-002) y reset de contraseña (RF-AUTH-004). Se guarda solo el hash.
+model VerificationToken {
+  id         String              @id @default(cuid())
+  userId     String?
+  identifier String
+  purpose    VerificationPurpose
+  tokenHash  String
+  expiresAt  DateTime
+  consumedAt DateTime?
+  attempts   Int                 @default(0)
+  createdAt  DateTime            @default(now())
+
+  @@index([identifier, purpose])
+  @@index([expiresAt])
+}
+
 // ─────────────────────────── GAMARRA ───────────────────────────
 
 model Gallery {
