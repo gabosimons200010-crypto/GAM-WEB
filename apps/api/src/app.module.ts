@@ -18,6 +18,7 @@ import { AiCatalogingModule } from './modules/ai-cataloging/ai-cataloging.module
 import { StorefrontModule } from './modules/storefront/storefront.module';
 import { CartModule } from './modules/cart/cart.module';
 import { CheckoutModule } from './modules/checkout/checkout.module';
+import { PaymentModule } from './modules/payment/payment.module';
 
 @Module({
   imports: [
@@ -45,7 +46,8 @@ import { CheckoutModule } from './modules/checkout/checkout.module';
     StorefrontModule, // Sprint 7 (Fase 2): vitrina del comprador — búsqueda + tiendas
     CartModule, // Sprint 8 (Fase 2): carrito multi-tienda
     CheckoutModule, // Sprint 9 (Fase 2): checkout — carrito → orden + reserva de stock
-    // Fase 2: PaymentsModule, OrdersModule, ...
+    PaymentModule, // Sprint 10 (Fase 2): pagos (Yape/Plin QR + webhook) → orden PAID
+    // Fase 2: OrdersModule (consulta/postventa), ...
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
