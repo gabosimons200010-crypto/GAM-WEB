@@ -15,6 +15,7 @@ import { SellerModule } from './modules/seller/seller.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { CatalogModule } from './modules/catalog/catalog.module';
 import { AiCatalogingModule } from './modules/ai-cataloging/ai-cataloging.module';
+import { StorefrontModule } from './modules/storefront/storefront.module';
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { AiCatalogingModule } from './modules/ai-cataloging/ai-cataloging.module
     CatalogModule, // Sprint 3
     AiCatalogingModule, // Sprint 4 (productor; el worker es un proceso aparte)
     // Sprint 5: visión + copy (cola "ai")
-    // Fase 2: SearchModule, CartModule, OrdersModule, PaymentsModule, ...
+    StorefrontModule, // Sprint 7 (Fase 2): vitrina del comprador — búsqueda + tiendas
+    // Fase 2: CartModule, OrdersModule, PaymentsModule, ...
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
