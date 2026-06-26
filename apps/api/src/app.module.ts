@@ -17,6 +17,7 @@ import { CatalogModule } from './modules/catalog/catalog.module';
 import { AiCatalogingModule } from './modules/ai-cataloging/ai-cataloging.module';
 import { StorefrontModule } from './modules/storefront/storefront.module';
 import { CartModule } from './modules/cart/cart.module';
+import { CheckoutModule } from './modules/checkout/checkout.module';
 
 @Module({
   imports: [
@@ -43,7 +44,8 @@ import { CartModule } from './modules/cart/cart.module';
     // Sprint 5: visión + copy (cola "ai")
     StorefrontModule, // Sprint 7 (Fase 2): vitrina del comprador — búsqueda + tiendas
     CartModule, // Sprint 8 (Fase 2): carrito multi-tienda
-    // Fase 2: CheckoutModule, OrdersModule, PaymentsModule, ...
+    CheckoutModule, // Sprint 9 (Fase 2): checkout — carrito → orden + reserva de stock
+    // Fase 2: PaymentsModule, OrdersModule, ...
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
