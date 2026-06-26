@@ -19,6 +19,7 @@ import { StorefrontModule } from './modules/storefront/storefront.module';
 import { CartModule } from './modules/cart/cart.module';
 import { CheckoutModule } from './modules/checkout/checkout.module';
 import { PaymentModule } from './modules/payment/payment.module';
+import { OrdersModule } from './modules/orders/orders.module';
 
 @Module({
   imports: [
@@ -47,7 +48,7 @@ import { PaymentModule } from './modules/payment/payment.module';
     CartModule, // Sprint 8 (Fase 2): carrito multi-tienda
     CheckoutModule, // Sprint 9 (Fase 2): checkout — carrito → orden + reserva de stock
     PaymentModule, // Sprint 10 (Fase 2): pagos (Yape/Plin QR + webhook) → orden PAID
-    // Fase 2: OrdersModule (consulta/postventa), ...
+    OrdersModule, // Sprint 11 (Fase 2): órdenes (comprador) + postventa (vendedor)
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
