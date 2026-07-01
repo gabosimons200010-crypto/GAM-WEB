@@ -2,6 +2,7 @@
 
 import { getToken } from './session';
 import type {
+  AdminStore,
   CartView,
   CreateProductInput,
   LoginResponse,
@@ -173,4 +174,39 @@ export function advanceOrderStatus(
     method: 'PATCH',
     body: JSON.stringify({ to, note, trackingCode }),
   });
+}
+
+// --- Admin: tiendas ---
+export function adminListStores(status?: string): Promise<{ items: AdminStore[]; nextCursor: string | null }> {
+  const q = status ? `?status=${status}` : '';
+  return request(`/admin/stores${q}`);
+}
+
+export function adminApproveStore(id: string): Promise<unknown> {
+  return request(`/admin/stores/${id}/approve`, { method: 'POST' });
+}
+
+export function adminVerifyStore(id: string, verified: boolean): Promise<unknown> {
+  return request(`/admin/stores/${id}/${verified ? 'verify' : 'unverify'}`, { method: 'POST' });
+}
+
+export function adminRejectStore(id: string, reason: string): Promise<unknown> {
+  return request(`/admin/stores/${id}/reject`, { method: 'POST', body: JSON.stringify({ reason }) });
+}
+
+export function adminSuspendStore(id: string, reason: string): Promise<unknown> {
+  return request(`/admin/stores/${id}/suspend`, { method: 'POST', body: JSON.stringify({ reason }) });
+}
+
+// --- Admin: moderación de productos ---
+export function adminListModeration(): Promise<{ items: ProductDetail[]; nextCursor: string | null }> {
+  return request('/admin/products/moderation');
+}
+
+export function adminApproveProduct(productId: string): Promise<unknown> {
+  return request(`/admin/products/moderation/${productId}/approve`, { method: 'POST' });
+}
+
+export function adminRejectProduct(productId: string, reason: string): Promise<unknown> {
+  return request(`/admin/products/moderation/${productId}/reject`, { method: 'POST', body: JSON.stringify({ reason }) });
 }
