@@ -97,3 +97,102 @@ export interface SearchParams {
   page?: number;
   pageSize?: number;
 }
+
+// --- Auth ---
+export interface AuthUserInfo {
+  sub: string;
+  roles: string[];
+  stores: string[];
+  email: string | null;
+}
+
+export interface LoginResponse {
+  accessToken: string;
+  expiresIn: number;
+  refreshExpiresIn: number;
+  user: AuthUserInfo;
+}
+
+// --- Carrito ---
+export interface CartLineView {
+  variantId: string;
+  productId: string;
+  productSlug: string;
+  productName: string;
+  size: string | null;
+  color: string | null;
+  unitPrice: number;
+  quantity: number;
+  available: number;
+  lineTotal: number;
+  thumbnailUrl: string | null;
+  unavailable: boolean;
+}
+
+export interface CartStoreGroup {
+  storeId: string;
+  storeName: string;
+  storeSlug: string;
+  lines: CartLineView[];
+  subtotal: number;
+}
+
+export interface CartView {
+  groups: CartStoreGroup[];
+  itemCount: number;
+  total: number;
+}
+
+// --- Órdenes y pagos ---
+export interface OrderItemView {
+  variantId: string;
+  productName: string;
+  size: string | null;
+  color: string | null;
+  unitPrice: number;
+  quantity: number;
+}
+
+export interface OrderSubView {
+  id: string;
+  storeId: string;
+  storeName?: string;
+  status: string;
+  subtotal: number;
+  shippingCost: number;
+  commission?: number;
+  trackingCode: string | null;
+  items: OrderItemView[];
+}
+
+export interface OrderView {
+  id: string;
+  number: string;
+  status: string;
+  subtotal: number;
+  shippingTotal: number;
+  discountTotal: number;
+  grandTotal: number;
+  createdAt: string;
+  subOrders: OrderSubView[];
+}
+
+export interface PaymentView {
+  id: string;
+  orderId: string;
+  method: string;
+  status: string;
+  amount: number;
+  qrPayload: string | null;
+  providerRef: string | null;
+  expiresAt: string | null;
+}
+
+export interface ShippingAddressInput {
+  department: string;
+  province: string;
+  district: string;
+  line: string;
+  reference?: string;
+  phone?: string;
+}
