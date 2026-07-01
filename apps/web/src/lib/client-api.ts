@@ -3,9 +3,13 @@
 import { getToken } from './session';
 import type {
   CartView,
+  CreateProductInput,
   LoginResponse,
   OrderView,
   PaymentView,
+  ProductDetail,
+  SellerStore,
+  SellerSubOrder,
   ShippingAddressInput,
 } from './types';
 
@@ -117,4 +121,56 @@ export function listOrders(): Promise<{ items: OrderView[]; nextCursor: string |
 
 export function getOrder(id: string): Promise<OrderView> {
   return request<OrderView>(`/orders/${id}`);
+}
+
+// --- Vendedor: tiendas ---
+export interface RegisterStoreBody {
+  commercialName: string;
+  email: string;
+  phone: string;
+  legalName?: string;
+  ruc?: string;
+  floor?: string;
+  stand?: string;
+  address?: string;
+}
+
+export function getMyStores(): Promise<SellerStore[]> {
+  return request<SellerStore[]>('/seller/stores');
+}
+
+export function registerStore(body: RegisterStoreBody): Promise<SellerStore> {
+  return request<SellerStore>('/seller/stores', { method: 'POST', body: JSON.stringify(body) });
+}
+
+// --- Vendedor: productos ---
+export function listMyProducts(storeId: string, status?: string): Promise<{ items: ProductDetail[]; nextCursor: string | null }> {
+  const q = status ? `?status=${status}` : '';
+  return request(`/seller/stores/${storeId}/products${q}`);
+}
+
+export function createProduct(storeId: string, body: CreateProductInput): Promise<ProductDetail> {
+  return request<ProductDetail>(`/seller/stores/${storeId}/products`, { method: 'POST', body: JSON.stringify(body) });
+}
+
+export function publishProduct(storeId: string, productId: string): Promise<ProductDetail> {
+  return request<ProductDetail>(`/seller/stores/${storeId}/products/${productId}/publish`, { method: 'POST' });
+}
+
+// --- Vendedor: pedidos ---
+export function listSellerOrders(status?: string): Promise<{ items: SellerSubOrder[]; nextCursor: string | null }> {
+  const q = status ? `?status=${status}` : '';
+  return request(`/seller/orders${q}`);
+}
+
+export function advanceOrderStatus(
+  subOrderId: string,
+  to: string,
+  note?: string,
+  trackingCode?: string,
+): Promise<SellerSubOrder> {
+  return request<SellerSubOrder>(`/seller/orders/${subOrderId}/status`, {
+    method: 'PATCH',
+    body: JSON.stringify({ to, note, trackingCode }),
+  });
 }

@@ -196,3 +196,57 @@ export interface ShippingAddressInput {
   reference?: string;
   phone?: string;
 }
+
+// --- Vendedor ---
+export interface SellerStore {
+  id: string;
+  slug: string;
+  commercialName: string;
+  status: string;
+  verified: boolean;
+  logoUrl: string | null;
+  floor: string | null;
+  stand: string | null;
+  salesCount: number;
+}
+
+export interface NewVariantInput {
+  size?: string;
+  color?: string;
+  colorHex?: string;
+  price?: number;
+  stock: number;
+}
+
+export interface CreateProductInput {
+  name: string;
+  description?: string;
+  gender?: Gender;
+  price: number;
+  salePrice?: number;
+  tags?: string[];
+  variants: NewVariantInput[];
+}
+
+export interface SellerSubOrder {
+  id: string;
+  orderId: string;
+  orderNumber: string;
+  storeId: string;
+  status: string;
+  subtotal: number;
+  shippingCost: number;
+  commission: number;
+  trackingCode: string | null;
+  createdAt: string;
+  buyerName: string | null;
+  shipTo: {
+    department: string;
+    province: string;
+    district: string;
+    line: string;
+    reference: string | null;
+    phone: string | null;
+  } | null;
+  items: OrderItemView[];
+}
