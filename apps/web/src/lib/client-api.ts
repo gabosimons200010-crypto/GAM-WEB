@@ -3,6 +3,7 @@
 import { getToken } from './session';
 import type {
   AdminStore,
+  AIBatch,
   CartView,
   CreateProductInput,
   LoginResponse,
@@ -12,6 +13,7 @@ import type {
   SellerStore,
   SellerSubOrder,
   ShippingAddressInput,
+  UploadUrlResult,
 } from './types';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api/v1';
@@ -174,6 +176,33 @@ export function advanceOrderStatus(
     method: 'PATCH',
     body: JSON.stringify({ to, note, trackingCode }),
   });
+}
+
+// --- Vendedor: carga con IA ---
+export function requestUploadUrl(storeId: string, contentType: string): Promise<UploadUrlResult> {
+  return request<UploadUrlResult>(`/seller/stores/${storeId}/products/upload-url`, {
+    method: 'POST',
+    body: JSON.stringify({ contentType }),
+  });
+}
+
+/** Sube el archivo directo al storage (MinIO/S3) con la URL prefirmada. */
+export async function uploadToStorage(uploadUrl: string, file: File): Promise<void> {
+  const res = await fetch(uploadUrl, { method: 'PUT', body: file, headers: { 'Content-Type': file.type } });
+  if (!res.ok) {
+    throw new ClientApiError(res.status, `No se pudo subir la imagen (${res.status})`);
+  }
+}
+
+export function createAiBatch(storeId: string, imageKeys: string[]): Promise<AIBatch> {
+  return request<AIBatch>(`/seller/stores/${storeId}/ai/batches`, {
+    method: 'POST',
+    body: JSON.stringify({ imageKeys }),
+  });
+}
+
+export function getAiBatch(storeId: string, batchId: string): Promise<AIBatch> {
+  return request<AIBatch>(`/seller/stores/${storeId}/ai/batches/${batchId}`);
 }
 
 // --- Admin: tiendas ---
