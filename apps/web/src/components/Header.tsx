@@ -41,6 +41,9 @@ export function Header() {
 
           {ready && user ? (
             <div className="flex items-center gap-3">
+              <Link href="/vendedor" className="hover:text-brand-600">
+                Vender
+              </Link>
               <Link href="/mis-ordenes" className="hover:text-brand-600">
                 Mis órdenes
               </Link>
