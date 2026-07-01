@@ -228,6 +228,22 @@ export interface CreateProductInput {
   variants: NewVariantInput[];
 }
 
+// --- Admin ---
+export interface AdminStore {
+  id: string;
+  slug: string;
+  commercialName: string;
+  legalName: string | null;
+  ruc: string | null;
+  email: string;
+  phone: string;
+  status: string;
+  verified: boolean;
+  floor: string | null;
+  stand: string | null;
+  createdAt: string;
+}
+
 export interface SellerSubOrder {
   id: string;
   orderId: string;

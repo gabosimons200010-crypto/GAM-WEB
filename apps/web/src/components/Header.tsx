@@ -41,6 +41,11 @@ export function Header() {
 
           {ready && user ? (
             <div className="flex items-center gap-3">
+              {(user.roles.includes('ADMIN') || user.roles.includes('SUPER_ADMIN')) && (
+                <Link href="/admin/tiendas" className="hover:text-brand-600">
+                  Admin
+                </Link>
+              )}
               <Link href="/vendedor" className="hover:text-brand-600">
                 Vender
               </Link>
