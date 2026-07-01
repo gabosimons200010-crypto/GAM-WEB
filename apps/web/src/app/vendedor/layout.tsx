@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/auth-context';
 
 const NAV = [
   { href: '/vendedor', label: 'Panel', icon: '📊' },
+  { href: '/vendedor/ia', label: 'Cargar con IA', icon: '✨' },
   { href: '/vendedor/productos', label: 'Productos', icon: '👕' },
   { href: '/vendedor/pedidos', label: 'Pedidos', icon: '📦' },
 ];

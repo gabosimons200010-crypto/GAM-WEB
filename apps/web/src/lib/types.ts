@@ -228,6 +228,25 @@ export interface CreateProductInput {
   variants: NewVariantInput[];
 }
 
+// --- IA / carga de fotos ---
+export interface UploadUrlResult {
+  uploadUrl: string;
+  key: string;
+  publicUrl: string;
+  expiresIn: number;
+}
+
+export interface AIBatch {
+  id: string;
+  storeId: string;
+  status: 'QUEUED' | 'PROCESSING' | 'DONE' | 'FAILED';
+  total: number;
+  processed: number;
+  failed: number;
+  source: string;
+  createdAt: string;
+}
+
 // --- Admin ---
 export interface AdminStore {
   id: string;
