@@ -22,7 +22,7 @@ export default function CartPage() {
       setCart(c);
       await refresh();
     } catch (e) {
-      setError(e instanceof ClientApiError ? e.message : 'No pudimos cargar el carrito');
+      setError(e instanceof ClientApiError ? e.message : 'No pudimos cargar la cesta');
     } finally {
       setLoading(false);
     }
@@ -54,69 +54,75 @@ export default function CartPage() {
   if (ready && !user) {
     return (
       <Panel>
-        <p className="text-4xl">🔒</p>
-        <h1 className="mt-3 text-xl font-bold">Inicia sesión para ver tu carrito</h1>
-        <Link href="/ingresar?next=/carrito" className="mt-6 inline-block rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-600">
+        <h1 className="font-display text-3xl text-ink">Inicia sesión para ver tu cesta</h1>
+        <Link href="/ingresar?next=/carrito" className="microcaps mt-8 inline-block bg-ink px-10 py-3.5 text-paper hover:opacity-80">
           Ingresar
         </Link>
       </Panel>
     );
   }
 
-  if (loading) return <Panel><p className="text-gray-500">Cargando carrito…</p></Panel>;
+  if (loading)
+    return (
+      <Panel>
+        <p className="microcaps text-muted">Cargando cesta…</p>
+      </Panel>
+    );
 
-  if (error) return <Panel><p className="text-red-600">{error}</p></Panel>;
+  if (error)
+    return (
+      <Panel>
+        <p className="microcaps text-sale">{error}</p>
+      </Panel>
+    );
 
   if (!cart || cart.groups.length === 0) {
     return (
       <Panel>
-        <p className="text-4xl">🛒</p>
-        <h1 className="mt-3 text-xl font-bold">Tu carrito está vacío</h1>
-        <Link href="/buscar" className="mt-6 inline-block rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-600">
-          Explorar catálogo
+        <h1 className="font-display text-3xl text-ink">Tu cesta está vacía</h1>
+        <Link href="/buscar" className="microcaps mt-8 inline-block bg-ink px-10 py-3.5 text-paper hover:opacity-80">
+          Ver catálogo
         </Link>
       </Panel>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
-      <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Tu carrito</h1>
+    <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_300px]">
+      <div className="space-y-10">
+        <h1 className="border-b border-line pb-3 font-display text-3xl text-ink">Cesta</h1>
         {cart.groups.map((g) => (
-          <div key={g.storeId} className="rounded-xl border border-gray-200 bg-white">
-            <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3">
-              <Link href={`/tienda/${g.storeSlug}`} className="text-sm font-semibold text-gray-700 hover:text-brand-600">
-                🏬 {g.storeName}
+          <div key={g.storeId}>
+            <div className="flex items-baseline justify-between pb-3">
+              <Link href={`/tienda/${g.storeSlug}`} className="microcaps text-ink hover:underline hover:underline-offset-4">
+                {g.storeName}
               </Link>
-              <span className="text-sm text-gray-500">{money(g.subtotal)}</span>
+              <span className="microcaps text-muted">{money(g.subtotal)}</span>
             </div>
-            <ul className="divide-y divide-gray-100">
+            <ul className="divide-y divide-line border-y border-line">
               {g.lines.map((l) => (
-                <li key={l.variantId} className="flex gap-3 p-4">
-                  <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+                <li key={l.variantId} className="flex gap-5 py-5">
+                  <div className="h-24 w-20 shrink-0 overflow-hidden bg-[#f4f4f4]">
                     {l.thumbnailUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={l.thumbnailUrl} alt={l.productName} className="h-full w-full object-cover" />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center text-2xl text-gray-300">👕</div>
-                    )}
+                    ) : null}
                   </div>
                   <div className="flex flex-1 flex-col">
-                    <Link href={`/producto/${l.productSlug}`} className="text-sm font-medium text-gray-800 hover:text-brand-600">
+                    <Link href={`/producto/${l.productSlug}`} className="microcaps text-ink hover:underline hover:underline-offset-4">
                       {l.productName}
                     </Link>
-                    <p className="text-xs text-gray-400">
+                    <p className="microcaps mt-1 text-[10px] text-muted">
                       {[l.size, l.color].filter(Boolean).join(' · ')} · {money(l.unitPrice)} c/u
                     </p>
                     {l.unavailable && (
-                      <p className="mt-1 text-xs font-medium text-red-500">Sin stock o no disponible — no se cobrará.</p>
+                      <p className="microcaps mt-1 text-[10px] text-sale">Sin stock o no disponible — no se cobrará.</p>
                     )}
-                    <div className="mt-2 flex items-center gap-2">
+                    <div className="mt-3 flex items-center gap-3">
                       <QtyButton disabled={busyVariant === l.variantId} onClick={() => changeQty(l.variantId, l.quantity - 1)}>
                         −
                       </QtyButton>
-                      <span className="w-8 text-center text-sm">{l.quantity}</span>
+                      <span className="w-6 text-center text-[13px] text-ink">{l.quantity}</span>
                       <QtyButton
                         disabled={busyVariant === l.variantId || l.quantity >= l.available}
                         onClick={() => changeQty(l.variantId, l.quantity + 1)}
@@ -126,13 +132,13 @@ export default function CartPage() {
                       <button
                         onClick={() => changeQty(l.variantId, 0)}
                         disabled={busyVariant === l.variantId}
-                        className="ml-3 text-xs text-gray-400 hover:text-red-500"
+                        className="microcaps ml-4 text-[10px] text-muted hover:text-ink"
                       >
-                        Quitar
+                        Eliminar
                       </button>
                     </div>
                   </div>
-                  <div className="text-sm font-semibold text-gray-800">{money(l.lineTotal)}</div>
+                  <div className="text-[13px] text-ink">{money(l.lineTotal)}</div>
                 </li>
               ))}
             </ul>
@@ -140,23 +146,23 @@ export default function CartPage() {
         ))}
       </div>
 
-      <aside className="h-fit rounded-xl border border-gray-200 bg-white p-5 lg:sticky lg:top-24">
-        <h2 className="text-lg font-bold">Resumen</h2>
-        <div className="mt-4 flex items-center justify-between text-sm text-gray-600">
+      <aside className="h-fit border-t border-ink pt-5 lg:sticky lg:top-24">
+        <h2 className="microcaps text-muted">Resumen</h2>
+        <div className="microcaps mt-5 flex items-baseline justify-between text-muted">
           <span>Productos ({cart.itemCount})</span>
           <span>{money(cart.total)}</span>
         </div>
-        <div className="mt-2 flex items-center justify-between border-t border-gray-100 pt-3 text-base font-bold">
-          <span>Total</span>
+        <div className="mt-4 flex items-baseline justify-between border-t border-line pt-4 text-[15px] text-ink">
+          <span className="microcaps">Total</span>
           <span>{money(cart.total)}</span>
         </div>
         <Link
           href="/checkout"
-          className={`mt-5 block rounded-lg px-4 py-3 text-center text-sm font-bold text-white ${
-            cart.total > 0 ? 'bg-brand-500 hover:bg-brand-600' : 'pointer-events-none bg-gray-300'
+          className={`microcaps mt-6 block px-4 py-3.5 text-center ${
+            cart.total > 0 ? 'bg-ink text-paper hover:opacity-80' : 'pointer-events-none bg-line text-muted'
           }`}
         >
-          Ir a pagar
+          Tramitar pedido
         </Link>
       </aside>
     </div>
@@ -164,7 +170,7 @@ export default function CartPage() {
 }
 
 function Panel({ children }: { children: React.ReactNode }) {
-  return <div className="mx-auto max-w-lg rounded-2xl border border-gray-200 bg-white p-10 text-center">{children}</div>;
+  return <div className="mx-auto max-w-lg py-20 text-center">{children}</div>;
 }
 
 function QtyButton({ children, onClick, disabled }: { children: React.ReactNode; onClick: () => void; disabled?: boolean }) {
@@ -172,7 +178,7 @@ function QtyButton({ children, onClick, disabled }: { children: React.ReactNode;
     <button
       onClick={onClick}
       disabled={disabled}
-      className="flex h-7 w-7 items-center justify-center rounded-md border border-gray-300 text-gray-600 hover:border-brand-400 disabled:opacity-40"
+      className="flex h-7 w-7 items-center justify-center border border-line text-ink hover:border-ink disabled:opacity-40"
     >
       {children}
     </button>

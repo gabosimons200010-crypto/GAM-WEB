@@ -33,44 +33,44 @@ export default function AdminModerationPage() {
   }
 
   return (
-    <div className="space-y-5">
-      <h1 className="text-2xl font-bold">Moderación de productos</h1>
-      <p className="text-sm text-gray-500">Productos en revisión esperando aprobación para publicarse.</p>
+    <div className="space-y-6">
+      <div className="border-b border-line pb-3">
+        <h1 className="font-display text-3xl text-ink">Moderación</h1>
+        <p className="microcaps mt-2 text-muted">Productos en revisión esperando aprobación para publicarse.</p>
+      </div>
 
-      {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+      {error && <p className="microcaps text-sale">{error}</p>}
 
       {products === null ? (
-        <p className="text-gray-500">Cargando…</p>
+        <p className="microcaps text-muted">Cargando…</p>
       ) : products.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center text-gray-500">
-          <p className="text-3xl">✅</p>
-          <p className="mt-2 font-medium">No hay productos por revisar</p>
+        <div className="border border-dashed border-line p-12 text-center">
+          <p className="font-display text-2xl text-ink">Nada por revisar</p>
+          <p className="microcaps mt-3 text-muted">No hay productos en la cola de moderación.</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="border-t border-line">
           {products.map((p) => (
-            <div key={p.id} className="flex flex-wrap items-center gap-4 rounded-xl border border-gray-200 bg-white p-4">
-              <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+            <div key={p.id} className="flex flex-wrap items-center gap-4 border-b border-line py-4">
+              <div className="h-20 w-16 shrink-0 overflow-hidden bg-[#f4f4f4]">
                 {p.media[0]?.url ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={p.media[0].url} alt={p.name} className="h-full w-full object-cover" />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-2xl text-gray-300">👕</div>
-                )}
+                ) : null}
               </div>
               <div className="flex-1">
-                <p className="font-medium text-gray-800">{p.name}</p>
-                <p className="text-xs text-gray-400">
+                <p className="microcaps text-ink">{p.name}</p>
+                <p className="microcaps text-[10px] text-muted">
                   {money(p.salePrice ?? p.price)} · {p.variants.length} variante(s) ·{' '}
                   {p.variants.reduce((a, v) => a + v.available, 0)} en stock
                 </p>
-                {p.description && <p className="mt-1 line-clamp-2 text-xs text-gray-500">{p.description}</p>}
+                {p.description && <p className="mt-1 line-clamp-2 text-[12px] text-muted">{p.description}</p>}
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={() => act(p.id, () => adminApproveProduct(p.id))}
                   disabled={busy === p.id}
-                  className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-green-700 disabled:opacity-60"
+                  className="microcaps bg-ink px-3 py-1.5 text-paper hover:opacity-80 disabled:opacity-50"
                 >
                   Aprobar
                 </button>
@@ -80,7 +80,7 @@ export default function AdminModerationPage() {
                     if (reason.trim()) void act(p.id, () => adminRejectProduct(p.id, reason.trim()));
                   }}
                   disabled={busy === p.id}
-                  className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-red-700 disabled:opacity-60"
+                  className="microcaps border border-line px-3 py-1.5 text-sale transition hover:border-sale disabled:opacity-50"
                 >
                   Rechazar
                 </button>

@@ -21,28 +21,24 @@ export function Pagination({
     return `${basePath}?${q.toString()}`;
   }
 
-  const btn = 'rounded-lg border px-4 py-2 text-sm font-medium';
-  const enabled = 'border-gray-300 bg-white text-gray-700 hover:border-brand-400 hover:text-brand-600';
-  const disabled = 'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-300';
-
   return (
-    <div className="mt-8 flex items-center justify-center gap-3">
+    <div className="microcaps mt-12 flex items-center justify-center gap-8">
       {page > 1 ? (
-        <Link href={href(page - 1)} className={`${btn} ${enabled}`}>
-          ← Anterior
+        <Link href={href(page - 1)} className="border-b border-ink pb-0.5 text-ink hover:opacity-70">
+          Anterior
         </Link>
       ) : (
-        <span className={`${btn} ${disabled}`}>← Anterior</span>
+        <span className="text-line">Anterior</span>
       )}
 
-      <span className="text-sm text-gray-500">Página {page}</span>
+      <span className="text-muted">Página {page}</span>
 
       {hasMore ? (
-        <Link href={href(page + 1)} className={`${btn} ${enabled}`}>
-          Siguiente →
+        <Link href={href(page + 1)} className="border-b border-ink pb-0.5 text-ink hover:opacity-70">
+          Siguiente
         </Link>
       ) : (
-        <span className={`${btn} ${disabled}`}>Siguiente →</span>
+        <span className="text-line">Siguiente</span>
       )}
     </div>
   );

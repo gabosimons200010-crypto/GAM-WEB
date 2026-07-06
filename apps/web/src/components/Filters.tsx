@@ -35,12 +35,12 @@ export function Filters() {
 
   const onSelect = (key: string) => (e: ChangeEvent<HTMLSelectElement>) => setParam(key, e.target.value || null);
 
-  const inputCls = 'w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none';
+  const inputCls = 'w-full border-b border-ink bg-transparent pb-1 text-[12px] text-ink focus:outline-none';
 
   return (
-    <aside className="space-y-4 rounded-xl border border-gray-200 bg-white p-4">
+    <aside className="h-fit space-y-6">
       <div>
-        <label className="mb-1 block text-xs font-semibold uppercase text-gray-500">Ordenar por</label>
+        <label className="microcaps mb-2 block text-muted">Ordenar por</label>
         <select className={inputCls} value={params.get('sort') ?? 'relevance'} onChange={onSelect('sort')}>
           {SORTS.map((s) => (
             <option key={s.value} value={s.value}>
@@ -51,7 +51,7 @@ export function Filters() {
       </div>
 
       <div>
-        <label className="mb-1 block text-xs font-semibold uppercase text-gray-500">Género</label>
+        <label className="microcaps mb-2 block text-muted">Género</label>
         <select className={inputCls} value={params.get('gender') ?? ''} onChange={onSelect('gender')}>
           <option value="">Todos</option>
           {GENDERS.map((g) => (
@@ -63,8 +63,8 @@ export function Filters() {
       </div>
 
       <div>
-        <label className="mb-1 block text-xs font-semibold uppercase text-gray-500">Precio (S/)</label>
-        <div className="flex gap-2">
+        <label className="microcaps mb-2 block text-muted">Precio (S/)</label>
+        <div className="flex gap-3">
           <input
             type="number"
             min={0}
@@ -90,7 +90,7 @@ export function Filters() {
             const q = params.get('q');
             router.push(q ? `/buscar?q=${encodeURIComponent(q)}` : '/buscar');
           }}
-          className="text-sm font-medium text-brand-600 hover:underline"
+          className="microcaps border-b border-ink pb-0.5 text-ink hover:opacity-70"
         >
           Limpiar filtros
         </button>

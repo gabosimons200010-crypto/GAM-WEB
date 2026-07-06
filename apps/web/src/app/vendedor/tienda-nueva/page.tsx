@@ -37,23 +37,27 @@ export default function NewStorePage() {
 
   return (
     <div className="mx-auto max-w-lg">
-      <h1 className="mb-6 text-2xl font-bold">Registrar tienda</h1>
-      <form onSubmit={onSubmit} className="space-y-4 rounded-xl border border-gray-200 bg-white p-6">
+      <h1 className="mb-8 border-b border-line pb-3 font-display text-3xl text-ink">Registrar tienda</h1>
+      <form onSubmit={onSubmit} className="space-y-6">
         <Field label="Nombre comercial" value={form.commercialName} onChange={(v) => set('commercialName', v)} placeholder="Modas Karla" />
         <Field label="Correo de contacto" type="email" value={form.email} onChange={(v) => set('email', v)} placeholder="contacto@tienda.pe" />
         <Field label="Celular" value={form.phone} onChange={(v) => set('phone', v)} placeholder="987654321" />
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-6">
           <Field label="Piso (opcional)" value={form.floor ?? ''} onChange={(v) => set('floor', v)} required={false} placeholder="2" />
           <Field label="Stand (opcional)" value={form.stand ?? ''} onChange={(v) => set('stand', v)} required={false} placeholder="A-123" />
         </div>
 
-        {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+        {error && <p className="microcaps text-sale">{error}</p>}
 
-        <p className="rounded-lg bg-amber-50 p-3 text-xs text-amber-700">
+        <p className="microcaps border border-line px-3 py-2 text-[10px] text-muted">
           Tras registrarla, un administrador debe aprobarla antes de que puedas publicar productos.
         </p>
 
-        <button type="submit" disabled={busy} className="w-full rounded-lg bg-brand-500 px-4 py-3 text-sm font-bold text-white hover:bg-brand-600 disabled:opacity-60">
+        <button
+          type="submit"
+          disabled={busy}
+          className="microcaps w-full bg-ink px-4 py-3.5 text-paper transition hover:opacity-80 disabled:opacity-50"
+        >
           {busy ? 'Registrando…' : 'Registrar tienda'}
         </button>
       </form>
@@ -78,14 +82,14 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-gray-700">{label}</span>
+      <span className="microcaps mb-2 block text-muted">{label}</span>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
-        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+        className="w-full border-b border-line bg-transparent pb-1.5 text-[13px] text-ink placeholder:text-line focus:border-ink focus:outline-none"
       />
     </label>
   );

@@ -2,17 +2,17 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getMyStores, listMyProducts, publishProduct, ClientApiError } from '@/lib/client-api';
-import type { ProductDetail, SellerStore } from '@/lib/types';
+import { getMyStores, listMyProducts, publishProduct, adjustInventory, ClientApiError } from '@/lib/client-api';
+import type { ProductDetail, SellerStore, VariantView } from '@/lib/types';
 import { money } from '@/lib/format';
 
-const PRODUCT_STATUS: Record<string, { label: string; cls: string }> = {
-  DRAFT: { label: 'Borrador', cls: 'bg-gray-100 text-gray-600' },
-  IN_REVIEW: { label: 'En revisión', cls: 'bg-amber-100 text-amber-700' },
-  ACTIVE: { label: 'Publicado', cls: 'bg-green-100 text-green-700' },
-  PAUSED: { label: 'Pausado', cls: 'bg-blue-100 text-blue-700' },
-  ARCHIVED: { label: 'Archivado', cls: 'bg-gray-100 text-gray-500' },
-  REJECTED: { label: 'Rechazado', cls: 'bg-red-100 text-red-700' },
+const PRODUCT_STATUS: Record<string, string> = {
+  DRAFT: 'Borrador',
+  IN_REVIEW: 'En revisión',
+  ACTIVE: 'Publicado',
+  PAUSED: 'Pausado',
+  ARCHIVED: 'Archivado',
+  REJECTED: 'Rechazado',
 };
 
 export default function SellerProductsPage() {
@@ -21,6 +21,7 @@ export default function SellerProductsPage() {
   const [products, setProducts] = useState<ProductDetail[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [publishing, setPublishing] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   useEffect(() => {
     getMyStores()
@@ -58,14 +59,26 @@ export default function SellerProductsPage() {
     }
   }
 
-  if (stores === null) return <p className="text-gray-500">Cargando…</p>;
+  /** Refleja el nuevo stock en el estado local tras guardarlo en el backend. */
+  function applyStock(productId: string, variantId: string, available: number) {
+    setProducts((prev) =>
+      prev
+        ? prev.map((p) =>
+            p.id === productId
+              ? { ...p, variants: p.variants.map((v) => (v.id === variantId ? { ...v, available } : v)) }
+              : p,
+          )
+        : prev,
+    );
+  }
+
+  if (stores === null) return <p className="microcaps text-muted">Cargando…</p>;
 
   if (stores.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center text-gray-500">
-        <p className="text-3xl">🏬</p>
-        <p className="mt-2 font-medium">Primero registra una tienda</p>
-        <Link href="/vendedor/tienda-nueva" className="mt-5 inline-block rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-600">
+      <div className="border border-dashed border-line p-12 text-center">
+        <p className="font-display text-2xl text-ink">Primero registra una tienda</p>
+        <Link href="/vendedor/tienda-nueva" className="microcaps mt-6 inline-block bg-ink px-8 py-3.5 text-paper hover:opacity-80">
           Registrar tienda
         </Link>
       </div>
@@ -73,15 +86,15 @@ export default function SellerProductsPage() {
   }
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold">Productos</h1>
-        <div className="flex items-center gap-3">
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-line pb-3">
+        <h1 className="font-display text-3xl text-ink">Productos</h1>
+        <div className="flex items-center gap-4">
           {stores.length > 1 && (
             <select
               value={storeId}
               onChange={(e) => setStoreId(e.target.value)}
-              className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+              className="border-b border-ink bg-transparent pb-1 text-[12px] text-ink focus:outline-none"
             >
               {stores.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -90,74 +103,153 @@ export default function SellerProductsPage() {
               ))}
             </select>
           )}
-          <Link href={`/vendedor/productos/nuevo?storeId=${storeId}`} className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-bold text-white hover:bg-brand-600">
+          <Link
+            href={`/vendedor/productos/nuevo?storeId=${storeId}`}
+            className="microcaps border-b border-ink pb-0.5 text-ink hover:opacity-70"
+          >
             + Nuevo producto
           </Link>
         </div>
       </div>
 
-      {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+      {error && <p className="microcaps text-sale">{error}</p>}
 
       {products === null ? (
-        <p className="text-gray-500">Cargando productos…</p>
+        <p className="microcaps text-muted">Cargando productos…</p>
       ) : products.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center text-gray-500">
-          <p className="text-3xl">👕</p>
-          <p className="mt-2 font-medium">Aún no tienes productos</p>
-          <Link href={`/vendedor/productos/nuevo?storeId=${storeId}`} className="mt-5 inline-block rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-600">
+        <div className="border border-dashed border-line p-12 text-center">
+          <p className="font-display text-2xl text-ink">Aún no tienes productos</p>
+          <Link
+            href={`/vendedor/productos/nuevo?storeId=${storeId}`}
+            className="microcaps mt-6 inline-block bg-ink px-8 py-3.5 text-paper hover:opacity-80"
+          >
             Crear el primero
           </Link>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
-          <table className="w-full text-sm">
-            <thead className="border-b border-gray-100 bg-gray-50 text-left text-xs uppercase text-gray-500">
-              <tr>
-                <th className="px-4 py-3">Producto</th>
-                <th className="px-4 py-3">Precio</th>
-                <th className="px-4 py-3">Stock</th>
-                <th className="px-4 py-3">Estado</th>
-                <th className="px-4 py-3"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {products.map((p) => {
-                const stock = p.variants.reduce((acc, v) => acc + v.available, 0);
-                const st = PRODUCT_STATUS[p.status] ?? { label: p.status, cls: 'bg-gray-100 text-gray-600' };
-                return (
-                  <tr key={p.id}>
-                    <td className="px-4 py-3">
-                      <p className="font-medium text-gray-800">{p.name}</p>
-                      <p className="text-xs text-gray-400">{p.variants.length} variante(s)</p>
-                    </td>
-                    <td className="px-4 py-3">{money(p.salePrice ?? p.price)}</td>
-                    <td className="px-4 py-3">{stock}</td>
-                    <td className="px-4 py-3">
-                      <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${st.cls}`}>{st.label}</span>
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      {(p.status === 'DRAFT' || p.status === 'PAUSED') && (
-                        <button
-                          onClick={() => onPublish(p.id)}
-                          disabled={publishing === p.id}
-                          className="rounded-lg bg-brand-500 px-3 py-1.5 text-xs font-bold text-white hover:bg-brand-600 disabled:opacity-60"
-                        >
-                          {publishing === p.id ? 'Publicando…' : 'Publicar'}
-                        </button>
-                      )}
-                      {p.status === 'ACTIVE' && (
-                        <Link href={`/producto/${p.slug}`} className="text-xs font-medium text-brand-600 hover:underline">
-                          Ver
-                        </Link>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div className="border-t border-line">
+          {products.map((p) => {
+            const stock = p.variants.reduce((acc, v) => acc + v.available, 0);
+            const open = expanded === p.id;
+            return (
+              <div key={p.id} className="border-b border-line">
+                <div className="flex items-center gap-4 py-4">
+                  <button
+                    onClick={() => setExpanded(open ? null : p.id)}
+                    className="flex flex-1 items-center gap-4 text-left"
+                  >
+                    <span className="microcaps w-5 text-muted">{open ? '–' : '+'}</span>
+                    <span className="flex-1">
+                      <span className="microcaps block text-ink">{p.name}</span>
+                      <span className="microcaps block text-[10px] text-muted">
+                        {p.variants.length} variante(s) · {money(p.salePrice ?? p.price)}
+                      </span>
+                    </span>
+                    <span className="microcaps w-24 text-right text-muted">{stock} en stock</span>
+                    <span className="microcaps w-24 text-right text-ink">{PRODUCT_STATUS[p.status] ?? p.status}</span>
+                  </button>
+                  <div className="w-24 text-right">
+                    {(p.status === 'DRAFT' || p.status === 'PAUSED') && (
+                      <button
+                        onClick={() => onPublish(p.id)}
+                        disabled={publishing === p.id}
+                        className="microcaps bg-ink px-3 py-1.5 text-paper hover:opacity-80 disabled:opacity-50"
+                      >
+                        {publishing === p.id ? '…' : 'Publicar'}
+                      </button>
+                    )}
+                    {p.status === 'ACTIVE' && (
+                      <Link href={`/producto/${p.slug}`} className="microcaps border-b border-ink pb-0.5 text-ink hover:opacity-70">
+                        Ver
+                      </Link>
+                    )}
+                  </div>
+                </div>
+
+                {open && (
+                  <div className="border-t border-line bg-[#fafafa] px-2 pb-4 pt-2 sm:px-9">
+                    <p className="microcaps mb-3 text-muted">Ajustar inventario</p>
+                    <div className="space-y-2">
+                      {p.variants.map((v) => (
+                        <InventoryRow
+                          key={v.id}
+                          storeId={storeId}
+                          productId={p.id}
+                          variant={v}
+                          onSaved={(available) => applyStock(p.id, v.id, available)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
+    </div>
+  );
+}
+
+function InventoryRow({
+  storeId,
+  productId,
+  variant,
+  onSaved,
+}: {
+  storeId: string;
+  productId: string;
+  variant: VariantView;
+  onSaved: (available: number) => void;
+}) {
+  const [value, setValue] = useState(String(variant.available));
+  const [busy, setBusy] = useState(false);
+  const [state, setState] = useState<'idle' | 'ok' | 'err'>('idle');
+  const [lowStock, setLowStock] = useState(false);
+
+  const dirty = value !== String(variant.available);
+  const label = [variant.size, variant.color].filter(Boolean).join(' · ') || variant.sku;
+
+  async function save() {
+    const n = Number(value);
+    if (!Number.isInteger(n) || n < 0) {
+      setState('err');
+      return;
+    }
+    setBusy(true);
+    setState('idle');
+    try {
+      const r = await adjustInventory(storeId, variant.id, n);
+      setLowStock(r.lowStock);
+      onSaved(r.available);
+      setState('ok');
+      setTimeout(() => setState('idle'), 1500);
+    } catch {
+      setState('err');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="flex items-center gap-3">
+      <span className="microcaps w-40 shrink-0 text-ink">{label}</span>
+      <input
+        type="number"
+        min={0}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        className="w-24 border-b border-line bg-transparent pb-1 text-[13px] text-ink focus:border-ink focus:outline-none"
+      />
+      <button
+        onClick={save}
+        disabled={busy || !dirty}
+        className="microcaps border border-line px-3 py-1.5 text-ink transition hover:border-ink disabled:opacity-40"
+      >
+        {busy ? '…' : 'Guardar'}
+      </button>
+      {state === 'ok' && <span className="microcaps text-ink">Guardado ✓{lowStock ? ' · stock bajo' : ''}</span>}
+      {state === 'err' && <span className="microcaps text-sale">Error</span>}
     </div>
   );
 }

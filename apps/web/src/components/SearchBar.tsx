@@ -21,19 +21,16 @@ export function SearchBar() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex w-full">
+    <form onSubmit={onSubmit} className="flex w-full max-w-md items-baseline gap-3 border-b border-ink pb-1">
       <input
         type="search"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="Busca polos, jeans, casacas…"
-        className="w-full rounded-l-lg border border-r-0 border-gray-300 px-4 py-2 text-sm focus:border-brand-500 focus:outline-none"
+        placeholder="BUSCAR"
+        className="microcaps w-full bg-transparent text-ink placeholder:text-muted focus:outline-none"
       />
-      <button
-        type="submit"
-        className="rounded-r-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-600"
-      >
-        Buscar
+      <button type="submit" className="microcaps shrink-0 text-ink hover:underline hover:underline-offset-4">
+        Ir
       </button>
     </form>
   );

@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { listOrders, ClientApiError } from '@/lib/client-api';
-import type { OrderView } from '@/lib/types';
-import { money, statusColor, statusLabel } from '@/lib/format';
+import type { OrderView, OrderSubView } from '@/lib/types';
+import { money, statusLabel } from '@/lib/format';
+import { OrderTimeline } from '@/components/OrderTimeline';
 
 export default function MyOrdersPage() {
   const { user, ready } = useAuth();
@@ -20,75 +21,56 @@ export default function MyOrdersPage() {
     }
     listOrders()
       .then((r) => setOrders(r.items))
-      .catch((e) => setError(e instanceof ClientApiError ? e.message : 'No pudimos cargar tus órdenes'));
+      .catch((e) => setError(e instanceof ClientApiError ? e.message : 'No pudimos cargar tus pedidos'));
   }, [ready, user]);
 
   if (ready && !user) {
     return (
       <Panel>
-        <p className="text-4xl">🔒</p>
-        <h1 className="mt-3 text-xl font-bold">Inicia sesión para ver tus órdenes</h1>
-        <Link href="/ingresar?next=/mis-ordenes" className="mt-6 inline-block rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-600">
+        <h1 className="font-display text-3xl text-ink">Inicia sesión para ver tus pedidos</h1>
+        <Link href="/ingresar?next=/mis-ordenes" className="microcaps mt-8 inline-block bg-ink px-10 py-3.5 text-paper hover:opacity-80">
           Ingresar
         </Link>
       </Panel>
     );
   }
 
-  if (error) return <Panel><p className="text-red-600">{error}</p></Panel>;
-  if (orders === null) return <Panel><p className="text-gray-500">Cargando…</p></Panel>;
+  if (error) return <Panel><p className="microcaps text-sale">{error}</p></Panel>;
+  if (orders === null) return <Panel><p className="microcaps text-muted">Cargando…</p></Panel>;
 
   if (orders.length === 0) {
     return (
       <Panel>
-        <p className="text-4xl">📦</p>
-        <h1 className="mt-3 text-xl font-bold">Aún no tienes órdenes</h1>
-        <Link href="/buscar" className="mt-6 inline-block rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-600">
-          Explorar catálogo
+        <h1 className="font-display text-3xl text-ink">Aún no tienes pedidos</h1>
+        <Link href="/buscar" className="microcaps mt-8 inline-block bg-ink px-10 py-3.5 text-paper hover:opacity-80">
+          Ver catálogo
         </Link>
       </Panel>
     );
   }
 
   return (
-    <div className="space-y-5">
-      <h1 className="text-2xl font-bold">Mis órdenes</h1>
-      {orders.map((o) => (
-        <div key={o.id} className="rounded-xl border border-gray-200 bg-white">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 px-5 py-3">
+    <div className="space-y-10">
+      <h1 className="border-b border-line pb-3 font-display text-3xl text-ink">Mis pedidos</h1>
+      {orders.map((o, oi) => (
+        <div key={o.id} className="gg-fade-up border border-line" style={{ animationDelay: `${oi * 80}ms` }}>
+          <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-line px-5 py-4">
             <div>
-              <p className="font-mono font-semibold text-gray-800">{o.number}</p>
-              <p className="text-xs text-gray-400">{new Date(o.createdAt).toLocaleDateString('es-PE')}</p>
+              <p className="font-display text-xl text-ink">{o.number}</p>
+              <p className="microcaps text-[10px] text-muted">{new Date(o.createdAt).toLocaleDateString('es-PE', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
             </div>
-            <span className={`rounded-full px-3 py-1 text-xs font-semibold ${statusColor(o.status)}`}>
-              {statusLabel(o.status)}
-            </span>
+            <span className="microcaps border border-ink px-3 py-1 text-ink">{statusLabel(o.status)}</span>
           </div>
 
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-line">
             {o.subOrders.map((s) => (
-              <div key={s.id} className="px-5 py-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-700">{s.storeName ?? 'Tienda'}</span>
-                  <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${statusColor(s.status)}`}>
-                    {statusLabel(s.status)}
-                  </span>
-                </div>
-                <ul className="mt-1 text-sm text-gray-500">
-                  {s.items.map((it) => (
-                    <li key={it.variantId}>
-                      {it.quantity}× {it.productName}
-                      {[it.size, it.color].filter(Boolean).length > 0 && ` (${[it.size, it.color].filter(Boolean).join(', ')})`}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <ShipmentBlock key={s.id} sub={s} createdAt={o.createdAt} />
             ))}
           </div>
 
-          <div className="flex items-center justify-between border-t border-gray-100 px-5 py-3">
-            <span className="text-sm text-gray-500">Total</span>
-            <span className="font-bold">{money(o.grandTotal)}</span>
+          <div className="flex items-baseline justify-between border-t border-line px-5 py-3">
+            <span className="microcaps text-muted">Total</span>
+            <span className="text-[15px] text-ink">{money(o.grandTotal)}</span>
           </div>
         </div>
       ))}
@@ -96,6 +78,53 @@ export default function MyOrdersPage() {
   );
 }
 
+function ShipmentBlock({ sub, createdAt }: { sub: OrderSubView; createdAt: string }) {
+  const delivered = sub.status === 'DELIVERED';
+  const cancelled = ['CANCELLED', 'RETURNED', 'DELIVERY_FAILED'].includes(sub.status);
+  const eta = new Date(new Date(createdAt).getTime() + 3 * 864e5);
+
+  return (
+    <div className="px-5 py-5">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <span className="microcaps text-ink">{sub.storeName ?? 'Tienda'}</span>
+        <span className={`microcaps ${delivered ? 'text-ink' : cancelled ? 'text-sale' : 'text-muted'}`}>
+          {delivered ? 'Entregado ✓' : statusLabel(sub.status)}
+        </span>
+      </div>
+
+      <OrderTimeline status={sub.status} />
+
+      {/* Estado dinámico bajo la línea */}
+      {!cancelled && (
+        <p className="microcaps mt-4 text-[10px] text-muted">
+          {delivered ? (
+            <>Entregado — ¡gracias por tu compra!</>
+          ) : (
+            <>
+              Entrega estimada:{' '}
+              <span className="text-ink">{eta.toLocaleDateString('es-PE', { day: '2-digit', month: 'long' })}</span>
+            </>
+          )}
+          {sub.trackingCode && (
+            <>
+              {' · '}Seguimiento <span className="text-ink">{sub.trackingCode}</span>
+            </>
+          )}
+        </p>
+      )}
+
+      <ul className="mt-3 space-y-0.5">
+        {sub.items.map((it) => (
+          <li key={it.variantId} className="text-[13px] text-ink">
+            {it.quantity}× {it.productName}
+            {[it.size, it.color].filter(Boolean).length > 0 && ` (${[it.size, it.color].filter(Boolean).join(', ')})`}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function Panel({ children }: { children: React.ReactNode }) {
-  return <div className="mx-auto max-w-lg rounded-2xl border border-gray-200 bg-white p-10 text-center">{children}</div>;
+  return <div className="mx-auto max-w-lg py-20 text-center">{children}</div>;
 }

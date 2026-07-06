@@ -51,7 +51,6 @@ export default function AiUploadPage() {
     setError(null);
     setPhase('uploading');
     try {
-      // 1) Sube cada imagen al storage con URL prefirmada.
       const keys: string[] = [];
       for (let i = 0; i < files.length; i++) {
         setProgress(`Subiendo ${i + 1}/${files.length}…`);
@@ -60,13 +59,11 @@ export default function AiUploadPage() {
         keys.push(key);
       }
 
-      // 2) Crea el lote de IA.
       setPhase('processing');
       setProgress('Enviando a la IA…');
       const created = await createAiBatch(storeId, keys);
       setBatch(created);
 
-      // 3) Poll del estado hasta DONE/FAILED (máx ~3 min).
       for (let tries = 0; tries < 90; tries++) {
         await sleep(2000);
         const b = await getAiBatch(storeId, created.id);
@@ -83,13 +80,12 @@ export default function AiUploadPage() {
 
   const busy = phase === 'uploading' || phase === 'processing';
 
-  if (stores === null) return <p className="text-gray-500">Cargando…</p>;
+  if (stores === null) return <p className="microcaps text-muted">Cargando…</p>;
   if (stores.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center text-gray-500">
-        <p className="text-3xl">🏬</p>
-        <p className="mt-2 font-medium">Primero registra una tienda</p>
-        <Link href="/vendedor/tienda-nueva" className="mt-5 inline-block rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-600">
+      <div className="border border-dashed border-line p-12 text-center">
+        <p className="font-display text-2xl text-ink">Primero registra una tienda</p>
+        <Link href="/vendedor/tienda-nueva" className="microcaps mt-6 inline-block bg-ink px-8 py-3.5 text-paper hover:opacity-80">
           Registrar tienda
         </Link>
       </div>
@@ -97,26 +93,29 @@ export default function AiUploadPage() {
   }
 
   return (
-    <div className="space-y-5">
-      <div>
-        <h1 className="text-2xl font-bold">Cargar productos con IA ✨</h1>
-        <p className="mt-1 text-sm text-gray-500">
+    <div className="space-y-6">
+      <div className="border-b border-line pb-3">
+        <h1 className="font-display text-3xl text-ink">Cargar con IA</h1>
+        <p className="microcaps mt-2 text-muted">
           Sube fotos de tus prendas y la IA genera el borrador (nombre, atributos, descripción). Luego revisas el precio y publicas.
         </p>
       </div>
 
-      <div className="rounded-lg bg-blue-50 p-3 text-xs text-blue-800">
-        ⚙️ Necesita el <b>worker</b> corriendo: <code>pnpm --filter @gamarra/api dev:worker</code>. Sin clave de Gemini,
-        la IA usa datos de ejemplo (modo demo).
-      </div>
+      <p className="microcaps border border-line px-3 py-2 text-[10px] text-muted">
+        Necesita el worker corriendo: <code>pnpm --filter @gamarra/api dev:worker</code>. Sin clave de Gemini, la IA usa datos de ejemplo (modo demo).
+      </p>
 
-      {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+      {error && <p className="microcaps text-sale">{error}</p>}
 
-      <div className="space-y-4 rounded-xl border border-gray-200 bg-white p-6">
+      <div className="space-y-5">
         {stores.length > 1 && (
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-gray-700">Tienda</span>
-            <select value={storeId} onChange={(e) => setStoreId(e.target.value)} className="rounded-lg border border-gray-300 px-3 py-2 text-sm">
+            <span className="microcaps mb-2 block text-muted">Tienda</span>
+            <select
+              value={storeId}
+              onChange={(e) => setStoreId(e.target.value)}
+              className="border-b border-ink bg-transparent pb-1 text-[13px] text-ink focus:outline-none"
+            >
               {stores.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.commercialName}
@@ -126,20 +125,17 @@ export default function AiUploadPage() {
           </label>
         )}
 
-        <div>
-          <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 p-8 text-center hover:border-brand-400">
-            <span className="text-4xl">📷</span>
-            <span className="mt-2 text-sm font-medium text-gray-700">Elige fotos de tus prendas</span>
-            <span className="text-xs text-gray-400">JPG, PNG o WebP · hasta 20</span>
-            <input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={onSelect} disabled={busy} className="hidden" />
-          </label>
-        </div>
+        <label className="flex cursor-pointer flex-col items-center justify-center border border-dashed border-line bg-[#fafafa] p-12 text-center hover:border-ink">
+          <span className="microcaps text-ink">Elige fotos de tus prendas</span>
+          <span className="microcaps mt-1 text-[10px] text-muted">JPG, PNG o WebP · hasta 20</span>
+          <input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={onSelect} disabled={busy} className="hidden" />
+        </label>
 
         {files.length > 0 && (
           <div className="grid grid-cols-4 gap-2 sm:grid-cols-6">
             {files.map((f, i) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={i} src={previews.current[i]} alt={f.name} className="aspect-square w-full rounded-lg object-cover" />
+              <img key={i} src={previews.current[i]} alt={f.name} className="aspect-square w-full object-cover" />
             ))}
           </div>
         )}
@@ -147,23 +143,21 @@ export default function AiUploadPage() {
         <button
           onClick={onProcess}
           disabled={busy || files.length === 0 || !storeId}
-          className="w-full rounded-lg bg-brand-500 px-4 py-3 text-sm font-bold text-white hover:bg-brand-600 disabled:opacity-60"
+          className="microcaps w-full bg-ink px-4 py-3.5 text-paper transition hover:opacity-80 disabled:opacity-50"
         >
           {busy ? progress || 'Procesando…' : `Procesar ${files.length || ''} foto(s) con IA`}
         </button>
       </div>
 
       {batch && (phase === 'processing' || phase === 'done') && (
-        <div className={`rounded-xl border p-5 ${phase === 'done' ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-white'}`}>
-          <p className="text-sm font-semibold">
-            {phase === 'done' ? '✅ Procesamiento terminado' : '⏳ Procesando…'}
-          </p>
-          <p className="mt-1 text-sm text-gray-600">
+        <div className="border border-line p-5">
+          <p className="microcaps text-ink">{phase === 'done' ? 'Procesamiento terminado ✓' : 'Procesando…'}</p>
+          <p className="microcaps mt-1 text-[10px] text-muted">
             {batch.processed} procesadas · {batch.failed} con error · {batch.total} en total
           </p>
           {phase === 'done' && (
-            <Link href="/vendedor/productos" className="mt-4 inline-block rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-600">
-              Ver borradores en Productos →
+            <Link href="/vendedor/productos" className="microcaps mt-4 inline-block bg-ink px-6 py-3 text-paper hover:opacity-80">
+              Ver borradores en Productos
             </Link>
           )}
         </div>

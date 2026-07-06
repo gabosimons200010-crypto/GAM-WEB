@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { listSellerOrders, advanceOrderStatus, ClientApiError } from '@/lib/client-api';
 import type { SellerSubOrder } from '@/lib/types';
-import { money, statusColor, statusLabel } from '@/lib/format';
+import { money, statusLabel } from '@/lib/format';
 
 // Acciones de avance disponibles según el estado (espejo de la máquina de estados del backend).
 const NEXT: Record<string, { to: string; label: string }[]> = {
@@ -21,6 +21,7 @@ export default function SellerOrdersPage() {
   const [orders, setOrders] = useState<SellerSubOrder[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
+  const [tracking, setTracking] = useState<Record<string, string>>({});
 
   function load() {
     listSellerOrders()
@@ -34,8 +35,11 @@ export default function SellerOrdersPage() {
     setBusy(subOrderId);
     setError(null);
     try {
-      const updated = await advanceOrderStatus(subOrderId, to);
-      setOrders((prev) => (prev ? prev.map((s) => (s.id === subOrderId ? { ...s, status: updated.status } : s)) : prev));
+      const code = to === 'SHIPPED' ? tracking[subOrderId]?.trim() || undefined : undefined;
+      const updated = await advanceOrderStatus(subOrderId, to, undefined, code);
+      setOrders((prev) =>
+        prev ? prev.map((s) => (s.id === subOrderId ? { ...s, status: updated.status, trackingCode: updated.trackingCode } : s)) : prev,
+      );
     } catch (e) {
       setError(e instanceof ClientApiError ? e.message : 'No se pudo actualizar');
     } finally {
@@ -43,36 +47,33 @@ export default function SellerOrdersPage() {
     }
   }
 
-  if (orders === null && !error) return <p className="text-gray-500">Cargando pedidos…</p>;
+  if (orders === null && !error) return <p className="microcaps text-muted">Cargando pedidos…</p>;
 
   return (
-    <div className="space-y-5">
-      <h1 className="text-2xl font-bold">Pedidos</h1>
-      {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+    <div className="space-y-6">
+      <h1 className="border-b border-line pb-3 font-display text-3xl text-ink">Pedidos</h1>
+      {error && <p className="microcaps text-sale">{error}</p>}
 
       {orders && orders.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center text-gray-500">
-          <p className="text-3xl">📦</p>
-          <p className="mt-2 font-medium">Aún no tienes pedidos</p>
-          <p className="mt-1 text-sm">Cuando alguien compre tus productos, aparecerán aquí.</p>
+        <div className="border border-dashed border-line p-12 text-center">
+          <p className="font-display text-2xl text-ink">Aún no tienes pedidos</p>
+          <p className="microcaps mt-3 text-muted">Cuando alguien compre tus productos, aparecerán aquí.</p>
         </div>
       ) : (
         <div className="space-y-4">
           {orders?.map((s) => (
-            <div key={s.id} className="rounded-xl border border-gray-200 bg-white p-5">
-              <div className="flex flex-wrap items-center justify-between gap-2">
+            <div key={s.id} className="border border-line p-5">
+              <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-line pb-3">
                 <div>
-                  <p className="font-mono font-semibold text-gray-800">{s.orderNumber}</p>
-                  <p className="text-xs text-gray-400">{new Date(s.createdAt).toLocaleString('es-PE')}</p>
+                  <p className="microcaps text-ink">{s.orderNumber}</p>
+                  <p className="microcaps text-[10px] text-muted">{new Date(s.createdAt).toLocaleString('es-PE')}</p>
                 </div>
-                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${statusColor(s.status)}`}>
-                  {statusLabel(s.status)}
-                </span>
+                <span className="microcaps text-ink">{statusLabel(s.status)}</span>
               </div>
 
-              <ul className="mt-3 border-t border-gray-100 pt-3 text-sm text-gray-600">
+              <ul className="mt-3 space-y-1">
                 {s.items.map((it) => (
-                  <li key={it.variantId} className="flex justify-between">
+                  <li key={it.variantId} className="flex justify-between text-[13px] text-ink">
                     <span>
                       {it.quantity}× {it.productName}
                       {[it.size, it.color].filter(Boolean).length > 0 && ` (${[it.size, it.color].filter(Boolean).join(', ')})`}
@@ -83,25 +84,36 @@ export default function SellerOrdersPage() {
               </ul>
 
               {s.shipTo && (
-                <p className="mt-2 text-xs text-gray-500">
-                  📍 {s.buyerName ? `${s.buyerName} — ` : ''}
+                <p className="microcaps mt-3 text-[10px] text-muted">
+                  {s.buyerName ? `${s.buyerName} — ` : ''}
                   {[s.shipTo.line, s.shipTo.district, s.shipTo.province].filter(Boolean).join(', ')}
                   {s.shipTo.phone && ` · ${s.shipTo.phone}`}
                 </p>
               )}
 
-              <div className="mt-3 flex items-center justify-between border-t border-gray-100 pt-3">
-                <span className="text-sm">
-                  Subtotal <span className="font-semibold">{money(s.subtotal)}</span>
-                  <span className="ml-2 text-xs text-gray-400">(comisión {money(s.commission)})</span>
+              {s.trackingCode && (
+                <p className="microcaps mt-2 text-[10px] text-ink">Tracking: {s.trackingCode}</p>
+              )}
+
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-3">
+                <span className="microcaps text-muted">
+                  Subtotal <span className="text-ink">{money(s.subtotal)}</span> · comisión {money(s.commission)}
                 </span>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  {(NEXT[s.status] ?? []).some((a) => a.to === 'SHIPPED') && (
+                    <input
+                      value={tracking[s.id] ?? ''}
+                      onChange={(e) => setTracking((t) => ({ ...t, [s.id]: e.target.value }))}
+                      placeholder="CÓD. TRACKING (OPCIONAL)"
+                      className="microcaps w-48 border-b border-line bg-transparent pb-1 text-ink placeholder:text-line focus:border-ink focus:outline-none"
+                    />
+                  )}
                   {(NEXT[s.status] ?? []).map((action) => (
                     <button
                       key={action.to}
                       onClick={() => advance(s.id, action.to)}
                       disabled={busy === s.id}
-                      className="rounded-lg bg-brand-500 px-3 py-1.5 text-xs font-bold text-white hover:bg-brand-600 disabled:opacity-60"
+                      className="microcaps bg-ink px-3 py-1.5 text-paper hover:opacity-80 disabled:opacity-50"
                     >
                       {action.label}
                     </button>

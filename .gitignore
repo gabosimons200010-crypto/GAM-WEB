@@ -39,3 +39,6 @@ coverage/
 
 # docker volumes (local)
 infra/.volumes/
+
+# claude code — estado local de la máquina (permisos, etc.)
+.claude/settings.local.json

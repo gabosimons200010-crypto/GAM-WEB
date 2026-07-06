@@ -38,10 +38,10 @@ export default function CheckoutPage() {
       setOrder(created);
       const pay = await createPayment(created.id, 'YAPE');
       setPayment(pay);
-      await refresh(); // el carrito quedó vacío
+      await refresh(); // la cesta quedó vacía
       setStep('pay');
     } catch (err) {
-      setError(err instanceof ClientApiError ? err.message : 'No se pudo generar la orden');
+      setError(err instanceof ClientApiError ? err.message : 'No se pudo generar el pedido');
     } finally {
       setBusy(false);
     }
@@ -64,21 +64,21 @@ export default function CheckoutPage() {
   if (!ready || !user) return null;
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <h1 className="mb-6 text-2xl font-bold">Finalizar compra</h1>
+    <div className="mx-auto max-w-xl">
+      <h1 className="mb-10 border-b border-line pb-3 font-display text-3xl text-ink">Tramitar pedido</h1>
 
-      {error && <p className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+      {error && <p className="microcaps mb-6 text-sale">{error}</p>}
 
       {step === 'address' && (
-        <form onSubmit={onPlaceOrder} className="space-y-4 rounded-xl border border-gray-200 bg-white p-6">
-          <h2 className="font-semibold">Dirección de envío</h2>
-          <div className="grid grid-cols-2 gap-3">
+        <form onSubmit={onPlaceOrder} className="space-y-6">
+          <h2 className="microcaps text-muted">Dirección de envío</h2>
+          <div className="grid grid-cols-2 gap-6">
             <Field label="Departamento" value={addr.department} onChange={(v) => setAddr({ ...addr, department: v })} />
             <Field label="Provincia" value={addr.province} onChange={(v) => setAddr({ ...addr, province: v })} />
           </div>
           <Field label="Distrito" value={addr.district} onChange={(v) => setAddr({ ...addr, district: v })} />
           <Field label="Dirección" value={addr.line} onChange={(v) => setAddr({ ...addr, line: v })} placeholder="Jr. Gamarra 123, Galería…" />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-6">
             <Field label="Referencia (opcional)" value={addr.reference ?? ''} onChange={(v) => setAddr({ ...addr, reference: v })} required={false} />
             <Field label="Celular (opcional)" value={addr.phone ?? ''} onChange={(v) => setAddr({ ...addr, phone: v })} required={false} placeholder="987654321" />
           </div>
@@ -87,54 +87,53 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={busy}
-            className="w-full rounded-lg bg-brand-500 px-4 py-3 text-sm font-bold text-white hover:bg-brand-600 disabled:opacity-60"
+            className="microcaps w-full bg-ink px-4 py-3.5 text-paper hover:opacity-80 disabled:opacity-50"
           >
-            {busy ? 'Generando orden…' : 'Continuar al pago'}
+            {busy ? 'Generando pedido…' : 'Continuar al pago'}
           </button>
         </form>
       )}
 
       {step === 'pay' && order && payment && (
-        <div className="space-y-4 rounded-xl border border-gray-200 bg-white p-6 text-center">
-          <h2 className="font-semibold">Paga con Yape</h2>
-          <p className="text-sm text-gray-500">
-            Orden <span className="font-mono font-semibold text-gray-700">{order.number}</span>
+        <div className="space-y-5 text-center">
+          <h2 className="font-display text-2xl text-ink">Paga con Yape</h2>
+          <p className="microcaps text-muted">
+            Pedido <span className="text-ink">{order.number}</span>
           </p>
 
-          <div className="mx-auto flex h-48 w-48 flex-col items-center justify-center rounded-xl border-2 border-dashed border-brand-300 bg-brand-50 p-4">
-            <span className="text-5xl">📱</span>
-            <span className="mt-2 text-xs text-gray-500">QR de Yape (demo)</span>
-            <span className="mt-1 break-all font-mono text-[10px] text-gray-400">{payment.providerRef}</span>
+          <div className="mx-auto flex h-48 w-48 flex-col items-center justify-center border border-line p-4">
+            <span className="font-display text-3xl text-ink">QR</span>
+            <span className="microcaps mt-2 text-[9px] text-muted">Yape (demo)</span>
+            <span className="mt-1 break-all text-[9px] text-line">{payment.providerRef}</span>
           </div>
 
-          <p className="text-2xl font-bold">{money(payment.amount)}</p>
-          <p className="text-xs text-gray-400">
+          <p className="text-2xl text-ink">{money(payment.amount)}</p>
+          <p className="microcaps mx-auto max-w-sm text-muted">
             En producción escanearías este QR con tu app de Yape. Aquí lo simulamos con el botón de abajo.
           </p>
 
           <button
             onClick={onConfirmPayment}
             disabled={busy}
-            className="w-full rounded-lg bg-green-600 px-4 py-3 text-sm font-bold text-white hover:bg-green-700 disabled:opacity-60"
+            className="microcaps w-full bg-ink px-4 py-3.5 text-paper hover:opacity-80 disabled:opacity-50"
           >
-            {busy ? 'Confirmando…' : 'Simular pago confirmado ✅'}
+            {busy ? 'Confirmando…' : 'Simular pago confirmado'}
           </button>
         </div>
       )}
 
       {step === 'done' && order && (
-        <div className="rounded-xl border border-green-200 bg-green-50 p-8 text-center">
-          <p className="text-5xl">🎉</p>
-          <h2 className="mt-3 text-xl font-bold text-green-800">¡Pago confirmado!</h2>
-          <p className="mt-1 text-sm text-green-700">
-            Tu orden <span className="font-mono font-semibold">{order.number}</span> por {money(order.grandTotal)} está pagada.
-            Las tiendas ya pueden preparar tu pedido.
+        <div className="py-10 text-center">
+          <h2 className="font-display text-3xl text-ink">Pago confirmado</h2>
+          <p className="microcaps mx-auto mt-4 max-w-sm leading-relaxed text-muted">
+            Tu pedido <span className="text-ink">{order.number}</span> por {money(order.grandTotal)} está pagado. Las
+            tiendas ya pueden prepararlo.
           </p>
-          <div className="mt-6 flex justify-center gap-3">
-            <Link href="/mis-ordenes" className="rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-600">
-              Ver mis órdenes
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <Link href="/mis-ordenes" className="microcaps bg-ink px-8 py-3.5 text-paper hover:opacity-80">
+              Ver mis pedidos
             </Link>
-            <Link href="/buscar" className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-bold text-gray-700 hover:border-gray-400">
+            <Link href="/buscar" className="microcaps border border-ink px-8 py-3.5 text-ink hover:bg-ink hover:text-paper">
               Seguir comprando
             </Link>
           </div>
@@ -159,13 +158,13 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-gray-700">{label}</span>
+      <span className="microcaps mb-2 block text-muted">{label}</span>
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
-        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+        className="w-full border-b border-line bg-transparent pb-1.5 text-[13px] text-ink placeholder:text-line focus:border-ink focus:outline-none"
       />
     </label>
   );

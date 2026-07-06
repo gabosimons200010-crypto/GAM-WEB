@@ -6,10 +6,12 @@ import { useEffect, ReactNode } from 'react';
 import { useAuth } from '@/lib/auth-context';
 
 const NAV = [
-  { href: '/vendedor', label: 'Panel', icon: '📊' },
-  { href: '/vendedor/ia', label: 'Cargar con IA', icon: '✨' },
-  { href: '/vendedor/productos', label: 'Productos', icon: '👕' },
-  { href: '/vendedor/pedidos', label: 'Pedidos', icon: '📦' },
+  { href: '/vendedor', label: 'Panel' },
+  { href: '/vendedor/productos', label: 'Productos' },
+  { href: '/vendedor/pedidos', label: 'Pedidos' },
+  { href: '/vendedor/ventas', label: 'Ventas' },
+  { href: '/vendedor/pagos', label: 'Pagos' },
+  { href: '/vendedor/ia', label: 'Cargar con IA' },
 ];
 
 export default function SellerLayout({ children }: { children: ReactNode }) {
@@ -24,21 +26,21 @@ export default function SellerLayout({ children }: { children: ReactNode }) {
   if (!ready || !user) return null;
 
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-[200px_1fr]">
-      <aside className="h-fit rounded-xl border border-gray-200 bg-white p-3">
-        <p className="px-3 py-2 text-xs font-bold uppercase tracking-wide text-gray-400">Vendedor</p>
-        <nav className="space-y-1">
+    <div className="grid grid-cols-1 gap-10 md:grid-cols-[190px_1fr]">
+      <aside className="h-fit md:sticky md:top-24">
+        <p className="microcaps mb-4 text-muted">Vendedor</p>
+        <nav className="flex flex-col">
           {NAV.map((n) => {
             const active = n.href === '/vendedor' ? pathname === n.href : pathname.startsWith(n.href);
             return (
               <Link
                 key={n.href}
                 href={n.href}
-                className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium ${
-                  active ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50'
+                className={`microcaps border-l-2 py-2.5 pl-3 transition ${
+                  active ? 'border-ink text-ink' : 'border-line text-muted hover:border-ink hover:text-ink'
                 }`}
               >
-                <span>{n.icon}</span> {n.label}
+                {n.label}
               </Link>
             );
           })}

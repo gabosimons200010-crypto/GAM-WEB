@@ -2,20 +2,20 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 import type { VariantView } from '@/lib/types';
 import { useAuth } from '@/lib/auth-context';
 import { useCart } from '@/lib/cart-context';
 import { addToCart, ClientApiError } from '@/lib/client-api';
 
-/** Selector de variante (talla/color) y acción real de agregar al carrito. */
+/** Selector de variante (talla/color) y acción real de agregar a la cesta. */
 export function ProductPurchase({ variants }: { variants: VariantView[] }) {
   const { user, ready } = useAuth();
   const { refresh } = useCart();
   const router = useRouter();
   const pathname = usePathname();
 
-  const sizes = useMemo(() => unique(variants.map((v) => v.size)), [variants]);
+  const sizes = useMemo(() => sortSizes(unique(variants.map((v) => v.size))), [variants]);
   const colors = useMemo(() => unique(variants.map((v) => v.color)), [variants]);
 
   const [size, setSize] = useState<string | null>(sizes.length === 1 ? sizes[0] : null);
@@ -23,12 +23,20 @@ export function ProductPurchase({ variants }: { variants: VariantView[] }) {
   const [msg, setMsg] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [added, setAdded] = useState(false);
+  const [notified, setNotified] = useState(false);
 
   const selected = variants.find((v) => (size === null || v.size === size) && (color === null || v.color === color));
   const needsSize = sizes.some((s) => s !== null);
   const needsColor = colors.some((c) => c !== null);
   const ready2 = (!needsSize || size !== null) && (!needsColor || color !== null) && !!selected;
   const available = selected?.available ?? 0;
+  const soldOut = ready2 && available <= 0;
+
+  /** Sin stock por talla: si TODAS las variantes de esa talla están en cero. */
+  function sizeSoldOut(s: string): boolean {
+    const ofSize = variants.filter((v) => v.size === s);
+    return ofSize.length > 0 && ofSize.every((v) => v.available <= 0);
+  }
 
   async function onAdd() {
     setMsg(null);
@@ -49,49 +57,65 @@ export function ProductPurchase({ variants }: { variants: VariantView[] }) {
       await addToCart(selected.id, 1);
       await refresh();
       setAdded(true);
-      setMsg({ kind: 'ok', text: '✅ Agregado al carrito.' });
+      setMsg({ kind: 'ok', text: 'Añadido a la cesta.' });
     } catch (err) {
-      const text = err instanceof ClientApiError ? err.message : 'No pudimos agregar al carrito';
+      const text = err instanceof ClientApiError ? err.message : 'No pudimos añadir a la cesta';
       setMsg({ kind: 'err', text });
     } finally {
       setBusy(false);
     }
   }
 
+  function onNotify(e: FormEvent) {
+    e.preventDefault();
+    setNotified(true); // Captura demo: aún no hay backend de avisos de restock.
+  }
+
   return (
-    <div className="space-y-4">
-      {needsSize && <Selector label="Talla" options={sizes} value={size} onChange={setSize} />}
+    <div className="space-y-6">
+      {needsSize && <Selector label="Talla" options={sizes} value={size} onChange={setSize} isSoldOut={sizeSoldOut} />}
       {needsColor && <Selector label="Color" options={colors} value={color} onChange={setColor} />}
 
-      {ready2 && (
-        <p className="text-sm">
-          {available > 0 ? (
-            <span className="text-green-600">{available} disponibles</span>
-          ) : (
-            <span className="text-red-500">Agotado</span>
-          )}
-        </p>
+      {ready2 && !soldOut && available <= 5 && (
+        <p className="microcaps text-muted">Quedan {available} unidades</p>
       )}
 
-      <div className="flex flex-wrap items-center gap-3">
+      {soldOut && (
+        <form onSubmit={onNotify} className="border-t border-line pt-4">
+          <p className="microcaps mb-3 text-ink">{notified ? 'Te avisaremos cuando vuelva.' : 'Agotado — recibe un aviso'}</p>
+          {!notified && (
+            <div className="flex max-w-xs items-baseline gap-3 border-b border-ink pb-1">
+              <input
+                type="email"
+                required
+                placeholder="INTRODUCIR E-MAIL"
+                className="microcaps w-full bg-transparent text-ink placeholder:text-muted focus:outline-none"
+              />
+              <button type="submit" className="microcaps shrink-0 hover:opacity-70">
+                Avisarme
+              </button>
+            </div>
+          )}
+        </form>
+      )}
+
+      <div className="flex flex-wrap items-center gap-5">
         <button
           onClick={onAdd}
-          disabled={busy}
-          className="rounded-lg bg-brand-500 px-6 py-3 text-sm font-bold text-white hover:bg-brand-600 disabled:opacity-60"
+          disabled={busy || soldOut}
+          className="microcaps min-w-56 bg-ink px-10 py-3.5 text-paper transition hover:opacity-80 disabled:cursor-not-allowed disabled:bg-line disabled:text-muted"
         >
-          {busy ? 'Agregando…' : 'Agregar al carrito'}
+          {busy ? 'Añadiendo…' : soldOut ? 'Agotado' : 'Añadir a la cesta'}
         </button>
         {added && (
-          <Link href="/carrito" className="text-sm font-semibold text-brand-600 hover:underline">
-            Ir al carrito →
+          <Link href="/carrito" className="microcaps border-b border-ink pb-0.5 hover:opacity-70">
+            Ver cesta
           </Link>
         )}
       </div>
 
       {msg && (
-        <p className={`rounded-lg p-3 text-sm ${msg.kind === 'ok' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-          {msg.text}
-        </p>
+        <p className={`microcaps ${msg.kind === 'ok' ? 'text-ink' : 'text-sale'}`}>{msg.text}</p>
       )}
     </div>
   );
@@ -102,29 +126,38 @@ function Selector({
   options,
   value,
   onChange,
+  isSoldOut,
 }: {
   label: string;
   options: (string | null)[];
   value: string | null;
   onChange: (v: string) => void;
+  isSoldOut?: (v: string) => boolean;
 }) {
   return (
     <div>
-      <p className="mb-1.5 text-sm font-semibold text-gray-700">{label}</p>
+      <p className="microcaps mb-3 text-muted">{label}</p>
       <div className="flex flex-wrap gap-2">
         {options
           .filter((o): o is string => o !== null)
-          .map((o) => (
-            <button
-              key={o}
-              onClick={() => onChange(o)}
-              className={`rounded-lg border px-3 py-1.5 text-sm font-medium ${
-                value === o ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-gray-300 text-gray-700 hover:border-gray-400'
-              }`}
-            >
-              {o}
-            </button>
-          ))}
+          .map((o) => {
+            const out = isSoldOut?.(o) ?? false;
+            return (
+              <button
+                key={o}
+                onClick={() => onChange(o)}
+                className={`min-w-12 border px-3 py-2.5 text-[12px] ${
+                  value === o
+                    ? 'border-ink bg-ink text-paper'
+                    : out
+                      ? 'border-line text-line line-through'
+                      : 'border-line text-ink hover:border-ink'
+                }`}
+              >
+                {o}
+              </button>
+            );
+          })}
       </div>
     </div>
   );
@@ -132,4 +165,18 @@ function Selector({
 
 function unique(values: (string | null)[]): (string | null)[] {
   return [...new Set(values)];
+}
+
+const SIZE_ORDER = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
+/** Ordena tallas en el orden canónico; las desconocidas van al final, alfabéticas. */
+function sortSizes(values: (string | null)[]): (string | null)[] {
+  return [...values].sort((a, b) => {
+    const ia = a ? SIZE_ORDER.indexOf(a.toUpperCase()) : -1;
+    const ib = b ? SIZE_ORDER.indexOf(b.toUpperCase()) : -1;
+    if (ia !== -1 && ib !== -1) return ia - ib;
+    if (ia !== -1) return -1;
+    if (ib !== -1) return 1;
+    return String(a).localeCompare(String(b));
+  });
 }

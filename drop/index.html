@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SIN NOMBRE™ — MIDNIGHT DROP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ══════════ FIXED HEADER ══════════ -->
+<header class="site-head" id="siteHead">
+  <a class="wordmark" href="#top">SIN&nbsp;NOMBRE<sup>™</sup></a>
+  <nav class="head-nav">
+    <a href="#drop">Drop</a>
+    <a href="#brands">Sellers</a>
+    <a href="#fabric">Fabric</a>
+  </nav>
+  <button class="head-cart" id="headCartBtn" aria-label="Open cart">
+    CART <span class="cart-count" data-cart-count>0</span>
+  </button>
+</header>
+
+<!-- ══════════ HERO — SCROLL-SCRUBBED WALK ══════════ -->
+<section class="hero" id="top">
+  <div class="hero-sticky">
+    <video class="hero-video" id="heroVideo" muted playsinline preload="auto">
+      <source src="assets/hero.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-fallback" id="heroFallback" aria-hidden="true"></div>
+    <div class="hero-shade"></div>
+
+    <div class="hero-type">
+      <p class="hero-kicker mono">FW26&nbsp;/&nbsp;CAPSULE&nbsp;001&nbsp;/&nbsp;3&nbsp;BRANDS&nbsp;—&nbsp;3&nbsp;PIECES</p>
+      <h1 class="hero-title">
+        <span class="line solid">ONYX&nbsp;SUPPLY</span>
+        <span class="line hollow">MIDNIGHT&nbsp;DROP</span>
+      </h1>
+
+      <div class="countdown mono" id="countdown" role="timer" aria-label="Time until drop">
+        <div class="cd-cell"><span class="cd-num" id="cdD">00</span><span class="cd-lab">DAYS</span></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-cell"><span class="cd-num" id="cdH">00</span><span class="cd-lab">HRS</span></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-cell"><span class="cd-num" id="cdM">00</span><span class="cd-lab">MIN</span></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-cell"><span class="cd-num" id="cdS">00</span><span class="cd-lab">SEC</span></div>
+      </div>
+    </div>
+
+    <div class="hero-scrollhint mono">SCROLL&nbsp;TO&nbsp;SCRUB&nbsp;<span class="hint-bar"></span></div>
+  </div>
+</section>
+
+<!-- ══════════ MARQUEE ══════════ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>HW-01 HEAVYWEIGHT HOODIE ✕ CG-02 CARGO PANT ✕ CH-03 CHROME PUFFER ✕ MIDNIGHT DROP ✕&nbsp;</span>
+    <span>HW-01 HEAVYWEIGHT HOODIE ✕ CG-02 CARGO PANT ✕ CH-03 CHROME PUFFER ✕ MIDNIGHT DROP ✕&nbsp;</span>
+  </div>
+</div>
+
+<!-- ══════════ PRODUCT GRID ══════════ -->
+<section class="drop" id="drop">
+  <div class="drop-head reveal">
+    <h2 class="sec-title">THE&nbsp;DROP</h2>
+    <p class="sec-sub mono">03 PIECES / 03 INDEPENDENT SELLERS / NO RESTOCK</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- 01 — HOODIE -->
+    <article class="card reveal" id="card-hw01" data-product="hw01">
+      <span class="card-index" aria-hidden="true">01</span>
+      <figure class="card-media" data-video-wrap>
+        <video class="card-video" muted playsinline loop preload="metadata">
+          <source src="assets/spin-hoodie.mp4" type="video/mp4" />
+        </video>
+        <div class="card-poster poster-hoodie" aria-hidden="true"></div>
+        <span class="spin-tag mono" aria-hidden="true">HOVER — 360°</span>
+      </figure>
+      <div class="card-body">
+        <p class="card-brand mono"><a href="#brand-vanta">VANTA STUDIO</a> · HW-01</p>
+        <h3 class="card-name">HEAVYWEIGHT HOODIE</h3>
+        <p class="card-price mono">$180</p>
+        <div class="sizes" role="group" aria-label="Select size">
+          <button class="size">XS</button>
+          <button class="size">S</button>
+          <button class="size soldout" data-soldout>M</button>
+          <button class="size">L</button>
+          <button class="size">XL</button>
+        </div>
+        <form class="notify mono" hidden>
+          <label>SIZE <span data-notify-size>M</span> IS GONE — GET RESTOCK ALERT</label>
+          <div class="notify-row">
+            <input type="email" placeholder="you@email.com" required />
+            <button type="submit">NOTIFY&nbsp;ME</button>
+          </div>
+        </form>
+        <button class="add-btn" data-add>ADD&nbsp;TO&nbsp;CART&nbsp;→</button>
+      </div>
+    </article>
+
+    <!-- 02 — CARGO -->
+    <article class="card reveal" id="card-cg02" data-product="cg02">
+      <span class="card-index" aria-hidden="true">02</span>
+      <figure class="card-media" data-video-wrap>
+        <video class="card-video" muted playsinline loop preload="metadata">
+          <source src="assets/spin-cargo.mp4" type="video/mp4" />
+        </video>
+        <div class="card-poster poster-cargo" aria-hidden="true"></div>
+        <span class="spin-tag mono" aria-hidden="true">HOVER — 360°</span>
+      </figure>
+      <div class="card-body">
+        <p class="card-brand mono"><a href="#brand-gravel">GRAVEL WORKS</a> · CG-02</p>
+        <h3 class="card-name">CARGO PANT</h3>
+        <p class="card-price mono">$210</p>
+        <div class="sizes" role="group" aria-label="Select size">
+          <button class="size">XS</button>
+          <button class="size">S</button>
+          <button class="size">M</button>
+          <button class="size soldout" data-soldout>L</button>
+          <button class="size">XL</button>
+        </div>
+        <form class="notify mono" hidden>
+          <label>SIZE <span data-notify-size>L</span> IS GONE — GET RESTOCK ALERT</label>
+          <div class="notify-row">
+            <input type="email" placeholder="you@email.com" required />
+            <button type="submit">NOTIFY&nbsp;ME</button>
+          </div>
+        </form>
+        <button class="add-btn" data-add>ADD&nbsp;TO&nbsp;CART&nbsp;→</button>
+      </div>
+    </article>
+
+    <!-- 03 — PUFFER -->
+    <article class="card reveal" id="card-ch03" data-product="ch03">
+      <span class="card-index" aria-hidden="true">03</span>
+      <figure class="card-media" data-video-wrap>
+        <video class="card-video" muted playsinline loop preload="metadata">
+          <source src="assets/spin-puffer.mp4" type="video/mp4" />
+        </video>
+        <div class="card-poster poster-puffer" aria-hidden="true"></div>
+        <span class="spin-tag mono" aria-hidden="true">HOVER — 360°</span>
+      </figure>
+      <div class="card-body">
+        <p class="card-brand mono"><a href="#brand-onyx">ONYX SUPPLY</a> · CH-03</p>
+        <h3 class="card-name">CHROME PUFFER</h3>
+        <p class="card-price mono">$340</p>
+        <div class="sizes" role="group" aria-label="Select size">
+          <button class="size">XS</button>
+          <button class="size">S</button>
+          <button class="size">M</button>
+          <button class="size">L</button>
+          <button class="size soldout" data-soldout>XL</button>
+        </div>
+        <form class="notify mono" hidden>
+          <label>SIZE <span data-notify-size>XL</span> IS GONE — GET RESTOCK ALERT</label>
+          <div class="notify-row">
+            <input type="email" placeholder="you@email.com" required />
+            <button type="submit">NOTIFY&nbsp;ME</button>
+          </div>
+        </form>
+        <button class="add-btn" data-add>ADD&nbsp;TO&nbsp;CART&nbsp;→</button>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ══════════ BRAND PROFILES ══════════ -->
+<section class="brands" id="brands">
+  <div class="brands-head reveal">
+    <h2 class="sec-title">THE&nbsp;SELLERS</h2>
+    <p class="sec-sub mono">INDEPENDENT BRANDS SELLING THROUGH THE MARKETPLACE — EACH RUNS ITS OWN PROFILE, DROPS, AND STOCK.</p>
+  </div>
+
+  <div class="brand-rows">
+    <article class="brand-row reveal" id="brand-vanta">
+      <span class="brand-mono" aria-hidden="true">VS</span>
+      <div class="brand-info">
+        <h3 class="brand-name">VANTA&nbsp;STUDIO</h3>
+        <p class="brand-meta mono">LIMA — EST. 2021 — SELLER #0047</p>
+        <p class="brand-bio">Heavyweight basics only. 480gsm loopback fleece, garment-dyed matte black, seams taped by hand in a six-person studio.</p>
+      </div>
+      <div class="brand-piece mono">
+        <span>IN THIS DROP</span>
+        <a href="#card-hw01">HW-01 HEAVYWEIGHT HOODIE — $180 →</a>
+      </div>
+    </article>
+
+    <article class="brand-row reveal" id="brand-gravel">
+      <span class="brand-mono" aria-hidden="true">GW</span>
+      <div class="brand-info">
+        <h3 class="brand-name">GRAVEL&nbsp;WORKS</h3>
+        <p class="brand-meta mono">CALLAO — EST. 2019 — SELLER #0012</p>
+        <p class="brand-bio">Utility silhouettes cut from bonded workwear canvas. Bar-tacked stress points, chrome YKK hardware, zero decoration.</p>
+      </div>
+      <div class="brand-piece mono">
+        <span>IN THIS DROP</span>
+        <a href="#card-cg02">CG-02 CARGO PANT — $210 →</a>
+      </div>
+    </article>
+
+    <article class="brand-row reveal" id="brand-onyx">
+      <span class="brand-mono" aria-hidden="true">OS</span>
+      <div class="brand-info">
+        <h3 class="brand-name">ONYX&nbsp;SUPPLY</h3>
+        <p class="brand-meta mono">LIMA — EST. 2022 — SELLER #0193 — DROP CURATOR</p>
+        <p class="brand-bio">Technical outerwear with mirror-chrome hardware. Down-alternative fill rated to -15°C, matte shell, zero branding on the outside.</p>
+      </div>
+      <div class="brand-piece mono">
+        <span>IN THIS DROP</span>
+        <a href="#card-ch03">CH-03 CHROME PUFFER — $340 →</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ══════════ MARQUEE 2 ══════════ -->
+<div class="marquee marquee-invert" aria-hidden="true">
+  <div class="marquee-track">
+    <span>BUILT HEAVY ✕ CUT CLEAN ✕ NO RESTOCK ✕ SIN NOMBRE™ MARKETPLACE ✕&nbsp;</span>
+    <span>BUILT HEAVY ✕ CUT CLEAN ✕ NO RESTOCK ✕ SIN NOMBRE™ MARKETPLACE ✕&nbsp;</span>
+  </div>
+</div>
+
+<!-- ══════════ FABRIC MACRO ══════════ -->
+<section class="fabric" id="fabric">
+  <figure class="fabric-media" data-video-wrap>
+    <video class="fabric-video" id="fabricVideo" muted playsinline loop preload="metadata">
+      <source src="assets/macro.mp4" type="video/mp4" />
+    </video>
+    <div class="fabric-fallback" aria-hidden="true"></div>
+  </figure>
+  <div class="fabric-copy">
+    <p class="fabric-kicker mono reveal">QUALITY&nbsp;MANIFESTO</p>
+    <h2 class="fabric-quote reveal">BUILT&nbsp;HEAVY.<br /><em>CUT&nbsp;CLEAN.</em></h2>
+    <div class="fabric-claims mono reveal">
+      <p>480GSM LOOPBACK — NOTHING LIGHTER LEAVES THE FLOOR.</p>
+      <p>CHROME YKK TEETH — TESTED TO 10,000 PULLS.</p>
+      <p>EMBOSSED, NEVER PRINTED — THE LOGO IS IN THE FABRIC.</p>
+      <p>ONE RUN. WHEN IT'S GONE, IT'S GONE.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="foot">
+  <div class="foot-notify reveal">
+    <h2 class="foot-title">MISS&nbsp;THE&nbsp;DROP?</h2>
+    <form class="notify foot-form mono" id="footNotify">
+      <div class="notify-row">
+        <input type="email" placeholder="you@email.com" required />
+        <button type="submit">NOTIFY&nbsp;ME</button>
+      </div>
+    </form>
+  </div>
+  <div class="foot-base mono">
+    <span>SIN&nbsp;NOMBRE™ — WORKING TITLE, NAME TBD</span>
+    <span>MARKETPLACE DEMO — NO REAL PAYMENTS</span>
+    <span>LIMA, PE — FW26</span>
+  </div>
+</footer>
+
+<!-- ══════════ STICKY CART FAB ══════════ -->
+<button class="cart-fab" id="cartFab" aria-label="Open cart">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" aria-hidden="true">
+    <path d="M6 7h12l-1.2 12H7.2L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/>
+  </svg>
+  <span class="cart-count" data-cart-count>0</span>
+</button>
+
+<!-- ══════════ CART DRAWER ══════════ -->
+<div class="drawer-veil" id="drawerVeil" hidden></div>
+<aside class="drawer" id="cartDrawer" aria-label="Cart" aria-hidden="true">
+  <header class="drawer-head">
+    <h2>CART</h2>
+    <button class="drawer-close" id="drawerClose" aria-label="Close cart">✕</button>
+  </header>
+  <ul class="drawer-items mono" id="drawerItems"></ul>
+  <p class="drawer-empty mono" id="drawerEmpty">NOTHING&nbsp;YET.&nbsp;THE&nbsp;FOG&nbsp;IS&nbsp;WAITING.</p>
+  <footer class="drawer-foot">
+    <div class="drawer-total mono"><span>SUBTOTAL</span><span id="drawerTotal">$0</span></div>
+    <button class="checkout-btn" id="checkoutBtn">CHECKOUT&nbsp;→</button>
+    <p class="drawer-demo mono" id="drawerDemo" hidden>DEMO&nbsp;CHECKOUT&nbsp;—&nbsp;NOTHING&nbsp;WAS&nbsp;CHARGED&nbsp;✓</p>
+  </footer>
+</aside>
+
+<script src="app.js"></script>
+</body>
+</html>

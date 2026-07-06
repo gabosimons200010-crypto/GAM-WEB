@@ -34,38 +34,25 @@ export default async function StorePage({
 
   return (
     <div>
-      <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
-        <div className="h-32 bg-gradient-to-r from-brand-400 to-brand-600 sm:h-40">
-          {store.bannerUrl && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={store.bannerUrl} alt={store.name} className="h-full w-full object-cover" />
-          )}
-        </div>
-        <div className="flex items-end gap-4 px-6 pb-5">
-          <div className="-mt-10 h-20 w-20 shrink-0 overflow-hidden rounded-xl border-4 border-white bg-gray-100">
-            {store.logoUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={store.logoUrl} alt={store.name} className="h-full w-full object-cover" />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center text-2xl text-gray-300">🏬</div>
-            )}
-          </div>
-          <div className="pt-3">
-            <h1 className="flex items-center gap-2 text-xl font-bold">
-              {store.name}
-              {store.verified && <span className="text-sm text-brand-600" title="Tienda verificada">✔️</span>}
-            </h1>
-            <p className="text-sm text-gray-500">
-              {[store.floor && `Piso ${store.floor}`, store.stand && `Stand ${store.stand}`].filter(Boolean).join(' · ') ||
-                'Gamarra, Lima'}
-              {store.salesCount > 0 && ` · ${store.salesCount} ventas`}
-            </p>
-          </div>
-        </div>
-        {store.description && <p className="border-t border-gray-100 px-6 py-3 text-sm text-gray-600">{store.description}</p>}
+      {/* ── Perfil de marca editorial ── */}
+      <div className="border-b border-line pb-10 pt-6 text-center">
+        <h1 className="font-display text-5xl text-ink sm:text-6xl">{store.name}</h1>
+        <p className="microcaps mt-4 text-muted">
+          {[store.floor && `Piso ${store.floor}`, store.stand && `Stand ${store.stand}`].filter(Boolean).join(' · ') ||
+            'Gamarra, Lima'}
+          {store.salesCount > 0 && ` · ${store.salesCount} ventas`}
+          {store.rating > 0 && ` · ★ ${Number(store.rating).toFixed(1)}`}
+          {store.verified && ' · Tienda verificada'}
+        </p>
+        {store.description && (
+          <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-ink">{store.description}</p>
+        )}
       </div>
 
-      <h2 className="mb-4 mt-8 text-lg font-bold">Productos de la tienda</h2>
+      <div className="mb-7 mt-10 flex items-baseline justify-between border-b border-line pb-3">
+        <h2 className="font-display text-2xl text-ink">Piezas de la tienda</h2>
+        <span className="microcaps text-muted">{products.total} en vitrina</span>
+      </div>
       <ProductGrid products={products.items} />
       <Pagination basePath={`/tienda/${slug}`} query={{ sort }} page={products.page} hasMore={products.hasMore} />
     </div>

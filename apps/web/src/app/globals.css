@@ -7,5 +7,63 @@
 }
 
 body {
-  @apply bg-gray-50 text-gray-900 antialiased;
+  @apply bg-paper text-ink antialiased;
+}
+
+::selection {
+  @apply bg-ink text-paper;
+}
+
+:focus-visible {
+  outline: 1px solid theme('colors.ink');
+  outline-offset: 2px;
+}
+
+@layer utilities {
+  /* Etiqueta editorial: mayúsculas pequeñas con tracking amplio. */
+  .microcaps {
+    @apply text-[11px] uppercase tracking-caps;
+  }
+  /* Sección que rompe el contenedor central y ocupa todo el ancho. */
+  .full-bleed {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+  }
+}
+
+/* ── Animaciones del seguimiento de pedidos ── */
+@keyframes gg-pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(17, 17, 17, 0.35); }
+  70% { box-shadow: 0 0 0 8px rgba(17, 17, 17, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(17, 17, 17, 0); }
+}
+@keyframes gg-truck {
+  0% { left: 0; }
+  100% { left: 100%; }
+}
+@keyframes gg-grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes gg-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes gg-dash {
+  to { background-position: -16px 0; }
+}
+
+.gg-pulse { animation: gg-pulse-ring 1.8s ease-out infinite; }
+.gg-fade-up { animation: gg-fade-up 0.5s ease both; }
+.gg-grow { transform-origin: left; animation: gg-grow 0.7s cubic-bezier(0.4, 0, 0.2, 1) both; }
+.gg-truck { animation: gg-truck 2.4s ease-in-out infinite alternate; }
+/* Línea a rayas en movimiento (tramo "en camino"). */
+.gg-dashes {
+  background-image: repeating-linear-gradient(90deg, theme('colors.ink') 0 6px, transparent 6px 12px);
+  background-size: 16px 100%;
+  animation: gg-dash 0.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gg-pulse, .gg-truck, .gg-dashes, .gg-grow, .gg-fade-up { animation: none; }
 }

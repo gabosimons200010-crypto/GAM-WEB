@@ -16,12 +16,12 @@ const TABS: { value: string; label: string }[] = [
   { value: '', label: 'Todas' },
 ];
 
-const STORE_STATUS: Record<string, { label: string; cls: string }> = {
-  DRAFT: { label: 'Borrador', cls: 'bg-gray-100 text-gray-600' },
-  IN_REVIEW: { label: 'En revisión', cls: 'bg-amber-100 text-amber-700' },
-  APPROVED: { label: 'Aprobada', cls: 'bg-green-100 text-green-700' },
-  SUSPENDED: { label: 'Suspendida', cls: 'bg-red-100 text-red-700' },
-  REJECTED: { label: 'Rechazada', cls: 'bg-red-100 text-red-700' },
+const STORE_STATUS: Record<string, string> = {
+  DRAFT: 'Borrador',
+  IN_REVIEW: 'En revisión',
+  APPROVED: 'Aprobada',
+  SUSPENDED: 'Suspendida',
+  REJECTED: 'Rechazada',
 };
 
 export default function AdminStoresPage() {
@@ -58,16 +58,16 @@ export default function AdminStoresPage() {
   }
 
   return (
-    <div className="space-y-5">
-      <h1 className="text-2xl font-bold">Tiendas</h1>
+    <div className="space-y-6">
+      <h1 className="border-b border-line pb-3 font-display text-3xl text-ink">Tiendas</h1>
 
-      <div className="flex gap-2">
+      <div className="flex gap-6">
         {TABS.map((t) => (
           <button
             key={t.value}
             onClick={() => setTab(t.value)}
-            className={`rounded-lg px-4 py-1.5 text-sm font-medium ${
-              tab === t.value ? 'bg-brand-500 text-white' : 'bg-white text-gray-600 hover:bg-gray-100'
+            className={`microcaps border-b-2 pb-1 transition ${
+              tab === t.value ? 'border-ink text-ink' : 'border-transparent text-muted hover:text-ink'
             }`}
           >
             {t.label}
@@ -75,94 +75,76 @@ export default function AdminStoresPage() {
         ))}
       </div>
 
-      {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+      {error && <p className="microcaps text-sale">{error}</p>}
 
       {stores === null ? (
-        <p className="text-gray-500">Cargando…</p>
+        <p className="microcaps text-muted">Cargando…</p>
       ) : stores.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center text-gray-500">
-          No hay tiendas en este estado.
+        <div className="border border-dashed border-line p-10 text-center">
+          <p className="microcaps text-muted">No hay tiendas en este estado.</p>
         </div>
       ) : (
         <div className="space-y-3">
-          {stores.map((s) => {
-            const st = STORE_STATUS[s.status] ?? { label: s.status, cls: 'bg-gray-100 text-gray-600' };
-            return (
-              <div key={s.id} className="rounded-xl border border-gray-200 bg-white p-4">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
-                    <p className="flex items-center gap-2 font-bold">
-                      {s.commercialName}
-                      {s.verified && <span title="Verificada" className="text-brand-600">✔️</span>}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {s.ruc ? `RUC ${s.ruc} · ` : ''}
-                      {s.email} · {s.phone}
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      {[s.floor && `Piso ${s.floor}`, s.stand && `Stand ${s.stand}`].filter(Boolean).join(' · ')}
-                    </p>
-                  </div>
-                  <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${st.cls}`}>{st.label}</span>
-                </div>
-
-                <div className="mt-3 flex flex-wrap gap-2 border-t border-gray-100 pt-3">
-                  {s.status !== 'APPROVED' && (
-                    <Action onClick={() => act(s.id, () => adminApproveStore(s.id))} busy={busy === s.id} color="green">
-                      Aprobar
-                    </Action>
-                  )}
-                  {s.status === 'APPROVED' && (
-                    <Action onClick={() => act(s.id, () => adminVerifyStore(s.id, !s.verified))} busy={busy === s.id} color="brand">
-                      {s.verified ? 'Quitar verificación' : 'Verificar'}
-                    </Action>
-                  )}
-                  {s.status !== 'REJECTED' && (
-                    <Action
-                      onClick={() => {
-                        const reason = window.prompt('Motivo del rechazo:') ?? '';
-                        if (reason.trim()) void act(s.id, () => adminRejectStore(s.id, reason.trim()));
-                      }}
-                      busy={busy === s.id}
-                      color="red"
-                    >
-                      Rechazar
-                    </Action>
-                  )}
-                </div>
-                {s.status === 'APPROVED' && !s.verified && (
-                  <p className="mt-2 text-xs text-amber-600">
-                    💡 Verifica la tienda para que sus productos se publiquen directo (sin cola de moderación).
+          {stores.map((s) => (
+            <div key={s.id} className="border border-line p-5">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="font-display text-xl text-ink">
+                    {s.commercialName}
+                    {s.verified && <span className="microcaps ml-2 text-muted">· Verificada</span>}
                   </p>
+                  <p className="microcaps mt-1 text-[10px] text-muted">
+                    {s.ruc ? `RUC ${s.ruc} · ` : ''}
+                    {s.email} · {s.phone}
+                  </p>
+                  <p className="microcaps text-[10px] text-muted">
+                    {[s.floor && `Piso ${s.floor}`, s.stand && `Stand ${s.stand}`].filter(Boolean).join(' · ')}
+                  </p>
+                </div>
+                <span className="microcaps text-ink">{STORE_STATUS[s.status] ?? s.status}</span>
+              </div>
+
+              <div className="mt-4 flex flex-wrap gap-2 border-t border-line pt-4">
+                {s.status !== 'APPROVED' && (
+                  <button
+                    onClick={() => act(s.id, () => adminApproveStore(s.id))}
+                    disabled={busy === s.id}
+                    className="microcaps bg-ink px-3 py-1.5 text-paper hover:opacity-80 disabled:opacity-50"
+                  >
+                    Aprobar
+                  </button>
+                )}
+                {s.status === 'APPROVED' && (
+                  <button
+                    onClick={() => act(s.id, () => adminVerifyStore(s.id, !s.verified))}
+                    disabled={busy === s.id}
+                    className="microcaps border border-line px-3 py-1.5 text-ink transition hover:border-ink disabled:opacity-50"
+                  >
+                    {s.verified ? 'Quitar verificación' : 'Verificar'}
+                  </button>
+                )}
+                {s.status !== 'REJECTED' && (
+                  <button
+                    onClick={() => {
+                      const reason = window.prompt('Motivo del rechazo:') ?? '';
+                      if (reason.trim()) void act(s.id, () => adminRejectStore(s.id, reason.trim()));
+                    }}
+                    disabled={busy === s.id}
+                    className="microcaps border border-line px-3 py-1.5 text-sale transition hover:border-sale disabled:opacity-50"
+                  >
+                    Rechazar
+                  </button>
                 )}
               </div>
-            );
-          })}
+              {s.status === 'APPROVED' && !s.verified && (
+                <p className="microcaps mt-3 text-[10px] text-muted">
+                  Verifica la tienda para que sus productos se publiquen directo (sin cola de moderación).
+                </p>
+              )}
+            </div>
+          ))}
         </div>
       )}
     </div>
-  );
-}
-
-function Action({
-  children,
-  onClick,
-  busy,
-  color,
-}: {
-  children: React.ReactNode;
-  onClick: () => void;
-  busy: boolean;
-  color: 'green' | 'red' | 'brand';
-}) {
-  const cls = {
-    green: 'bg-green-600 hover:bg-green-700',
-    red: 'bg-red-600 hover:bg-red-700',
-    brand: 'bg-brand-500 hover:bg-brand-600',
-  }[color];
-  return (
-    <button onClick={onClick} disabled={busy} className={`rounded-lg px-3 py-1.5 text-xs font-bold text-white disabled:opacity-60 ${cls}`}>
-      {children}
-    </button>
   );
 }

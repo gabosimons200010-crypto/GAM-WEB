@@ -160,6 +160,18 @@ export function publishProduct(storeId: string, productId: string): Promise<Prod
   return request<ProductDetail>(`/seller/stores/${storeId}/products/${productId}/publish`, { method: 'POST' });
 }
 
+/** Ajusta el stock disponible de una variante (se refleja de inmediato en la tienda). */
+export function adjustInventory(
+  storeId: string,
+  variantId: string,
+  available: number,
+): Promise<{ variantId: string; available: number; lowStock: boolean }> {
+  return request(`/seller/stores/${storeId}/products/variants/${variantId}/inventory`, {
+    method: 'PATCH',
+    body: JSON.stringify({ available }),
+  });
+}
+
 // --- Vendedor: pedidos ---
 export function listSellerOrders(status?: string): Promise<{ items: SellerSubOrder[]; nextCursor: string | null }> {
   const q = status ? `?status=${status}` : '';

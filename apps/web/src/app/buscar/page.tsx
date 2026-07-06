@@ -52,23 +52,23 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   };
 
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-[220px_1fr]">
-      <Suspense fallback={<div className="h-64 rounded-xl bg-white" />}>
+    <div className="grid grid-cols-1 gap-10 md:grid-cols-[200px_1fr]">
+      <Suspense fallback={<div className="h-64" />}>
         <Filters />
       </Suspense>
 
       <div>
-        <div className="mb-4">
-          <h1 className="text-xl font-bold">{q ? `Resultados para “${q}”` : 'Catálogo'}</h1>
+        <div className="mb-8 border-b border-line pb-3">
+          <h1 className="font-display text-3xl text-ink">{q ? `“${q}”` : 'Catálogo'}</h1>
           {result && (
-            <p className="text-sm text-gray-500">
+            <p className="microcaps mt-2 text-muted">
               {result.total} {result.total === 1 ? 'producto' : 'productos'}
             </p>
           )}
         </div>
 
         {error ? (
-          <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-800">
+          <div className="border border-line p-6 text-sm text-muted">
             No pudimos cargar el catálogo. ¿Está corriendo el backend en <code>localhost:4000</code>?
           </div>
         ) : (

@@ -17,12 +17,11 @@ function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  async function onSubmit(e: FormEvent) {
-    e.preventDefault();
+  async function submit(mail: string, pass: string) {
     setError(null);
     setLoading(true);
     try {
-      await login(email.trim(), password);
+      await login(mail.trim(), pass);
       router.push(next);
       router.refresh();
     } catch (err) {
@@ -33,29 +32,42 @@ function LoginForm() {
   }
 
   return (
-    <div className="mx-auto max-w-sm rounded-2xl border border-gray-200 bg-white p-8">
-      <h1 className="text-xl font-bold">Ingresar</h1>
-      <p className="mt-1 text-sm text-gray-500">Entra para comprar y ver tus órdenes.</p>
+    <div className="mx-auto max-w-sm py-10">
+      <h1 className="font-display text-4xl text-ink">Ingresar</h1>
+      <p className="microcaps mt-3 text-muted">Entra para comprar, vender y ver tus pedidos.</p>
 
-      <form onSubmit={onSubmit} className="mt-6 space-y-4">
-        <Field label="Correo" type="email" value={email} onChange={setEmail} placeholder="tucorreo@example.com" />
+      <form
+        onSubmit={(e: FormEvent) => {
+          e.preventDefault();
+          void submit(email, password);
+        }}
+        className="mt-8 space-y-6"
+      >
+        <Field label="Correo" type="email" value={email} onChange={setEmail} placeholder="tucorreo@ejemplo.com" />
         <Field label="Contraseña" type="password" value={password} onChange={setPassword} placeholder="••••••••" />
 
-        {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+        {error && <p className="microcaps text-sale">{error}</p>}
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-bold text-white hover:bg-brand-600 disabled:opacity-60"
+          className="microcaps w-full bg-ink px-4 py-3.5 text-paper transition hover:opacity-80 disabled:opacity-50"
         >
           {loading ? 'Ingresando…' : 'Ingresar'}
         </button>
       </form>
 
-      <p className="mt-4 text-sm text-gray-600">
+      <p className="microcaps mt-6 text-muted">
         ¿No tienes cuenta?{' '}
-        <Link href="/registrarse" className="font-semibold text-brand-600 hover:underline">
-          Regístrate
+        <Link href="/registrarse" className="border-b border-ink pb-0.5 text-ink hover:opacity-70">
+          Crear cuenta
+        </Link>
+      </p>
+
+      <p className="microcaps mt-10 border-t border-line pt-6 text-[10px] text-muted">
+        ¿Eres una marca?{' '}
+        <Link href="/vender" className="text-ink hover:underline hover:underline-offset-4">
+          Vende en Gamarra Go →
         </Link>
       </p>
     </div>
@@ -77,14 +89,14 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-gray-700">{label}</span>
+      <span className="microcaps mb-2 block text-muted">{label}</span>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         required
-        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+        className="w-full border-b border-line bg-transparent pb-1.5 text-[13px] text-ink placeholder:text-line focus:border-ink focus:outline-none"
       />
     </label>
   );
@@ -92,7 +104,7 @@ function Field({
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="mx-auto h-80 max-w-sm rounded-2xl bg-white" />}>
+    <Suspense fallback={<div className="mx-auto h-80 max-w-sm" />}>
       <LoginForm />
     </Suspense>
   );

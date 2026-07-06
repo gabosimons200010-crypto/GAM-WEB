@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "gamarra-web",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@gamarra/web", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "midnight-drop",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["-y", "http-server", "drop", "-p", "4173", "-c-1"],
+      "port": 4173
+    }
+  ]
+}

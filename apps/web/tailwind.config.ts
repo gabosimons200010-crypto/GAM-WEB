@@ -5,7 +5,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Paleta GAMARRA GO: un naranja vibrante tipo mercado + neutros.
+        // Identidad editorial de la vitrina: blanco papel, negro tinta, líneas finas.
+        paper: '#ffffff',
+        ink: '#111111',
+        muted: '#767676',
+        line: '#e6e6e6',
+        sale: '#d10000',
+        // Paleta naranja original: la conservan los paneles internos (vendedor/admin).
         brand: {
           50: '#fff5ed',
           100: '#ffe8d4',
@@ -15,7 +21,11 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-instrument)', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        display: ['var(--font-bodoni)', 'Didot', 'Georgia', 'serif'],
+      },
+      letterSpacing: {
+        caps: '0.14em',
       },
     },
   },
