@@ -13,6 +13,7 @@ import { ProductStatus, ProductView, VariantContext } from '../domain/product';
 const productInclude = {
   variants: { include: { inventory: true }, orderBy: { sku: 'asc' } },
   media: { orderBy: { position: 'asc' } },
+  store: { select: { commercialName: true, slug: true } },
 } satisfies Prisma.ProductInclude;
 
 type ProductRow = Prisma.ProductGetPayload<{ include: typeof productInclude }>;
@@ -185,6 +186,8 @@ export class PrismaProductRepository extends ProductRepository {
     return {
       id: row.id,
       storeId: row.storeId,
+      storeName: row.store.commercialName,
+      storeSlug: row.store.slug,
       slug: row.slug,
       sku: row.sku,
       name: row.name,

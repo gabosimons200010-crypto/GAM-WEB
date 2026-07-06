@@ -25,6 +25,8 @@ export interface MediaView {
 export interface ProductView {
   id: string;
   storeId: string;
+  storeName: string;
+  storeSlug: string;
   slug: string;
   sku: string;
   name: string;

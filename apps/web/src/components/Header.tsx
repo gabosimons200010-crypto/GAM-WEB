@@ -39,7 +39,7 @@ export function Header() {
             Marcas
           </Link>
           <Link href="/carrito" className="hover:underline hover:underline-offset-4" aria-label="Cesta">
-            Cesta ({mounted ? count : 0})
+            Cesta (<span suppressHydrationWarning>{mounted ? count : 0}</span>)
           </Link>
 
           {authed ? (

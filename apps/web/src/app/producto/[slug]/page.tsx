@@ -35,7 +35,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
         <div className="space-y-7 md:pt-4">
           <div className="border-b border-line pb-6">
-            <h1 className="font-display text-3xl text-ink sm:text-4xl">{product.name}</h1>
+            <Link
+              href={`/tienda/${product.storeSlug}`}
+              className="microcaps text-muted transition hover:text-ink hover:underline hover:underline-offset-4"
+            >
+              {product.storeName}
+            </Link>
+            <h1 className="mt-1 font-display text-3xl text-ink sm:text-4xl">{product.name}</h1>
             <div className="microcaps mt-3 flex flex-wrap items-center gap-3 text-muted">
               <span>Ref. {product.sku}</span>
               {product.gender && <span>· {genderLabel(product.gender)}</span>}
@@ -69,6 +75,15 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               ))}
             </div>
           )}
+
+          {/* Botón a la tienda de la marca */}
+          <Link
+            href={`/tienda/${product.storeSlug}`}
+            className="microcaps flex items-center justify-between border border-line px-5 py-4 transition hover:border-ink"
+          >
+            <span className="text-ink">Ver más de {product.storeName}</span>
+            <span className="text-muted">→</span>
+          </Link>
         </div>
       </div>
     </div>

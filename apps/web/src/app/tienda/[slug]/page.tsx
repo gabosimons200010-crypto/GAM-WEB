@@ -34,24 +34,61 @@ export default async function StorePage({
   const { store, products } = data;
   const brand = getBrandBySlug(slug);
   const socials = brand ? brandSocials(brand) : [];
+  const editorial = brand?.editorialUrl ?? null;
+  const logo = brand?.logoUrl ?? null;
 
   return (
     <div>
-      {/* ── Perfil de marca editorial ── */}
-      <div className="border-b border-line pb-10 pt-6 text-center">
-        <h1 className="font-display text-5xl text-ink sm:text-6xl">{store.name}</h1>
-        <p className="microcaps mt-4 text-muted">
-          {store.salesCount > 0 && `${store.salesCount} ventas`}
-          {store.rating > 0 && `${store.salesCount > 0 ? ' · ' : ''}★ ${Number(store.rating).toFixed(1)}`}
-          {store.verified && `${store.salesCount > 0 || store.rating > 0 ? ' · ' : ''}Tienda verificada`}
-        </p>
-        {store.description && (
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-ink">{store.description}</p>
+      {/* ── Cabecera de marca: editorial + logo (o placeholder) ── */}
+      <div className="relative -mt-6 h-[42vh] min-h-72 overflow-hidden bg-[#f4f4f4]">
+        {editorial && (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={editorial} alt={store.name} className="h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
+          </>
+        )}
+        {/* Sin editorial: banda gris con marca de agua sutil (placeholder). */}
+        {!editorial && (
+          <span className="pointer-events-none absolute right-4 top-2 font-display text-[22vw] leading-none text-[#ededed]">
+            {store.name
+              .split(' ')
+              .map((w) => w[0])
+              .join('')
+              .slice(0, 3)}
+          </span>
         )}
 
-        {/* Redes de la marca (clickeables) */}
+        <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-4 p-5 sm:p-8">
+          <div className="flex items-end gap-4">
+            {logo && (
+              <span className="bg-paper/90 px-3 py-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={logo} alt={store.name} className="max-h-10 max-w-40 object-contain" />
+              </span>
+            )}
+            <h1 className={`font-display text-4xl leading-none sm:text-6xl ${editorial ? 'text-paper' : 'text-ink'}`}>
+              {store.name}
+            </h1>
+          </div>
+          {store.verified && (
+            <span className="microcaps bg-paper/90 px-2.5 py-1 text-ink">Tienda verificada</span>
+          )}
+        </div>
+      </div>
+
+      {/* Meta + redes + descripción */}
+      <div className="border-b border-line py-6 text-center">
+        <p className="microcaps text-muted">
+          {store.salesCount > 0 && `${store.salesCount} ventas`}
+          {store.rating > 0 && `${store.salesCount > 0 ? ' · ' : ''}★ ${Number(store.rating).toFixed(1)}`}
+          {store.salesCount === 0 && store.rating === 0 && 'Marca en Emporio'}
+        </p>
+        {store.description && (
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-ink">{store.description}</p>
+        )}
         {socials.length > 0 && (
-          <div className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2">
+          <div className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-2">
             {socials.map((s) => (
               <a
                 key={s.href}
