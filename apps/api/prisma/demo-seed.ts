@@ -27,6 +27,7 @@ const STORE_SLUGS = [
   'balboni',
   'ntf',
   'fuse-apparel',
+  'prueba-studio',
 ];
 
 type VariantSeed = { size: string; stock: number };
@@ -579,8 +580,11 @@ async function main(): Promise<void> {
     create: { userId: seller.id, roleId: sellerRole.id },
   });
 
-  // ── Re-ejecutable: borra las tiendas demo previas (cascade borra productos) ──
-  await prisma.store.deleteMany({ where: { slug: { in: STORE_SLUGS } } });
+  // ── Re-ejecutable ──
+  // Borra pedidos demo previos primero: sus OrderItem referencian variantes de
+  // estas tiendas (FK Restrict), así que sin esto el borrado de tiendas falla.
+  await prisma.order.deleteMany({});
+  await prisma.store.deleteMany({ where: { slug: { in: STORE_SLUGS } } }); // cascade: productos, variantes
 
   const gallery = await prisma.gallery.findFirst();
   const categories = await prisma.category.findMany();
@@ -636,7 +640,85 @@ async function main(): Promise<void> {
     console.log(`Tienda demo lista: ${s.commercialName} (${s.products.length} productos)`);
   }
 
-  console.log('Semilla demo aplicada. Vendedor: vendedor@gamarra.go / Vendedor123');
+  // ── Cuentas ficticias para explorar: un cliente y un vendedor con su tienda ──
+  const buyerRole = await prisma.role.findUnique({ where: { name: RoleName.COMPRADOR } });
+
+  async function ensureUser(email: string, password: string, fullName: string, roleId?: string) {
+    const passwordHash = await bcrypt.hash(password, 12);
+    const user = await prisma.user.upsert({
+      where: { email },
+      update: {},
+      create: { email, passwordHash, fullName, status: 'ACTIVE', emailVerified: new Date() },
+    });
+    if (roleId) {
+      await prisma.userRole.upsert({
+        where: { userId_roleId: { userId: user.id, roleId } },
+        update: {},
+        create: { userId: user.id, roleId },
+      });
+    }
+    return user;
+  }
+
+  await ensureUser('cliente.demo@emporio.pe', 'Cliente123', 'Cliente Demo', buyerRole?.id);
+  const demoSeller = await ensureUser('vendedor.demo@emporio.pe', 'Vendedor123', 'Vendedora Demo', sellerRole.id);
+
+  // Tienda propia del vendedor demo (independiente de las marcas curadas).
+  const demoStore = await prisma.store.create({
+    data: {
+      slug: 'prueba-studio',
+      commercialName: 'Prueba Studio',
+      email: 'hola@pruebastudio.pe',
+      phone: '999123456',
+      galleryId: gallery?.id,
+      floor: '1',
+      stand: '101',
+      description:
+        'Tienda de demostración del vendedor de prueba. Prendas de ejemplo para explorar el panel del vendedor (productos, inventario, pedidos, ventas y pagos).',
+      status: StoreStatus.APPROVED,
+      verified: true,
+      salesCount: 0,
+      approvedAt: new Date(),
+      memberships: { create: { userId: demoSeller.id, storeRole: RoleName.ADMIN_TIENDA } },
+    },
+  });
+
+  const demoProducts = [
+    { sku: 'PS-01', name: 'Polo Demo Blanco', slug: 'polo-demo-blanco', price: 59, cat: 'polos' },
+    { sku: 'PS-02', name: 'Hoodie Demo Negro', slug: 'hoodie-demo-negro', price: 129, cat: 'polos' },
+    { sku: 'PS-03', name: 'Pantalón Demo Beige', slug: 'pantalon-demo-beige', price: 99, cat: 'pantalones' },
+  ];
+  for (const p of demoProducts) {
+    await prisma.product.create({
+      data: {
+        storeId: demoStore.id,
+        categoryId: categoryBySlug.get(p.cat) ?? null,
+        sku: p.sku,
+        name: p.name,
+        slug: p.slug,
+        description: 'Producto de demostración de Prueba Studio.',
+        gender: 'UNISEX',
+        price: p.price,
+        status: ProductStatus.ACTIVE,
+        tags: ['demo'],
+        media: { create: [{ kind: 'ORIGINAL', url: '/media/ph-demo.svg', position: 0 }] },
+        variants: {
+          create: ['S', 'M', 'L', 'XL'].map((size) => ({
+            sku: `${p.sku}-${size}`,
+            size,
+            inventory: { create: { available: 20 } },
+          })),
+        },
+      },
+    });
+  }
+  console.log('Tienda demo lista: Prueba Studio (3 productos)');
+
+  console.log('Semilla demo aplicada.');
+  console.log('  Vendedor (marcas):  vendedor@gamarra.go / Vendedor123');
+  console.log('  Vendedor de prueba: vendedor.demo@emporio.pe / Vendedor123 (tienda Prueba Studio)');
+  console.log('  Cliente de prueba:  cliente.demo@emporio.pe / Cliente123');
+  console.log('  Admin:              admin@gamarra.go / Admin123');
 }
 
 main()
