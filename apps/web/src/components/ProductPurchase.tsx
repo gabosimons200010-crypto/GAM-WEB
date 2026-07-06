@@ -1,19 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
 import { FormEvent, useMemo, useState } from 'react';
-import type { VariantView } from '@/lib/types';
+import type { ProductDetail } from '@/lib/types';
 import { useAuth } from '@/lib/auth-context';
 import { useCart } from '@/lib/cart-context';
 import { addToCart, ClientApiError } from '@/lib/client-api';
+import { addGuestItem } from '@/lib/guest-cart';
 
 /** Selector de variante (talla/color) y acción real de agregar a la cesta. */
-export function ProductPurchase({ variants }: { variants: VariantView[] }) {
-  const { user, ready } = useAuth();
+export function ProductPurchase({ product }: { product: ProductDetail }) {
+  const { user } = useAuth();
   const { refresh } = useCart();
-  const router = useRouter();
-  const pathname = usePathname();
+  const variants = product.variants;
 
   const sizes = useMemo(() => sortSizes(unique(variants.map((v) => v.size))), [variants]);
   const colors = useMemo(() => unique(variants.map((v) => v.color)), [variants]);
@@ -48,16 +47,33 @@ export function ProductPurchase({ variants }: { variants: VariantView[] }) {
       setMsg({ kind: 'err', text: 'Esta variante está agotada.' });
       return;
     }
-    if (ready && !user) {
-      router.push(`/ingresar?next=${encodeURIComponent(pathname)}`);
-      return;
-    }
     setBusy(true);
     try {
-      await addToCart(selected.id, 1);
+      if (user) {
+        // Con sesión: cesta del servidor.
+        await addToCart(selected.id, 1);
+        setMsg({ kind: 'ok', text: 'Añadido a la cesta.' });
+      } else {
+        // Sin cuenta: cesta de invitado (localStorage). No obliga a registrarse.
+        addGuestItem(
+          {
+            variantId: selected.id,
+            productId: product.id,
+            productSlug: product.slug,
+            productName: product.name,
+            storeId: product.storeId,
+            size: selected.size,
+            color: selected.color,
+            unitPrice: selected.price ?? product.salePrice ?? product.price,
+            thumbnailUrl: product.media[0]?.url ?? null,
+            available: selected.available,
+          },
+          1,
+        );
+        setMsg({ kind: 'ok', text: 'Añadido a la cesta.' });
+      }
       await refresh();
       setAdded(true);
-      setMsg({ kind: 'ok', text: 'Añadido a la cesta.' });
     } catch (err) {
       const text = err instanceof ClientApiError ? err.message : 'No pudimos añadir a la cesta';
       setMsg({ kind: 'err', text });

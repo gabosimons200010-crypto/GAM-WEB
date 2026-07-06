@@ -3,7 +3,21 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
 import * as api from './client-api';
 import { clearSession, getStoredUser, saveSession } from './session';
+import { getGuestCart, clearGuestCart } from './guest-cart';
 import type { AuthUserInfo } from './types';
+
+/** Traspasa la cesta de invitado (localStorage) a la del servidor tras entrar. */
+async function mergeGuestCart(): Promise<void> {
+  const items = getGuestCart();
+  for (const it of items) {
+    try {
+      await api.addToCart(it.variantId, it.quantity);
+    } catch {
+      // si una variante ya no está disponible, la ignoramos
+    }
+  }
+  clearGuestCart();
+}
 
 interface AuthState {
   user: AuthUserInfo | null;
@@ -27,6 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = useCallback(async (email: string, password: string) => {
     const res = await api.login(email, password);
     saveSession(res.accessToken, res.user);
+    await mergeGuestCart();
     setUser(res.user);
   }, []);
 
@@ -35,6 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Registro y login inmediato (el backend no exige confirmar para entrar).
     const res = await api.login(email, password);
     saveSession(res.accessToken, res.user);
+    await mergeGuestCart();
     setUser(res.user);
   }, []);
 

@@ -21,7 +21,7 @@ export function Header() {
     <header className="sticky top-0 z-20 border-b border-line bg-paper">
       <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center">
         <Link href="/" className="shrink-0 font-display text-3xl font-medium tracking-tight text-ink">
-          GAMARRA&nbsp;GO
+          Emporio
         </Link>
 
         <div className="flex-1 sm:px-10">
@@ -39,7 +39,7 @@ export function Header() {
             Marcas
           </Link>
           <Link href="/carrito" className="hover:underline hover:underline-offset-4" aria-label="Cesta">
-            Cesta ({count})
+            Cesta ({mounted ? count : 0})
           </Link>
 
           {authed ? (

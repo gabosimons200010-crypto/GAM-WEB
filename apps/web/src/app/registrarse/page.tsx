@@ -34,7 +34,7 @@ export default function RegisterPage() {
   return (
     <div className="mx-auto max-w-sm py-10">
       <h1 className="font-display text-4xl text-ink">Crear cuenta</h1>
-      <p className="microcaps mt-3 text-muted">Regístrate para comprar en Gamarra Go.</p>
+      <p className="microcaps mt-3 text-muted">Regístrate para comprar en Emporio.</p>
 
       <form onSubmit={onSubmit} className="mt-8 space-y-6">
         <Field label="Nombre" type="text" value={fullName} onChange={setFullName} placeholder="María Pérez" required={false} />

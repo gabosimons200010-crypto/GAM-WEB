@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { getStorePage } from '@/lib/api';
 import { ProductGrid } from '@/components/ProductGrid';
 import { Pagination } from '@/components/Pagination';
+import { getBrandBySlug, brandSocials } from '@/lib/brands';
 import type { SortOption } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
@@ -13,7 +14,7 @@ const str = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const page = await getStorePage(slug).catch(() => null);
-  return { title: page ? `${page.store.name} — GAMARRA GO` : 'Tienda — GAMARRA GO' };
+  return { title: page ? `${page.store.name} — Emporio` : 'Tienda — Emporio' };
 }
 
 export default async function StorePage({
@@ -31,6 +32,8 @@ export default async function StorePage({
   if (!data) notFound();
 
   const { store, products } = data;
+  const brand = getBrandBySlug(slug);
+  const socials = brand ? brandSocials(brand) : [];
 
   return (
     <div>
@@ -38,14 +41,29 @@ export default async function StorePage({
       <div className="border-b border-line pb-10 pt-6 text-center">
         <h1 className="font-display text-5xl text-ink sm:text-6xl">{store.name}</h1>
         <p className="microcaps mt-4 text-muted">
-          {[store.floor && `Piso ${store.floor}`, store.stand && `Stand ${store.stand}`].filter(Boolean).join(' · ') ||
-            'Gamarra, Lima'}
-          {store.salesCount > 0 && ` · ${store.salesCount} ventas`}
-          {store.rating > 0 && ` · ★ ${Number(store.rating).toFixed(1)}`}
-          {store.verified && ' · Tienda verificada'}
+          {store.salesCount > 0 && `${store.salesCount} ventas`}
+          {store.rating > 0 && `${store.salesCount > 0 ? ' · ' : ''}★ ${Number(store.rating).toFixed(1)}`}
+          {store.verified && `${store.salesCount > 0 || store.rating > 0 ? ' · ' : ''}Tienda verificada`}
         </p>
         {store.description && (
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-ink">{store.description}</p>
+        )}
+
+        {/* Redes de la marca (clickeables) */}
+        {socials.length > 0 && (
+          <div className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2">
+            {socials.map((s) => (
+              <a
+                key={s.href}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="microcaps border-b border-ink pb-0.5 text-ink transition hover:opacity-60"
+              >
+                {s.label}
+              </a>
+            ))}
+          </div>
         )}
       </div>
 

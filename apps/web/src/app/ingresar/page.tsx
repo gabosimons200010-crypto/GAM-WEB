@@ -67,7 +67,7 @@ function LoginForm() {
       <p className="microcaps mt-10 border-t border-line pt-6 text-[10px] text-muted">
         ¿Eres una marca?{' '}
         <Link href="/vender" className="text-ink hover:underline hover:underline-offset-4">
-          Vende en Gamarra Go →
+          Vende en Emporio →
         </Link>
       </p>
     </div>

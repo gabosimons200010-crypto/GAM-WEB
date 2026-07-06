@@ -19,7 +19,7 @@ export function Footer() {
           href="/vender"
           className="mx-auto flex max-w-7xl flex-wrap items-baseline justify-between gap-3 px-4 py-8 transition hover:bg-[#fafafa]"
         >
-          <span className="font-display text-2xl text-ink sm:text-3xl">¿Tienes una marca? Vende en Gamarra Go</span>
+          <span className="font-display text-2xl text-ink sm:text-3xl">¿Tienes una marca? Vende en Emporio</span>
           <span className="microcaps border-b border-ink pb-0.5 text-ink">Empezar a vender →</span>
         </Link>
       </div>
@@ -43,22 +43,30 @@ export function Footer() {
           </div>
           <div className="microcaps space-y-3 text-muted">
             <p className="text-ink">Ayuda</p>
-            <p>Envíos y devoluciones</p>
-            <p>Guía de tallas</p>
-            <p>Contacto</p>
+            <Link href="/envios" className="block w-fit hover:text-ink">
+              Envíos y devoluciones
+            </Link>
+            <Link href="/guia-de-tallas" className="block w-fit hover:text-ink">
+              Guía de tallas
+            </Link>
+            <Link href="/contacto" className="block w-fit hover:text-ink">
+              Contacto
+            </Link>
           </div>
           <div className="microcaps space-y-3 text-muted">
             <p className="text-ink">La empresa</p>
             <Link href="/vender" className="block w-fit hover:text-ink">
-              Vender en Gamarra Go
+              Vender en Emporio
             </Link>
-            <p>Nuestras galerías</p>
-            <p>La Victoria, Lima, PE</p>
+            <Link href="/marcas" className="block w-fit hover:text-ink">
+              Marcas
+            </Link>
+            <p>Perú</p>
           </div>
         </div>
 
         <div className="microcaps mt-14 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5 text-muted">
-          <span>GAMARRA GO — El emporio, online</span>
+          <span>Emporio — Moda peruana, online</span>
           <span className="flex items-center gap-1">
             © {new Date().getFullYear()} · Demo Fase 2
             {/* Acceso discreto al panel de administración (oculto a la vista habitual). */}

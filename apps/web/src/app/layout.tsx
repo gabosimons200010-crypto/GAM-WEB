@@ -10,8 +10,8 @@ const bodoni = Bodoni_Moda({ subsets: ['latin'], weight: ['400', '500', '700'], 
 const instrument = Instrument_Sans({ subsets: ['latin'], weight: ['400', '500', '600'], variable: '--font-instrument' });
 
 export const metadata: Metadata = {
-  title: 'GAMARRA GO — El emporio de Gamarra, online',
-  description: 'Compra ropa de las tiendas de Gamarra (Lima, Perú) desde casa. Polos, jeans, casacas y más.',
+  title: 'Emporio — Moda peruana, online',
+  description: 'Compra ropa de marcas independientes del Perú desde casa. Polos, jeans, casacas y más.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

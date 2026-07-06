@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProduct(slug).catch(() => null);
-  return { title: product ? `${product.name} — GAMARRA GO` : 'Producto — GAMARRA GO' };
+  return { title: product ? `${product.name} — Emporio` : 'Producto — Emporio' };
 }
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -51,7 +51,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </div>
           </div>
 
-          <ProductPurchase variants={product.variants} />
+          <ProductPurchase product={product} />
 
           {product.description && (
             <div className="border-t border-line pt-6">

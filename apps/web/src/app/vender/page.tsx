@@ -22,7 +22,7 @@ export default function SellPage() {
     <div className="mx-auto max-w-3xl space-y-12 py-6">
       <header className="border-b border-line pb-6">
         <p className="microcaps text-muted">Vendedores</p>
-        <h1 className="mt-2 font-display text-5xl text-ink sm:text-6xl">Vende en Gamarra Go</h1>
+        <h1 className="mt-2 font-display text-5xl text-ink sm:text-6xl">Vende en Emporio</h1>
         <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-ink">
           Lleva tu marca de Gamarra a todo el Perú. Publica tu catálogo, gestiona tu stock y tus pedidos, y recibe tus
           pagos por Yape. Sin alquiler de stand online.
