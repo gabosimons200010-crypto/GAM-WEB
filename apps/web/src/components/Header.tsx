@@ -39,6 +39,9 @@ export function Header() {
       </Link>
       {authed ? (
         <>
+          <Link href="/favoritos" className="hover:underline hover:underline-offset-4">
+            Favoritos
+          </Link>
           <Link href="/mis-ordenes" className="hover:underline hover:underline-offset-4">
             Mis pedidos
           </Link>

@@ -5,6 +5,7 @@ import { getProduct } from '@/lib/api';
 import { Price } from '@/components/Price';
 import { Gallery } from '@/components/Gallery';
 import { ProductPurchase } from '@/components/ProductPurchase';
+import { FavoriteButton } from '@/components/FavoriteButton';
 import { genderLabel } from '@/lib/format';
 
 export const dynamic = 'force-dynamic';
@@ -58,6 +59,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           </div>
 
           <ProductPurchase product={product} />
+
+          <FavoriteButton productId={product.id} />
 
           {product.description && (
             <div className="border-t border-line pt-6">

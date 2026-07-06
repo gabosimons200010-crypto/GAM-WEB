@@ -6,6 +6,7 @@ import type {
   AIBatch,
   CartView,
   CreateProductInput,
+  FavoriteProduct,
   LoginResponse,
   OrderView,
   PaymentView,
@@ -115,6 +116,23 @@ export function simulatePaymentConfirmation(method: string, providerRef: string)
     body: JSON.stringify({ externalId, providerRef, outcome: 'CONFIRMED' }),
     auth: false,
   });
+}
+
+// --- Favoritos ---
+export function listFavorites(): Promise<FavoriteProduct[]> {
+  return request<FavoriteProduct[]>('/favorites');
+}
+
+export function listFavoriteIds(): Promise<string[]> {
+  return request<string[]>('/favorites/ids');
+}
+
+export function addFavorite(productId: string): Promise<unknown> {
+  return request('/favorites', { method: 'POST', body: JSON.stringify({ productId }) });
+}
+
+export function removeFavorite(productId: string): Promise<unknown> {
+  return request(`/favorites/${productId}`, { method: 'DELETE' });
 }
 
 // --- Órdenes ---

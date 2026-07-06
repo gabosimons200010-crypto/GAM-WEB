@@ -20,6 +20,7 @@ import { CartModule } from './modules/cart/cart.module';
 import { CheckoutModule } from './modules/checkout/checkout.module';
 import { PaymentModule } from './modules/payment/payment.module';
 import { OrdersModule } from './modules/orders/orders.module';
+import { FavoritesModule } from './modules/favorites/favorites.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { OrdersModule } from './modules/orders/orders.module';
     CheckoutModule, // Sprint 9 (Fase 2): checkout — carrito → orden + reserva de stock
     PaymentModule, // Sprint 10 (Fase 2): pagos (Yape/Plin QR + webhook) → orden PAID
     OrdersModule, // Sprint 11 (Fase 2): órdenes (comprador) + postventa (vendedor)
+    FavoritesModule, // Fase 2+: lista de deseos del comprador
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

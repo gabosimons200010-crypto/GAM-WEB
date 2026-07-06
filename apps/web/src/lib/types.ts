@@ -36,6 +36,17 @@ export interface Category {
   children: Category[];
 }
 
+export interface FavoriteProduct {
+  id: string;
+  slug: string;
+  name: string;
+  price: number;
+  salePrice: number | null;
+  thumbnailUrl: string | null;
+  storeName: string;
+  storeSlug: string;
+}
+
 export interface VariantView {
   id: string;
   sku: string;
