@@ -1,4 +1,4 @@
-import type { ProductDetail, SearchParams, SearchResult, StorePage } from './types';
+import type { Category, ProductDetail, SearchParams, SearchResult, StorePage } from './types';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api/v1';
 
@@ -40,6 +40,11 @@ function buildQuery(params: SearchParams): string {
 
 export function searchProducts(params: SearchParams): Promise<SearchResult> {
   return getJson<SearchResult>(`/storefront/products${buildQuery(params)}`);
+}
+
+/** Árbol de categorías (para los filtros del catálogo). */
+export function listCategories(): Promise<Category[]> {
+  return getJson<Category[]>('/categories');
 }
 
 /** Detalle de producto por slug. Devuelve null si no existe (404). */

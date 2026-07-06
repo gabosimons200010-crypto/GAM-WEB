@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
-import { searchProducts } from '@/lib/api';
+import { searchProducts, listCategories } from '@/lib/api';
 import { ProductGrid } from '@/components/ProductGrid';
 import { Filters } from '@/components/Filters';
 import { Pagination } from '@/components/Pagination';
-import type { Gender, SearchResult, SortOption } from '@/lib/types';
+import type { Category, Gender, SearchResult, SortOption } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,6 +42,13 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     error = true;
   }
 
+  let categories: Category[] = [];
+  try {
+    categories = await listCategories();
+  } catch {
+    categories = [];
+  }
+
   const queryForLinks = {
     q,
     category: params.category,
@@ -54,7 +61,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   return (
     <div className="grid grid-cols-1 gap-10 md:grid-cols-[200px_1fr]">
       <Suspense fallback={<div className="h-64" />}>
-        <Filters />
+        <Filters categories={categories} />
       </Suspense>
 
       <div>

@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ChangeEvent } from 'react';
-import type { Gender, SortOption } from '@/lib/types';
+import type { Category, Gender, SortOption } from '@/lib/types';
 
 const GENDERS: { value: Gender; label: string }[] = [
   { value: 'HOMBRE', label: 'Hombre' },
@@ -21,7 +21,7 @@ const SORTS: { value: SortOption; label: string }[] = [
 ];
 
 /** Filtros del catálogo: escriben en los query params y recargan los resultados. */
-export function Filters() {
+export function Filters({ categories = [] }: { categories?: Category[] }) {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -49,6 +49,20 @@ export function Filters() {
           ))}
         </select>
       </div>
+
+      {categories.length > 0 && (
+        <div>
+          <label className="microcaps mb-2 block text-muted">Categoría</label>
+          <select className={inputCls} value={params.get('category') ?? ''} onChange={onSelect('category')}>
+            <option value="">Todas</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.slug}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <div>
         <label className="microcaps mb-2 block text-muted">Género</label>

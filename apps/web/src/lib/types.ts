@@ -28,6 +28,14 @@ export interface SearchResult {
   hasMore: boolean;
 }
 
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  imageUrl: string | null;
+  children: Category[];
+}
+
 export interface VariantView {
   id: string;
   sku: string;
