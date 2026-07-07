@@ -34,8 +34,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    setUser(getStoredUser());
+    // Muestra la sesión guardada de inmediato (sin parpadeo)…
+    const stored = getStoredUser();
+    setUser(stored);
     setReady(true);
+    // …y renueva el access token en segundo plano (vence a los 15 min). Si el
+    // refresh token (30 días) ya no vale, cierra sesión limpio en vez de dejar
+    // un estado "logueado" con token muerto.
+    if (stored) {
+      api
+        .refreshSession()
+        .then((res) => setUser(res.user))
+        .catch(() => {
+          clearSession();
+          setUser(null);
+        });
+    }
+  }, []);
+
+  // Si una llamada detecta que la sesión expiró (401 sin poder refrescar), cierra sesión.
+  useEffect(() => {
+    const onLogout = () => setUser(null);
+    window.addEventListener('auth:logout', onLogout);
+    return () => window.removeEventListener('auth:logout', onLogout);
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {

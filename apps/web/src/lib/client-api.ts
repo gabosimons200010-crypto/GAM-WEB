@@ -1,6 +1,6 @@
 'use client';
 
-import { getToken } from './session';
+import { getToken, saveSession, clearSession } from './session';
 import type {
   AdminStore,
   AIBatch,
@@ -39,17 +39,72 @@ function messageFrom(body: unknown, fallback: string): string {
   return fallback;
 }
 
-async function request<T>(path: string, options: RequestInit & { auth?: boolean } = {}): Promise<T> {
-  const headers: Record<string, string> = { 'Content-Type': 'application/json', Accept: 'application/json' };
-  if (options.auth !== false) {
-    const token = getToken();
-    if (token) headers.Authorization = `Bearer ${token}`;
-  }
-  const res = await fetch(`${BASE_URL}${path}`, {
-    ...options,
-    headers: { ...headers, ...(options.headers as Record<string, string>) },
+// El refresh token ROTA en el backend (una sesión se revoca al usarse), así que
+// dos refresh concurrentes con la misma cookie: uno gana y el otro queda inválido.
+// Dedupe: todas las llamadas concurrentes comparten un único refresh en vuelo.
+let refreshInFlight: Promise<LoginResponse> | null = null;
+
+async function doRefresh(): Promise<LoginResponse> {
+  const res = await fetch(`${BASE_URL}/auth/refresh`, {
+    method: 'POST',
+    headers: { Accept: 'application/json' },
     credentials: 'include',
   });
+  if (!res.ok) throw new ClientApiError(res.status, 'La sesión expiró');
+  const data = (await res.json()) as LoginResponse;
+  saveSession(data.accessToken, data.user);
+  return data;
+}
+
+/**
+ * Renueva el access token con el refresh token (cookie HttpOnly, 30 días).
+ * Guarda la sesión nueva. Lanza si el refresh ya no es válido. Deduplica las
+ * llamadas concurrentes en un único refresh (evita colisión por la rotación).
+ */
+export function refreshSession(): Promise<LoginResponse> {
+  if (!refreshInFlight) {
+    refreshInFlight = doRefresh().finally(() => {
+      refreshInFlight = null;
+    });
+  }
+  return refreshInFlight;
+}
+
+/** Intenta refrescar tras un 401; si falla, cierra la sesión y avisa a la app. */
+async function tryRefresh(): Promise<boolean> {
+  try {
+    await refreshSession();
+    return true;
+  } catch {
+    clearSession();
+    if (typeof window !== 'undefined') window.dispatchEvent(new Event('auth:logout'));
+    return false;
+  }
+}
+
+async function request<T>(path: string, options: RequestInit & { auth?: boolean } = {}): Promise<T> {
+  const authed = options.auth !== false;
+
+  const doFetch = (): Promise<Response> => {
+    const headers: Record<string, string> = { 'Content-Type': 'application/json', Accept: 'application/json' };
+    if (authed) {
+      const token = getToken();
+      if (token) headers.Authorization = `Bearer ${token}`;
+    }
+    return fetch(`${BASE_URL}${path}`, {
+      ...options,
+      headers: { ...headers, ...(options.headers as Record<string, string>) },
+      credentials: 'include',
+    });
+  };
+
+  let res = await doFetch();
+
+  // Si el access token expiró (401) en una llamada autenticada, renueva y reintenta una vez.
+  const isAuthEndpoint = path === '/auth/refresh' || path === '/auth/login';
+  if (res.status === 401 && authed && !isAuthEndpoint) {
+    if (await tryRefresh()) res = await doFetch();
+  }
 
   const text = await res.text();
   const body = text ? JSON.parse(text) : null;
