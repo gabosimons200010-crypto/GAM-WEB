@@ -19,6 +19,7 @@ function buildStore(over: Partial<StoreView> = {}): StoreView {
     commercialName: 'Modas Karla',
     legalName: null,
     ruc: null,
+    contactName: null,
     email: 'a@b.com',
     phone: '987654321',
     galleryId: null,

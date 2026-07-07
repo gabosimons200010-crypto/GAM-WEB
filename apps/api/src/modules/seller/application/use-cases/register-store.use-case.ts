@@ -10,6 +10,7 @@ export interface RegisterStoreInput {
   commercialName: string;
   legalName?: string;
   ruc?: string;
+  contactName?: string;
   email: string;
   phone: string;
   galleryId?: string;
@@ -47,6 +48,7 @@ export class RegisterStoreUseCase {
         commercialName: input.commercialName,
         legalName: input.legalName ?? null,
         ruc: input.ruc ?? null,
+        contactName: input.contactName ?? null,
         email: input.email,
         phone: input.phone,
         galleryId: input.galleryId ?? null,

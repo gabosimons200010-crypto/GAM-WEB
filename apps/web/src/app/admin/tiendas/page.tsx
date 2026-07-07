@@ -88,18 +88,31 @@ export default function AdminStoresPage() {
           {stores.map((s) => (
             <div key={s.id} className="border border-line p-5">
               <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
+                <div className="space-y-1">
                   <p className="font-display text-xl text-ink">
                     {s.commercialName}
                     {s.verified && <span className="microcaps ml-2 text-muted">· Verificada</span>}
                   </p>
-                  <p className="microcaps mt-1 text-[10px] text-muted">
-                    {s.ruc ? `RUC ${s.ruc} · ` : ''}
+                  {(s.legalName || s.ruc) && (
+                    <p className="microcaps text-[10px] text-muted">
+                      {[s.legalName, s.ruc && `RUC ${s.ruc}`].filter(Boolean).join(' · ')}
+                    </p>
+                  )}
+                  {s.contactName && (
+                    <p className="microcaps text-[10px] text-muted">
+                      A cargo: <span className="text-ink">{s.contactName}</span>
+                    </p>
+                  )}
+                  <p className="microcaps text-[10px] text-muted">
                     {s.email} · {s.phone}
                   </p>
-                  <p className="microcaps text-[10px] text-muted">
-                    {[s.floor && `Piso ${s.floor}`, s.stand && `Stand ${s.stand}`].filter(Boolean).join(' · ')}
-                  </p>
+                  {(s.address || s.floor || s.stand) && (
+                    <p className="microcaps text-[10px] text-muted">
+                      {[s.address, s.floor && `Piso ${s.floor}`, s.stand && `Stand ${s.stand}`]
+                        .filter(Boolean)
+                        .join(' · ')}
+                    </p>
+                  )}
                 </div>
                 <span className="microcaps text-ink">{STORE_STATUS[s.status] ?? s.status}</span>
               </div>

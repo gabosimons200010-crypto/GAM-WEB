@@ -88,6 +88,21 @@ type ProductSeed = {
   variants: VariantSeed[];
 };
 
+// Datos de empresa demo por tienda (persona a cargo + RUC único derivado del slug).
+const STORE_MANAGERS: Record<string, string> = {
+  'vanta-studio': 'Diego Salcedo',
+  pepuno: 'María Fernanda Ríos',
+  'mister-posh': 'Luis Ángel Paredes',
+  balboni: 'Sebastián Balbo',
+  ntf: 'Kevin Torres',
+  'fuse-apparel': 'Andrea Campos',
+};
+function demoRuc(slug: string): string {
+  let h = 0;
+  for (const c of slug) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return '20' + String(h).padStart(9, '0').slice(0, 9);
+}
+
 type StoreSeed = {
   slug: string;
   commercialName: string;
@@ -584,11 +599,15 @@ async function main(): Promise<void> {
       data: {
         slug: s.slug,
         commercialName: s.commercialName,
+        legalName: `${s.commercialName} S.A.C.`,
+        ruc: demoRuc(s.slug),
+        contactName: STORE_MANAGERS[s.slug] ?? null,
         email: s.email,
         phone: s.phone,
         galleryId: gallery?.id,
         floor: s.floor,
         stand: s.stand,
+        address: `Galería Gamarra, Piso ${s.floor} Stand ${s.stand}, La Victoria, Lima`,
         description: s.description,
         status: StoreStatus.APPROVED,
         verified: s.verified,
@@ -658,11 +677,15 @@ async function main(): Promise<void> {
     data: {
       slug: 'prueba-studio',
       commercialName: 'Prueba Studio',
+      legalName: 'Prueba Studio E.I.R.L.',
+      ruc: demoRuc('prueba-studio'),
+      contactName: 'Vendedora Demo',
       email: 'hola@pruebastudio.pe',
       phone: '999123456',
       galleryId: gallery?.id,
       floor: '1',
       stand: '101',
+      address: 'Galería Gamarra, Piso 1 Stand 101, La Victoria, Lima',
       description:
         'Tienda de demostración del vendedor de prueba. Prendas de ejemplo para explorar el panel del vendedor (productos, inventario, pedidos, ventas y pagos).',
       status: StoreStatus.APPROVED,

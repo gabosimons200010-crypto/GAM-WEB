@@ -280,6 +280,7 @@ export interface RegisterStoreBody {
   phone: string;
   legalName?: string;
   ruc?: string;
+  contactName?: string;
   floor?: string;
   stand?: string;
   address?: string;

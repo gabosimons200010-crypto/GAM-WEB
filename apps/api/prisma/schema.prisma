@@ -209,6 +209,7 @@ model Store {
   commercialName String
   legalName      String?
   ruc            String?     @unique
+  contactName    String? // persona que administra la tienda/marca
   email          String
   phone          String
   galleryId      String?

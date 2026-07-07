@@ -48,6 +48,12 @@ export class RegisterStoreDto {
   @Matches(RUC_REGEX, { message: 'El RUC debe tener 11 dígitos' })
   ruc?: string;
 
+  @ApiPropertyOptional({ example: 'Karla Ramírez', description: 'Persona que administra la tienda' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(120)
+  contactName?: string;
+
   @ApiProperty({ example: 'contacto@modaskarla.pe' })
   @IsEmail()
   email!: string;

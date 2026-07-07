@@ -284,12 +284,14 @@ export interface AdminStore {
   commercialName: string;
   legalName: string | null;
   ruc: string | null;
+  contactName: string | null;
   email: string;
   phone: string;
   status: string;
   verified: boolean;
   floor: string | null;
   stand: string | null;
+  address: string | null;
   createdAt: string;
 }
 

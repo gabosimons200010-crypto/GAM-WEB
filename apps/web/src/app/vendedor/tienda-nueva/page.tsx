@@ -6,7 +6,17 @@ import { registerStore, ClientApiError, RegisterStoreBody } from '@/lib/client-a
 
 export default function NewStorePage() {
   const router = useRouter();
-  const [form, setForm] = useState<RegisterStoreBody>({ commercialName: '', email: '', phone: '', floor: '', stand: '' });
+  const [form, setForm] = useState<RegisterStoreBody>({
+    commercialName: '',
+    legalName: '',
+    ruc: '',
+    contactName: '',
+    email: '',
+    phone: '',
+    address: '',
+    floor: '',
+    stand: '',
+  });
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -19,12 +29,17 @@ export default function NewStorePage() {
     setError(null);
     setBusy(true);
     try {
+      const trimmed = (v?: string) => (v && v.trim() ? v.trim() : undefined);
       await registerStore({
-        commercialName: form.commercialName,
-        email: form.email,
-        phone: form.phone,
-        floor: form.floor || undefined,
-        stand: form.stand || undefined,
+        commercialName: form.commercialName.trim(),
+        legalName: trimmed(form.legalName),
+        ruc: trimmed(form.ruc),
+        contactName: trimmed(form.contactName),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        address: trimmed(form.address),
+        floor: trimmed(form.floor),
+        stand: trimmed(form.stand),
       });
       router.push('/vendedor');
       router.refresh();
@@ -38,19 +53,34 @@ export default function NewStorePage() {
   return (
     <div className="mx-auto max-w-lg">
       <h1 className="mb-8 border-b border-line pb-3 font-display text-3xl text-ink">Registrar tienda</h1>
-      <form onSubmit={onSubmit} className="space-y-6">
-        <Field label="Nombre comercial" value={form.commercialName} onChange={(v) => set('commercialName', v)} placeholder="Modas Karla" />
-        <Field label="Correo de contacto" type="email" value={form.email} onChange={(v) => set('email', v)} placeholder="contacto@tienda.pe" />
-        <Field label="Celular" value={form.phone} onChange={(v) => set('phone', v)} placeholder="987654321" />
-        <div className="grid grid-cols-2 gap-6">
-          <Field label="Piso (opcional)" value={form.floor ?? ''} onChange={(v) => set('floor', v)} required={false} placeholder="2" />
-          <Field label="Stand (opcional)" value={form.stand ?? ''} onChange={(v) => set('stand', v)} required={false} placeholder="A-123" />
-        </div>
+      <form onSubmit={onSubmit} className="space-y-8">
+        {/* Datos de la empresa */}
+        <fieldset className="space-y-6">
+          <legend className="microcaps mb-2 text-muted">Datos de la empresa</legend>
+          <Field label="Nombre comercial" value={form.commercialName} onChange={(v) => set('commercialName', v)} placeholder="Modas Karla" />
+          <Field label="Razón social (opcional)" value={form.legalName ?? ''} onChange={(v) => set('legalName', v)} required={false} placeholder="Inversiones Karla S.A.C." />
+          <div className="grid grid-cols-2 gap-6">
+            <Field label="RUC (opcional)" value={form.ruc ?? ''} onChange={(v) => set('ruc', v)} required={false} placeholder="20123456789" />
+            <Field label="Persona a cargo" value={form.contactName ?? ''} onChange={(v) => set('contactName', v)} required={false} placeholder="Karla Ramírez" />
+          </div>
+        </fieldset>
+
+        {/* Contacto y ubicación */}
+        <fieldset className="space-y-6">
+          <legend className="microcaps mb-2 text-muted">Contacto y ubicación</legend>
+          <Field label="Correo de contacto" type="email" value={form.email} onChange={(v) => set('email', v)} placeholder="contacto@tienda.pe" />
+          <Field label="Celular" value={form.phone} onChange={(v) => set('phone', v)} placeholder="987654321" />
+          <Field label="Dirección (opcional)" value={form.address ?? ''} onChange={(v) => set('address', v)} required={false} placeholder="Jr. Gamarra 123, La Victoria" />
+          <div className="grid grid-cols-2 gap-6">
+            <Field label="Piso (opcional)" value={form.floor ?? ''} onChange={(v) => set('floor', v)} required={false} placeholder="2" />
+            <Field label="Stand (opcional)" value={form.stand ?? ''} onChange={(v) => set('stand', v)} required={false} placeholder="A-123" />
+          </div>
+        </fieldset>
 
         {error && <p className="microcaps text-sale">{error}</p>}
 
         <p className="microcaps border border-line px-3 py-2 text-[10px] text-muted">
-          Tras registrarla, un administrador debe aprobarla antes de que puedas publicar productos.
+          Tras registrarla, un administrador revisa tus datos y la aprueba antes de que puedas publicar productos.
         </p>
 
         <button

@@ -11,6 +11,7 @@ const APPROVED: StoreView = {
   commercialName: 'Moda Lima',
   legalName: 'Moda Lima SAC',
   ruc: '20123456789',
+  contactName: 'Ana Torres',
   email: 'ventas@modalima.pe',
   phone: '999888777',
   galleryId: 'g1',

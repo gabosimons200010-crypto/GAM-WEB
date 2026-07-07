@@ -6,6 +6,7 @@ export interface RegisterStoreData {
   commercialName: string;
   legalName?: string | null;
   ruc?: string | null;
+  contactName?: string | null;
   email: string;
   phone: string;
   galleryId?: string | null;

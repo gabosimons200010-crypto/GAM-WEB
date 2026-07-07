@@ -11,6 +11,7 @@ export interface StoreView {
   commercialName: string;
   legalName: string | null;
   ruc: string | null;
+  contactName: string | null;
   email: string;
   phone: string;
   galleryId: string | null;
