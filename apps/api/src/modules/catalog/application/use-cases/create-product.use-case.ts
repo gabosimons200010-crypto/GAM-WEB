@@ -28,6 +28,7 @@ export interface CreateProductInput {
   price: number;
   salePrice?: number;
   tags?: string[];
+  imageUrls?: string[];
   variants: CreateVariantInput[];
 }
 
@@ -78,6 +79,7 @@ export class CreateProductUseCase {
       price: input.price,
       salePrice: input.salePrice ?? null,
       tags: input.tags ?? [],
+      imageUrls: input.imageUrls ?? [],
       variants,
     });
   }

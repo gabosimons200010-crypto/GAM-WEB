@@ -254,6 +254,7 @@ export interface CreateProductInput {
   price: number;
   salePrice?: number;
   tags?: string[];
+  imageUrls?: string[];
   variants: NewVariantInput[];
 }
 

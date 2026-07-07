@@ -21,6 +21,7 @@ export interface CreateProductData {
   salePrice?: number | null;
   tags?: string[];
   attributes?: Record<string, unknown> | null;
+  imageUrls?: string[];
   variants: NewVariant[];
 }
 

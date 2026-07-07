@@ -1,8 +1,8 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Suspense, useState, FormEvent } from 'react';
-import { createProduct, ClientApiError } from '@/lib/client-api';
+import { Suspense, useRef, useState, FormEvent } from 'react';
+import { createProduct, requestUploadUrl, uploadToStorage, ClientApiError } from '@/lib/client-api';
 import type { Gender, NewVariantInput } from '@/lib/types';
 
 const GENDERS: { value: Gender; label: string }[] = [
@@ -26,8 +26,18 @@ function NewProductForm() {
   const [salePrice, setSalePrice] = useState('');
   const [tags, setTags] = useState('');
   const [variants, setVariants] = useState<NewVariantInput[]>([{ size: '', color: '', stock: 10 }]);
+  const [files, setFiles] = useState<File[]>([]);
+  const previews = useRef<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState('');
+
+  function onSelectFiles(e: React.ChangeEvent<HTMLInputElement>) {
+    const list = Array.from(e.target.files ?? []).slice(0, 8);
+    previews.current.forEach((u) => URL.revokeObjectURL(u));
+    previews.current = list.map((f) => URL.createObjectURL(f));
+    setFiles(list);
+  }
 
   function setVariant(i: number, patch: Partial<NewVariantInput>) {
     setVariants(variants.map((v, idx) => (idx === i ? { ...v, ...patch } : v)));
@@ -48,6 +58,16 @@ function NewProductForm() {
     }
     setBusy(true);
     try {
+      // 1) Sube las fotos al storage y recoge sus URLs públicas.
+      const imageUrls: string[] = [];
+      for (let i = 0; i < files.length; i++) {
+        setProgress(`Subiendo foto ${i + 1}/${files.length}…`);
+        const { uploadUrl, publicUrl } = await requestUploadUrl(storeId, files[i].type);
+        await uploadToStorage(uploadUrl, files[i]);
+        imageUrls.push(publicUrl);
+      }
+      setProgress('');
+      // 2) Crea el producto (borrador) con las fotos.
       await createProduct(storeId, {
         name,
         description: description || undefined,
@@ -55,6 +75,7 @@ function NewProductForm() {
         price: Number(price),
         salePrice: salePrice ? Number(salePrice) : undefined,
         tags: tags ? tags.split(',').map((t) => t.trim()).filter(Boolean) : undefined,
+        imageUrls: imageUrls.length ? imageUrls : undefined,
         variants: variants.map((v) => ({
           size: v.size || undefined,
           color: v.color || undefined,
@@ -85,6 +106,24 @@ function NewProductForm() {
           <span className="microcaps mb-2 block text-muted">Descripción (opcional)</span>
           <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3} className={INPUT} placeholder="Detalles del material, corte, cuidados…" />
         </label>
+
+        {/* Fotos del producto */}
+        <div>
+          <span className="microcaps mb-2 block text-muted">Fotos (hasta 8)</span>
+          <label className="flex cursor-pointer flex-col items-center justify-center border border-dashed border-line bg-[#fafafa] p-8 text-center hover:border-ink">
+            <span className="microcaps text-ink">Elegir fotos</span>
+            <span className="microcaps mt-1 text-[10px] text-muted">JPG, PNG o WebP</span>
+            <input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={onSelectFiles} disabled={busy} className="hidden" />
+          </label>
+          {files.length > 0 && (
+            <div className="mt-3 grid grid-cols-4 gap-2 sm:grid-cols-6">
+              {files.map((f, i) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img key={i} src={previews.current[i]} alt={f.name} className="aspect-square w-full object-cover" />
+              ))}
+            </div>
+          )}
+        </div>
 
         <div className="grid grid-cols-2 gap-6">
           <label className="block">
@@ -159,7 +198,7 @@ function NewProductForm() {
           disabled={busy}
           className="microcaps w-full bg-ink px-4 py-3.5 text-paper transition hover:opacity-80 disabled:opacity-50"
         >
-          {busy ? 'Creando…' : 'Crear producto'}
+          {busy ? progress || 'Creando…' : 'Crear producto'}
         </button>
       </form>
     </div>

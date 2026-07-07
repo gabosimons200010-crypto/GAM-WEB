@@ -95,6 +95,13 @@ export class CreateProductDto {
   @IsString({ each: true })
   tags?: string[];
 
+  @ApiPropertyOptional({ type: [String], description: 'URLs públicas de las fotos ya subidas al storage.' })
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(8)
+  @IsString({ each: true })
+  imageUrls?: string[];
+
   @ApiProperty({ type: [VariantInputDto] })
   @IsArray()
   @ArrayMinSize(1)

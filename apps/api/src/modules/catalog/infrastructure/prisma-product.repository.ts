@@ -43,6 +43,9 @@ export class PrismaProductRepository extends ProductRepository {
         tags: data.tags ?? [],
         attributes: (data.attributes ?? undefined) as Prisma.InputJsonValue | undefined,
         status: 'DRAFT',
+        media: data.imageUrls?.length
+          ? { create: data.imageUrls.map((url, i) => ({ kind: 'ORIGINAL', url, position: i })) }
+          : undefined,
         variants: {
           create: data.variants.map((v) => ({
             sku: v.sku,
