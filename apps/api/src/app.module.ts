@@ -21,6 +21,7 @@ import { CheckoutModule } from './modules/checkout/checkout.module';
 import { PaymentModule } from './modules/payment/payment.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { FavoritesModule } from './modules/favorites/favorites.module';
+import { ReviewsModule } from './modules/reviews/reviews.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { FavoritesModule } from './modules/favorites/favorites.module';
     PaymentModule, // Sprint 10 (Fase 2): pagos (Yape/Plin QR + webhook) → orden PAID
     OrdersModule, // Sprint 11 (Fase 2): órdenes (comprador) + postventa (vendedor)
     FavoritesModule, // Fase 2+: lista de deseos del comprador
+    ReviewsModule, // Fase 2+: reseñas y calificación de productos
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

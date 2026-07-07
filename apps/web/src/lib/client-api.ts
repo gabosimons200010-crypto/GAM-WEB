@@ -8,6 +8,7 @@ import type {
   CreateProductInput,
   FavoriteProduct,
   LoginResponse,
+  Review,
   OrderView,
   PaymentView,
   ProductDetail,
@@ -133,6 +134,15 @@ export function addFavorite(productId: string): Promise<unknown> {
 
 export function removeFavorite(productId: string): Promise<unknown> {
   return request(`/favorites/${productId}`, { method: 'DELETE' });
+}
+
+// --- Reseñas ---
+export function listReviews(productId: string): Promise<Review[]> {
+  return request<Review[]>(`/products/${productId}/reviews`, { auth: false });
+}
+
+export function createReview(productId: string, rating: number, comment?: string): Promise<unknown> {
+  return request(`/products/${productId}/reviews`, { method: 'POST', body: JSON.stringify({ rating, comment }) });
 }
 
 // --- Órdenes ---

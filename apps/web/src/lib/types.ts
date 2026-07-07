@@ -47,6 +47,14 @@ export interface FavoriteProduct {
   storeSlug: string;
 }
 
+export interface Review {
+  id: string;
+  rating: number;
+  comment: string | null;
+  createdAt: string;
+  authorName: string;
+}
+
 export interface VariantView {
   id: string;
   sku: string;

@@ -6,6 +6,7 @@ import { Price } from '@/components/Price';
 import { Gallery } from '@/components/Gallery';
 import { ProductPurchase } from '@/components/ProductPurchase';
 import { FavoriteButton } from '@/components/FavoriteButton';
+import { ProductReviews } from '@/components/ProductReviews';
 import { genderLabel } from '@/lib/format';
 
 export const dynamic = 'force-dynamic';
@@ -89,6 +90,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           </Link>
         </div>
       </div>
+
+      <ProductReviews productId={product.id} />
     </div>
   );
 }
