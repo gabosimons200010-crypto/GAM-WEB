@@ -226,8 +226,29 @@ export function createProduct(storeId: string, body: CreateProductInput): Promis
   return request<ProductDetail>(`/seller/stores/${storeId}/products`, { method: 'POST', body: JSON.stringify(body) });
 }
 
+export interface UpdateProductInput {
+  name?: string;
+  description?: string;
+  price?: number;
+  salePrice?: number;
+}
+
+/** Edita campos escalares del producto (nombre, descripción, precio, oferta). */
+export function updateProduct(storeId: string, productId: string, body: UpdateProductInput): Promise<ProductDetail> {
+  return request<ProductDetail>(`/seller/stores/${storeId}/products/${productId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(body),
+  });
+}
+
+/** Publica un borrador o reactiva un producto pausado (→ ACTIVE o IN_REVIEW). */
 export function publishProduct(storeId: string, productId: string): Promise<ProductDetail> {
   return request<ProductDetail>(`/seller/stores/${storeId}/products/${productId}/publish`, { method: 'POST' });
+}
+
+/** Pausa un producto activo (lo oculta del catálogo, reversible con publicar). */
+export function pauseProduct(storeId: string, productId: string): Promise<ProductDetail> {
+  return request<ProductDetail>(`/seller/stores/${storeId}/products/${productId}/pause`, { method: 'POST' });
 }
 
 /** Ajusta el stock disponible de una variante (se refleja de inmediato en la tienda). */

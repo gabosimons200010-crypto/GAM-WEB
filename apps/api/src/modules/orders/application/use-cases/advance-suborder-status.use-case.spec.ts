@@ -25,6 +25,9 @@ class FakeOrders extends OrderQueryRepository {
   findForUser(): never {
     throw new Error('n/a');
   }
+  findByNumberAndEmail(): never {
+    throw new Error('n/a');
+  }
   listForStores(): never {
     throw new Error('n/a');
   }

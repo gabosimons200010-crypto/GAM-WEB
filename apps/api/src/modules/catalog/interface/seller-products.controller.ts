@@ -23,6 +23,7 @@ import { AuthUser } from '../../identity/domain/auth-user';
 import { CreateProductUseCase } from '../application/use-cases/create-product.use-case';
 import { UpdateProductUseCase } from '../application/use-cases/update-product.use-case';
 import { ArchiveProductUseCase } from '../application/use-cases/archive-product.use-case';
+import { PauseProductUseCase } from '../application/use-cases/pause-product.use-case';
 import { PublishProductUseCase } from '../application/use-cases/publish-product.use-case';
 import { ListMyProductsUseCase } from '../application/use-cases/list-my-products.use-case';
 import { AdjustInventoryUseCase } from '../application/use-cases/adjust-inventory.use-case';
@@ -44,6 +45,7 @@ export class SellerProductsController {
     private readonly createProduct: CreateProductUseCase,
     private readonly updateProduct: UpdateProductUseCase,
     private readonly archiveProduct: ArchiveProductUseCase,
+    private readonly pauseProduct: PauseProductUseCase,
     private readonly publishProduct: PublishProductUseCase,
     private readonly listMyProducts: ListMyProductsUseCase,
     private readonly adjustInventory: AdjustInventoryUseCase,
@@ -93,7 +95,14 @@ export class SellerProductsController {
     return this.archiveProduct.archive(user.sub, productId).then(() => ({ archived: true }));
   }
 
-  /** Publica un borrador: ACTIVE si la tienda está verificada, si no IN_REVIEW. */
+  /** Pausa un producto activo/en revisión: lo oculta del catálogo (reversible). */
+  @Post(':productId/pause')
+  @HttpCode(200)
+  pause(@CurrentUser() user: AuthUser, @Param('productId') productId: string) {
+    return this.pauseProduct.execute(user.sub, productId);
+  }
+
+  /** Publica un borrador o reactiva un pausado: ACTIVE si la tienda está verificada, si no IN_REVIEW. */
   @Post(':productId/publish')
   @HttpCode(200)
   publish(@CurrentUser() user: AuthUser, @Param('productId') productId: string) {
