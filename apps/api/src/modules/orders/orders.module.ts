@@ -8,6 +8,7 @@ import { OrderQueryRepository } from './application/ports/order-query.repository
 import { PrismaOrderQueryRepository } from './infrastructure/prisma-order-query.repository';
 import { ListMyOrdersUseCase } from './application/use-cases/list-my-orders.use-case';
 import { GetMyOrderUseCase } from './application/use-cases/get-my-order.use-case';
+import { TrackOrderUseCase } from './application/use-cases/track-order.use-case';
 import { ListStoreOrdersUseCase } from './application/use-cases/list-store-orders.use-case';
 import { AdvanceSubOrderStatusUseCase } from './application/use-cases/advance-suborder-status.use-case';
 
@@ -23,6 +24,7 @@ import { AdvanceSubOrderStatusUseCase } from './application/use-cases/advance-su
     { provide: OrderQueryRepository, useClass: PrismaOrderQueryRepository },
     ListMyOrdersUseCase,
     GetMyOrderUseCase,
+    TrackOrderUseCase,
     ListStoreOrdersUseCase,
     AdvanceSubOrderStatusUseCase,
   ],

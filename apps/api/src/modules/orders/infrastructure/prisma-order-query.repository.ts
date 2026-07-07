@@ -42,6 +42,21 @@ export class PrismaOrderQueryRepository extends OrderQueryRepository {
     return row ? this.toOrderView(row) : null;
   }
 
+  async findByNumberAndEmail(number: string, email: string): Promise<OrderView | null> {
+    // Coincide por número (único) y correo: el de invitado o el de la cuenta.
+    const row = await this.prisma.order.findFirst({
+      where: {
+        number,
+        OR: [
+          { guestEmail: { equals: email, mode: 'insensitive' } },
+          { user: { is: { email: { equals: email, mode: 'insensitive' } } } },
+        ],
+      },
+      include: orderInclude,
+    });
+    return row ? this.toOrderView(row) : null;
+  }
+
   async listForStores(
     storeIds: string[],
     status: SubOrderStatus | undefined,

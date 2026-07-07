@@ -238,13 +238,28 @@ export default function CheckoutPage() {
             tiendas ya pueden prepararlo.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Link href="/mis-ordenes" className="microcaps bg-ink px-8 py-3.5 text-paper hover:opacity-80">
-              Ver mis pedidos
-            </Link>
+            {isGuest ? (
+              <Link
+                href={`/rastrear?number=${encodeURIComponent(order.number)}&email=${encodeURIComponent(guestEmail.trim())}`}
+                className="microcaps bg-ink px-8 py-3.5 text-paper hover:opacity-80"
+              >
+                Rastrear mi pedido
+              </Link>
+            ) : (
+              <Link href="/mis-ordenes" className="microcaps bg-ink px-8 py-3.5 text-paper hover:opacity-80">
+                Ver mis pedidos
+              </Link>
+            )}
             <Link href="/buscar" className="microcaps border border-ink px-8 py-3.5 text-ink hover:bg-ink hover:text-paper">
               Seguir comprando
             </Link>
           </div>
+          {isGuest && (
+            <p className="microcaps mx-auto mt-4 max-w-sm text-[10px] text-muted">
+              Guarda tu número <span className="text-ink">{order.number}</span> para consultar tu pedido cuando quieras
+              en “Rastrear pedido”.
+            </p>
+          )}
         </div>
       )}
     </div>

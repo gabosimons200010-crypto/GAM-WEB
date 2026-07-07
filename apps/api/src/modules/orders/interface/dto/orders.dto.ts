@@ -1,6 +1,6 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsEnum, IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
+import { IsEmail, IsEnum, IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
 
 export enum SubOrderStatusDto {
   PREPARING = 'PREPARING',
@@ -32,6 +32,18 @@ export class StoreOrdersQueryDto extends PageQueryDto {
   @IsOptional()
   @IsEnum(SubOrderStatusDto)
   status?: SubOrderStatusDto;
+}
+
+/** Rastreo público de pedido: número + correo. */
+export class TrackOrderDto {
+  @ApiProperty({ example: 'GG-A5EBB38C', description: 'Número del pedido.' })
+  @IsString()
+  @MaxLength(40)
+  number!: string;
+
+  @ApiProperty({ example: 'tu@correo.com', description: 'Correo con el que se hizo el pedido.' })
+  @IsEmail()
+  email!: string;
 }
 
 export class AdvanceStatusDto {

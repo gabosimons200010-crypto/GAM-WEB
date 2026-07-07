@@ -43,6 +43,9 @@ export function Footer() {
           </div>
           <div className="microcaps space-y-3 text-muted">
             <p className="text-ink">Ayuda</p>
+            <Link href="/rastrear" className="block w-fit hover:text-ink">
+              Rastrear pedido
+            </Link>
             <Link href="/envios" className="block w-fit hover:text-ink">
               Envíos y devoluciones
             </Link>

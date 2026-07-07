@@ -20,6 +20,12 @@ export abstract class OrderQueryRepository {
   /** Detalle de una orden del comprador. null si no existe o no es suya. */
   abstract findForUser(orderId: string, userId: string): Promise<OrderView | null>;
 
+  /**
+   * Rastreo público de una orden por número + correo (invitado o comprador).
+   * null si no coincide. El correo se compara sin distinguir mayúsculas.
+   */
+  abstract findByNumberAndEmail(number: string, email: string): Promise<OrderView | null>;
+
   /** Subórdenes de un conjunto de tiendas (cola del vendedor), opcional por estado. */
   abstract listForStores(
     storeIds: string[],

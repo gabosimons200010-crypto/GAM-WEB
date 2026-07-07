@@ -187,6 +187,15 @@ export function getOrder(id: string): Promise<OrderView> {
   return request<OrderView>(`/orders/${id}`);
 }
 
+/** Rastreo público por número + correo (sin sesión). */
+export function trackOrder(number: string, email: string): Promise<OrderView> {
+  return request<OrderView>('/orders/track', {
+    method: 'POST',
+    body: JSON.stringify({ number, email }),
+    auth: false,
+  });
+}
+
 // --- Vendedor: tiendas ---
 export interface RegisterStoreBody {
   commercialName: string;
