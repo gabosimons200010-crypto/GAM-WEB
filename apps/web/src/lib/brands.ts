@@ -51,7 +51,7 @@ export const BRANDS: BrandEntry[] = [
     instagram: '@ntf.pe',
     website: 'https://linktr.ee/ntf.pe',
     logoUrl: null,
-    editorialUrl: null,
+    editorialUrl: '/media/ntf/portada.jpg',
   },
   {
     slug: 'fuse-apparel',
