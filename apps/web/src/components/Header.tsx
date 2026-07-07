@@ -18,8 +18,10 @@ export function Header() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   const authed = mounted && !!user;
-  // Header consciente del rol: el admin ve su panel, no la tienda.
+  // Header consciente del rol: admin y vendedor ven su panel, no la tienda.
   const isAdmin = authed && !!user && (user.roles.includes('ADMIN') || user.roles.includes('SUPER_ADMIN'));
+  const isSeller = authed && !isAdmin && !!user && (user.roles.includes('VENDEDOR') || user.roles.includes('ADMIN_TIENDA'));
+  const panelLabel = isAdmin ? 'Panel de administración' : isSeller ? 'Panel de vendedor' : null;
 
   const [open, setOpen] = useState(false);
   // Cierra el menú móvil al navegar.
@@ -84,7 +86,30 @@ export function Header() {
     </>
   );
 
-  const links = isAdmin ? adminLinks : customerLinks;
+  const sellerLinks = (
+    <>
+      <Link href="/vendedor/productos" className="hover:underline hover:underline-offset-4">
+        Productos
+      </Link>
+      <Link href="/vendedor/pedidos" className="hover:underline hover:underline-offset-4">
+        Pedidos
+      </Link>
+      <Link href="/vendedor/ventas" className="hover:underline hover:underline-offset-4">
+        Ventas
+      </Link>
+      <Link href="/vendedor/pagos" className="hover:underline hover:underline-offset-4">
+        Pagos
+      </Link>
+      <Link href="/" className="text-muted hover:text-ink" title="Ver la tienda como cliente">
+        Ver tienda
+      </Link>
+      <button onClick={logout} className="microcaps text-left text-muted hover:text-ink" title="Cerrar sesión">
+        Salir
+      </button>
+    </>
+  );
+
+  const links = isAdmin ? adminLinks : isSeller ? sellerLinks : customerLinks;
 
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-paper">
@@ -93,13 +118,9 @@ export function Header() {
           Emporio
         </Link>
 
-        {/* Buscador (desktop) — el admin no compra, así que ve una etiqueta */}
+        {/* Buscador (desktop) — admin/vendedor ven una etiqueta de su panel */}
         <div className="hidden flex-1 sm:block sm:px-10">
-          {isAdmin ? (
-            <span className="microcaps text-muted">Panel de administración</span>
-          ) : (
-            <SearchBar />
-          )}
+          {panelLabel ? <span className="microcaps text-muted">{panelLabel}</span> : <SearchBar />}
         </div>
 
         {/* Nav (desktop) */}
@@ -121,11 +142,7 @@ export function Header() {
       {/* Menú desplegable (móvil) */}
       {open && (
         <div className="border-t border-line px-4 py-4 sm:hidden">
-          {isAdmin ? (
-            <p className="microcaps text-muted">Panel de administración</p>
-          ) : (
-            <SearchBar />
-          )}
+          {panelLabel ? <p className="microcaps text-muted">{panelLabel}</p> : <SearchBar />}
           <nav className="microcaps mt-5 flex flex-col gap-4 text-ink">{links}</nav>
         </div>
       )}

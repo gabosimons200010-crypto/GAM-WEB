@@ -23,10 +23,12 @@ function LoginForm() {
     setLoading(true);
     try {
       await login(mail.trim(), pass);
-      // Al admin lo llevamos a su panel (salvo que venga con un next explícito).
+      // Admin y vendedor caen en su panel (salvo que venga un next explícito).
       const roles = getStoredUser()?.roles ?? [];
       const isAdmin = roles.includes('ADMIN') || roles.includes('SUPER_ADMIN');
-      router.push(isAdmin && next === '/' ? '/admin/tiendas' : next);
+      const isSeller = roles.includes('VENDEDOR') || roles.includes('ADMIN_TIENDA');
+      const home = isAdmin ? '/admin/tiendas' : isSeller ? '/vendedor' : '/';
+      router.push(next === '/' ? home : next);
       router.refresh();
     } catch (err) {
       setError(err instanceof ClientApiError ? err.message : 'No pudimos iniciar sesión');
