@@ -26,6 +26,12 @@ export abstract class OrderQueryRepository {
    */
   abstract findByNumberAndEmail(number: string, email: string): Promise<OrderView | null>;
 
+  /**
+   * Cancela una orden del comprador (si aún no salió) y repone el stock
+   * reservado, en una transacción. Devuelve la orden actualizada.
+   */
+  abstract cancelByUser(orderId: string, userId: string): Promise<OrderView>;
+
   /** Subórdenes de un conjunto de tiendas (cola del vendedor), opcional por estado. */
   abstract listForStores(
     storeIds: string[],

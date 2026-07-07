@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
-import { listOrders, ClientApiError } from '@/lib/client-api';
+import { listOrders, cancelOrder, ClientApiError } from '@/lib/client-api';
 import type { OrderView } from '@/lib/types';
 import { OrderCard } from '@/components/OrderCard';
 
@@ -11,6 +11,21 @@ export default function MyOrdersPage() {
   const { user, ready } = useAuth();
   const [orders, setOrders] = useState<OrderView[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [canceling, setCanceling] = useState<string | null>(null);
+
+  async function onCancel(id: string) {
+    if (!window.confirm('¿Cancelar este pedido? Se repondrá el stock.')) return;
+    setCanceling(id);
+    setError(null);
+    try {
+      const updated = await cancelOrder(id);
+      setOrders((prev) => prev?.map((o) => (o.id === id ? updated : o)) ?? prev);
+    } catch (e) {
+      setError(e instanceof ClientApiError ? e.message : 'No se pudo cancelar el pedido');
+    } finally {
+      setCanceling(null);
+    }
+  }
 
   useEffect(() => {
     if (!ready) return;
@@ -55,7 +70,7 @@ export default function MyOrdersPage() {
         <Link href="/rastrear" className="microcaps text-muted hover:text-ink">Rastrear un pedido</Link>
       </div>
       {orders.map((o, oi) => (
-        <OrderCard key={o.id} order={o} delay={oi * 80} />
+        <OrderCard key={o.id} order={o} delay={oi * 80} onCancel={onCancel} canceling={canceling === o.id} />
       ))}
     </div>
   );

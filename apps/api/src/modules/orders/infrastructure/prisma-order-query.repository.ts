@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../../shared/prisma/prisma.service';
 import { OrderQueryRepository, Page, SubOrderRef } from '../application/ports/order-query.repository';
@@ -40,6 +40,43 @@ export class PrismaOrderQueryRepository extends OrderQueryRepository {
   async findForUser(orderId: string, userId: string): Promise<OrderView | null> {
     const row = await this.prisma.order.findFirst({ where: { id: orderId, userId }, include: orderInclude });
     return row ? this.toOrderView(row) : null;
+  }
+
+  async cancelByUser(orderId: string, userId: string): Promise<OrderView> {
+    const CANCELLED = 'CANCELLED' as SubOrderStatus & Prisma.SubOrderUpdateInput['status'];
+    const shippedStates = ['READY_FOR_PICKUP', 'SHIPPED', 'DELIVERED', 'RETURNED', 'DELIVERY_FAILED'];
+    const row = await this.prisma.$transaction(async (tx) => {
+      const order = await tx.order.findFirst({
+        where: { id: orderId, userId },
+        include: { subOrders: { include: { items: true } } },
+      });
+      if (!order) throw new NotFoundException('Orden no encontrada');
+      if (order.status === 'CANCELLED') throw new BadRequestException('El pedido ya está cancelado');
+      if (order.status !== 'PENDING_PAYMENT' && order.status !== 'PAID') {
+        throw new BadRequestException('Este pedido no se puede cancelar');
+      }
+      if (order.subOrders.some((s) => shippedStates.includes(s.status))) {
+        throw new BadRequestException('El pedido ya está en preparación/camino y no se puede cancelar');
+      }
+
+      // Repone el stock reservado y registra el historial.
+      for (const so of order.subOrders) {
+        for (const it of so.items) {
+          await tx.inventory.updateMany({
+            where: { variantId: it.variantId },
+            data: { available: { increment: it.quantity }, reserved: { decrement: it.quantity } },
+          });
+        }
+        await tx.orderStatusHistory.create({
+          data: { subOrderId: so.id, status: CANCELLED, changedBy: userId, note: 'Cancelado por el comprador' },
+        });
+      }
+      await tx.subOrder.updateMany({ where: { orderId }, data: { status: CANCELLED } });
+      await tx.order.update({ where: { id: orderId }, data: { status: 'CANCELLED' } });
+
+      return tx.order.findUniqueOrThrow({ where: { id: orderId }, include: orderInclude });
+    });
+    return this.toOrderView(row);
   }
 
   async findByNumberAndEmail(number: string, email: string): Promise<OrderView | null> {

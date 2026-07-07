@@ -264,6 +264,11 @@ export function getOrder(id: string): Promise<OrderView> {
   return request<OrderView>(`/orders/${id}`);
 }
 
+/** Cancela un pedido propio (si aún no salió) y repone el stock. */
+export function cancelOrder(id: string): Promise<OrderView> {
+  return request<OrderView>(`/orders/${id}/cancel`, { method: 'POST' });
+}
+
 /** Rastreo público por número + correo (sin sesión). */
 export function trackOrder(number: string, email: string): Promise<OrderView> {
   return request<OrderView>('/orders/track', {
