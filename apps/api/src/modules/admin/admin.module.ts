@@ -4,6 +4,8 @@ import { SellerModule } from '../seller/seller.module';
 import { CatalogModule } from '../catalog/catalog.module';
 import { AdminStoresController } from './interface/admin-stores.controller';
 import { AdminProductsController } from './interface/admin-products.controller';
+import { AdminAnalyticsController } from './interface/admin-analytics.controller';
+import { SalesByStyleUseCase } from './application/sales-by-style.use-case';
 
 /**
  * Bounded context ADMIN / PLATFORM. Sprint 2: gestión y moderación de tiendas.
@@ -14,6 +16,7 @@ import { AdminProductsController } from './interface/admin-products.controller';
  */
 @Module({
   imports: [IdentityModule, SellerModule, CatalogModule],
-  controllers: [AdminStoresController, AdminProductsController],
+  controllers: [AdminStoresController, AdminProductsController, AdminAnalyticsController],
+  providers: [SalesByStyleUseCase],
 })
 export class AdminModule {}

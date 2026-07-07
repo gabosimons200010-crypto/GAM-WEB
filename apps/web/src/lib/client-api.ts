@@ -408,6 +408,22 @@ export function adminSuspendStore(id: string, reason: string): Promise<unknown> 
   return request(`/admin/stores/${id}/suspend`, { method: 'POST', body: JSON.stringify({ reason }) });
 }
 
+// --- Admin: analítica de tendencias ---
+export interface StyleSales {
+  style: string;
+  units: number;
+  revenue: number;
+  products: number;
+  share: number;
+}
+export interface SalesByStyleResult {
+  styles: StyleSales[];
+  totals: { units: number; revenue: number; products: number; styles: number };
+}
+export function adminSalesByStyle(): Promise<SalesByStyleResult> {
+  return request<SalesByStyleResult>('/admin/analytics/sales-by-style');
+}
+
 // --- Admin: moderación de productos ---
 export function adminListModeration(): Promise<{ items: ProductDetail[]; nextCursor: string | null }> {
   return request('/admin/products/moderation');

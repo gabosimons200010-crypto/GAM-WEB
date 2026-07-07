@@ -8,6 +8,7 @@ import { useAuth } from '@/lib/auth-context';
 const NAV = [
   { href: '/admin/tiendas', label: 'Tiendas' },
   { href: '/admin/moderacion', label: 'Moderación' },
+  { href: '/admin/tendencias', label: 'Tendencias' },
 ];
 
 function isAdmin(roles: string[]): boolean {

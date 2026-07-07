@@ -23,6 +23,29 @@ const ntfCatalog: NtfCatalogItem[] = JSON.parse(
 );
 
 /**
+ * Deriva tags de estilo/look (vocabulario controlado) a partir de los tags,
+ * nombre y categoría. Metadata solo-admin que alimenta el panel de tendencias.
+ */
+function styleTagsFor(p: { tags?: string[]; name: string; categorySlug: string }): string[] {
+  const hay = `${(p.tags ?? []).join(' ')} ${p.name} ${p.categorySlug}`.toLowerCase();
+  const out = new Set<string>();
+  const add = (cond: boolean, ...t: string[]) => cond && t.forEach((x) => out.add(x));
+  add(/boxy|oversize/.test(hay), 'oversize');
+  add(/basic|básic/.test(hay), 'básico');
+  add(/hoodie|polera|casaca|capucha|zip|chaqueta|jacket|bomber|sweater|abrigo/.test(hay), 'abrigo');
+  add(/jean|denim|baggy|pantal|pant\b/.test(hay), 'denim');
+  add(/short|sin mangas|tank|manga 0/.test(hay), 'verano');
+  add(/camisa|sobrecamisa/.test(hay), 'formal-casual');
+  add(/manga larga|heavy|pesad/.test(hay), 'pesado');
+  add(/grafi|graffiti|diseño|estampa|flock|print|gráfic|flores|tribal|naipe/.test(hay), 'gráfico');
+  add(/racing|sport|deport/.test(hay), 'deportivo');
+  add(/polo|tee|camiseta/.test(hay), 'casual');
+  add(/ntf|balboni|mister ?posh|racing/.test(hay), 'streetwear');
+  add(out.size === 0, 'casual');
+  return [...out];
+}
+
+/**
  * Semilla DEMO (encima de la base): un vendedor con tiendas APROBADAS y
  * productos ACTIVOS para que la vitrina (/,/buscar, /producto, /tienda) muestre
  * contenido. Re-ejecutable: borra por slug (cascade) y vuelve a crear.
@@ -589,6 +612,7 @@ async function main(): Promise<void> {
           salePrice: p.salePrice ?? null,
           status: ProductStatus.ACTIVE,
           tags: p.tags,
+          styleTags: styleTagsFor(p),
           soldCount: p.soldCount ?? 0,
           media: {
             create: p.imageUrls.map((url, i) => ({ kind: 'ORIGINAL', url, position: i })),
@@ -667,6 +691,7 @@ async function main(): Promise<void> {
         price: p.price,
         status: ProductStatus.ACTIVE,
         tags: ['demo'],
+        styleTags: styleTagsFor({ tags: ['demo'], name: p.name, categorySlug: p.cat }),
         media: { create: [{ kind: 'ORIGINAL', url: '/media/ph-demo.svg', position: 0 }] },
         variants: {
           create: ['S', 'M', 'L', 'XL'].map((size) => ({

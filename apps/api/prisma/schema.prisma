@@ -317,6 +317,7 @@ model Product {
   status      ProductStatus                @default(DRAFT)
   attributes  Json?
   tags        String[]
+  styleTags   String[]                     @default([]) // estilo/look para analítica (solo admin)
   embedding   Unsupported("vector(1024)")?
   ratingAvg   Decimal                      @default(0) @db.Decimal(3, 2)
   ratingCount Int                          @default(0)
