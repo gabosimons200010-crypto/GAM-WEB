@@ -125,9 +125,12 @@ export class AuthController {
   @HttpCode(200)
   @Post('password/forgot')
   async postForgot(@Body() dto: RequestPasswordResetDto) {
-    await this.requestPasswordReset.execute(dto.email);
-    // Respuesta uniforme (no revela si el correo existe).
-    return { ok: true };
+    const token = await this.requestPasswordReset.execute(dto.email);
+    // En producción la respuesta es uniforme y no revela si el correo existe.
+    // Fuera de producción (demo, sin correo saliente) devolvemos el token para
+    // poder completar el flujo desde la UI. El límite de 3/h sigue vigente.
+    const isProd = this.config.get('NODE_ENV', { infer: true }) === 'production';
+    return isProd ? { ok: true } : { ok: true, demoToken: token };
   }
 
   @Public()

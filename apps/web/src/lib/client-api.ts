@@ -72,6 +72,23 @@ export function register(email: string, password: string, fullName?: string): Pr
   });
 }
 
+/**
+ * Solicita el enlace de recuperación. En producción responde uniforme; en demo
+ * (sin correo saliente) el backend devuelve `demoToken` para continuar el flujo.
+ */
+export function requestPasswordReset(email: string): Promise<{ ok: boolean; demoToken?: string | null }> {
+  return request('/auth/password/forgot', { method: 'POST', body: JSON.stringify({ email }), auth: false });
+}
+
+/** Fija la nueva contraseña con el token del enlace. */
+export function resetPassword(email: string, token: string, password: string): Promise<{ ok: boolean }> {
+  return request('/auth/password/reset', {
+    method: 'POST',
+    body: JSON.stringify({ email, token, password }),
+    auth: false,
+  });
+}
+
 // --- Carrito ---
 export function getCart(): Promise<CartView> {
   return request<CartView>('/cart');
@@ -230,7 +247,8 @@ export interface UpdateProductInput {
   name?: string;
   description?: string;
   price?: number;
-  salePrice?: number;
+  /** number = fijar oferta · null = quitar la oferta · omitir = dejar igual. */
+  salePrice?: number | null;
 }
 
 /** Edita campos escalares del producto (nombre, descripción, precio, oferta). */

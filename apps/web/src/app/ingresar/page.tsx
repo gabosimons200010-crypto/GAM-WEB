@@ -46,6 +46,12 @@ function LoginForm() {
         <Field label="Correo" type="email" value={email} onChange={setEmail} placeholder="tucorreo@ejemplo.com" />
         <Field label="Contraseña" type="password" value={password} onChange={setPassword} placeholder="••••••••" />
 
+        <div className="text-right">
+          <Link href="/recuperar" className="microcaps text-[10px] text-muted hover:text-ink">
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </div>
+
         {error && <p className="microcaps text-sale">{error}</p>}
 
         <button

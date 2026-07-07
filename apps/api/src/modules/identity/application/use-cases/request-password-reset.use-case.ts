@@ -19,11 +19,16 @@ export class RequestPasswordResetUseCase {
     private readonly delivery: CodeDelivery,
   ) {}
 
-  async execute(email: string): Promise<void> {
+  /**
+   * Devuelve el token generado (o null si la cuenta no existe). El controlador
+   * lo expone SOLO fuera de producción para poder demostrar el flujo sin correo;
+   * en producción la respuesta es uniforme y nunca revela el token ni si existe.
+   */
+  async execute(email: string): Promise<string | null> {
     const identifier = email.toLowerCase();
     const user = await this.users.findByEmail(identifier);
     if (!user) {
-      return; // silencioso: no revelar si existe
+      return null; // silencioso: no revelar si existe
     }
 
     await this.verifications.invalidateAll(identifier, VerificationPurpose.PASSWORD_RESET);
@@ -37,5 +42,6 @@ export class RequestPasswordResetUseCase {
       expiresAt: new Date(Date.now() + RESET_TTL_MS),
     });
     await this.delivery.sendPasswordReset(identifier, token);
+    return token;
   }
 }

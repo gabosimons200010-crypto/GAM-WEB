@@ -265,6 +265,9 @@ function EditProductForm({
         return setMsg({ kind: 'err', text: 'La oferta debe ser mayor a 0 y menor al precio' });
       }
       body.salePrice = saleN;
+    } else if (product.salePrice != null) {
+      // Campo vaciado teniendo oferta previa → quitar la oferta.
+      body.salePrice = null;
     }
 
     setBusy(true);

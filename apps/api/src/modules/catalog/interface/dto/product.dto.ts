@@ -141,11 +141,11 @@ export class UpdateProductDto {
   @Min(0)
   price?: number;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ description: 'Precio de oferta. Envía null para quitar la oferta.', nullable: true })
   @IsOptional()
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
-  salePrice?: number;
+  salePrice?: number | null;
 
   @ApiPropertyOptional({ type: [String] })
   @IsOptional()

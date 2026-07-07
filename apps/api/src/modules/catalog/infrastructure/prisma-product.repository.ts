@@ -126,7 +126,8 @@ export class PrismaProductRepository extends ProductRepository {
         categoryId: data.categoryId ?? undefined,
         gender: data.gender ?? undefined,
         price: data.price,
-        salePrice: data.salePrice ?? undefined,
+        // null limpia la oferta (Prisma pone la columna en NULL); undefined la deja igual.
+        salePrice: data.salePrice === undefined ? undefined : data.salePrice,
         tags: data.tags,
       },
       include: productInclude,
