@@ -1,7 +1,26 @@
 import { PrismaClient, ProductStatus, RoleName, StoreStatus } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 const prisma = new PrismaClient();
+
+/** Catálogo real de NTF extraído de los PDFs (fotos en apps/web/public/media/ntf). */
+type NtfCatalogItem = {
+  sku: string;
+  name: string;
+  slug: string;
+  description: string;
+  price: number;
+  categorySlug: string;
+  tags: string[];
+  imageUrl: string;
+  soldCount: number;
+  sizes: string[];
+};
+const ntfCatalog: NtfCatalogItem[] = JSON.parse(
+  readFileSync(join(process.cwd(), 'prisma', 'ntf-catalog.json'), 'utf8'),
+);
 
 /**
  * Semilla DEMO (encima de la base): un vendedor con tiendas APROBADAS y
@@ -395,30 +414,19 @@ const STORES: StoreSeed[] = [
       'Streetwear nacido en el corazón de Gamarra, con tiendas físicas en las galerías El Paraíso y Generación Gamarra. Polos boxy fit, hoodies y baggy jeans con actitud de calle. Venta por IG/TikTok @ntf.pe — envíos a todo el Perú.',
     verified: true,
     salesCount: 197,
-    // Polos Básicos Boxy Fit — catálogo real NTF 2025 (10 colores), fotos en /media/ntf.
-    products: [
-      { color: 'Hielo', s: 'hielo', img: 'basico-01-hielo', sold: 64 },
-      { color: 'Coffee', s: 'coffee', img: 'basico-02-coffee', sold: 58 },
-      { color: 'Blanco', s: 'blanco', img: 'basico-03-blanco', sold: 71 },
-      { color: 'Negro', s: 'negro', img: 'basico-04-negro', sold: 69 },
-      { color: 'Topo', s: 'topo', img: 'basico-05-topo', sold: 40 },
-      { color: 'Verde Exportación', s: 'verde-exportacion', img: 'basico-06-exportacion', sold: 33 },
-      { color: 'Verde Mineral', s: 'verde-mineral', img: 'basico-07-mineral', sold: 29 },
-      { color: 'Azul', s: 'azul', img: 'basico-08-azul', sold: 47 },
-      { color: 'Verde', s: 'verde', img: 'basico-09-verde', sold: 25 },
-      { color: 'Rojo', s: 'rojo', img: 'basico-10-rojo', sold: 38 },
-    ].map((b, i) => ({
-      sku: `NT-B${String(i + 1).padStart(2, '0')}`,
-      name: `Polo Básico ${b.color}`,
-      slug: `polo-basico-${b.s}-ntf`,
-      description: `Polo básico boxy fit NTF en ${b.color.toLowerCase()}: algodón pesado, hombro caído y largo recortado.`,
-      gender: 'UNISEX',
-      price: 49.9,
-      tags: ['polo', 'basico', 'boxy', 'ntf'],
-      categorySlug: 'polos',
-      imageUrls: [`/media/ntf/${b.img}.jpg`],
-      soldCount: b.sold,
-      variants: ['S', 'M', 'L'].map((size) => ({ size, stock: 15 })),
+    // Catálogo real NTF 2025 (115 prendas extraídas de los PDFs) — ver ntf-catalog.json.
+    products: ntfCatalog.map((p) => ({
+      sku: p.sku,
+      name: p.name,
+      slug: p.slug,
+      description: p.description,
+      gender: 'UNISEX' as const,
+      price: p.price,
+      tags: p.tags,
+      categorySlug: p.categorySlug,
+      imageUrls: [p.imageUrl],
+      soldCount: p.soldCount,
+      variants: p.sizes.map((size) => ({ size, stock: 15 })),
     })),
   },
   {

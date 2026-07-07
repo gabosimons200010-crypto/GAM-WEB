@@ -1,0 +1,2433 @@
+[
+  {
+    "sku": "NT-001",
+    "name": "Polo Básico Hielo",
+    "slug": "polo-basico-hielo-ntf",
+    "description": "Polo Básico de NTF, color hielo. Streetwear de Gamarra con corte urbano.",
+    "price": 49.9,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "basico",
+      "boxy",
+      "hielo",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/basico-01-hielo.jpg",
+    "soldCount": 64,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-002",
+    "name": "Polo Básico Coffee",
+    "slug": "polo-basico-coffee-ntf",
+    "description": "Polo Básico de NTF, color coffee. Streetwear de Gamarra con corte urbano.",
+    "price": 49.9,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "basico",
+      "boxy",
+      "coffee",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/basico-02-coffee.jpg",
+    "soldCount": 58,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-003",
+    "name": "Polo Básico Blanco",
+    "slug": "polo-basico-blanco-ntf",
+    "description": "Polo Básico de NTF, color blanco. Streetwear de Gamarra con corte urbano.",
+    "price": 49.9,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "basico",
+      "boxy",
+      "blanco",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/basico-03-blanco.jpg",
+    "soldCount": 71,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-004",
+    "name": "Polo Básico Negro",
+    "slug": "polo-basico-negro-ntf",
+    "description": "Polo Básico de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 49.9,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "basico",
+      "boxy",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/basico-04-negro.jpg",
+    "soldCount": 69,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-005",
+    "name": "Polo Básico Topo",
+    "slug": "polo-basico-topo-ntf",
+    "description": "Polo Básico de NTF, color topo. Streetwear de Gamarra con corte urbano.",
+    "price": 49.9,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "basico",
+      "boxy",
+      "topo",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/basico-05-topo.jpg",
+    "soldCount": 40,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-006",
+    "name": "Polo Básico Verde Exportación",
+    "slug": "polo-basico-verde-exportacion-ntf",
+    "description": "Polo Básico de NTF, color verde exportación. Streetwear de Gamarra con corte urbano.",
+    "price": 49.9,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "basico",
+      "boxy",
+      "verde-exportacion",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/basico-06-exportacion.jpg",
+    "soldCount": 33,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-007",
+    "name": "Polo Básico Verde Mineral",
+    "slug": "polo-basico-verde-mineral-ntf",
+    "description": "Polo Básico de NTF, color verde mineral. Streetwear de Gamarra con corte urbano.",
+    "price": 49.9,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "basico",
+      "boxy",
+      "verde-mineral",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/basico-07-mineral.jpg",
+    "soldCount": 29,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-008",
+    "name": "Polo Básico Azul",
+    "slug": "polo-basico-azul-ntf",
+    "description": "Polo Básico de NTF, color azul. Streetwear de Gamarra con corte urbano.",
+    "price": 49.9,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "basico",
+      "boxy",
+      "azul",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/basico-08-azul.jpg",
+    "soldCount": 47,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-009",
+    "name": "Polo Básico Verde",
+    "slug": "polo-basico-verde-ntf",
+    "description": "Polo Básico de NTF, color verde. Streetwear de Gamarra con corte urbano.",
+    "price": 49.9,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "basico",
+      "boxy",
+      "verde",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/basico-09-verde.jpg",
+    "soldCount": 25,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-010",
+    "name": "Polo Básico Rojo",
+    "slug": "polo-basico-rojo-ntf",
+    "description": "Polo Básico de NTF, color rojo. Streetwear de Gamarra con corte urbano.",
+    "price": 49.9,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "basico",
+      "boxy",
+      "rojo",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/basico-10-rojo.jpg",
+    "soldCount": 38,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-011",
+    "name": "Camisa Boxy Rayas Gris Claro",
+    "slug": "camisa-boxy-rayas-gris-claro-ntf",
+    "description": "Camisa Boxy Rayas de NTF, color gris claro. Streetwear de Gamarra con corte urbano.",
+    "price": 80,
+    "categorySlug": "polos",
+    "tags": [
+      "camisa",
+      "boxy",
+      "gris-claro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/camisa-01-rayas-gris-claro.jpg",
+    "soldCount": 46,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-012",
+    "name": "Camisa Boxy Rayas Celeste",
+    "slug": "camisa-boxy-rayas-celeste-ntf",
+    "description": "Camisa Boxy Rayas de NTF, color celeste. Streetwear de Gamarra con corte urbano.",
+    "price": 80,
+    "categorySlug": "polos",
+    "tags": [
+      "camisa",
+      "boxy",
+      "celeste",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/camisa-02-rayas-celeste.jpg",
+    "soldCount": 13,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-013",
+    "name": "Camisa Boxy Rayas Gris Oscuro",
+    "slug": "camisa-boxy-rayas-gris-oscuro-ntf",
+    "description": "Camisa Boxy Rayas de NTF, color gris oscuro. Streetwear de Gamarra con corte urbano.",
+    "price": 80,
+    "categorySlug": "polos",
+    "tags": [
+      "camisa",
+      "boxy",
+      "gris-oscuro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/camisa-03-rayas-gris-oscuro.jpg",
+    "soldCount": 54,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-014",
+    "name": "Camisa Boxy Arena",
+    "slug": "camisa-boxy-arena-ntf",
+    "description": "Camisa Boxy de NTF, color arena. Streetwear de Gamarra con corte urbano.",
+    "price": 70,
+    "categorySlug": "polos",
+    "tags": [
+      "camisa",
+      "boxy",
+      "arena",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/camisa-04-camisa-boxy-arena.jpg",
+    "soldCount": 21,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-015",
+    "name": "Camisa Boxy Negro",
+    "slug": "camisa-boxy-negro-ntf",
+    "description": "Camisa Boxy de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 70,
+    "categorySlug": "polos",
+    "tags": [
+      "camisa",
+      "boxy",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/camisa-05-camisa-boxy-negro.jpg",
+    "soldCount": 62,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-016",
+    "name": "Camisa Boxy Perla",
+    "slug": "camisa-boxy-perla-ntf",
+    "description": "Camisa Boxy de NTF, color perla. Streetwear de Gamarra con corte urbano.",
+    "price": 70,
+    "categorySlug": "polos",
+    "tags": [
+      "camisa",
+      "boxy",
+      "perla",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/camisa-06-camisa-boxy-perla.jpg",
+    "soldCount": 29,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-017",
+    "name": "Hoodie Shine Melange",
+    "slug": "hoodie-shine-melange-ntf",
+    "description": "Hoodie Shine de NTF, color melange. Streetwear de Gamarra con corte urbano.",
+    "price": 109.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "hoodie",
+      "capucha",
+      "melange",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/hoodie-01-shine-melange.jpg",
+    "soldCount": 70,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-018",
+    "name": "Hoodie Shine Gargoly",
+    "slug": "hoodie-shine-gargoly-ntf",
+    "description": "Hoodie Shine de NTF, color gargoly. Streetwear de Gamarra con corte urbano.",
+    "price": 109.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "hoodie",
+      "capucha",
+      "gargoly",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/hoodie-02-shine-gargoly.jpg",
+    "soldCount": 37,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-019",
+    "name": "Hoodie Shine Negro",
+    "slug": "hoodie-shine-negro-ntf",
+    "description": "Hoodie Shine de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 109.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "hoodie",
+      "capucha",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/hoodie-03-shine-negro.jpg",
+    "soldCount": 78,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-020",
+    "name": "Hoodie Trust Hielo",
+    "slug": "hoodie-trust-hielo-ntf",
+    "description": "Hoodie Trust de NTF, color hielo. Streetwear de Gamarra con corte urbano.",
+    "price": 99.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "hoodie",
+      "capucha",
+      "hielo",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/hoodie-04-trust-hielo.jpg",
+    "soldCount": 45,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-021",
+    "name": "Hoodie Trust Melange",
+    "slug": "hoodie-trust-melange-ntf",
+    "description": "Hoodie Trust de NTF, color melange. Streetwear de Gamarra con corte urbano.",
+    "price": 99.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "hoodie",
+      "capucha",
+      "melange",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/hoodie-05-trust-melange.jpg",
+    "soldCount": 12,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-022",
+    "name": "Hoodie Trust Rojo",
+    "slug": "hoodie-trust-rojo-ntf",
+    "description": "Hoodie Trust de NTF, color rojo. Streetwear de Gamarra con corte urbano.",
+    "price": 99.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "hoodie",
+      "capucha",
+      "rojo",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/hoodie-06-trust-rojo.jpg",
+    "soldCount": 53,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-023",
+    "name": "Hoodie Trust Rojo",
+    "slug": "hoodie-trust-rojo-2-ntf",
+    "description": "Hoodie Trust de NTF, color rojo. Streetwear de Gamarra con corte urbano.",
+    "price": 99.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "hoodie",
+      "capucha",
+      "rojo",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/hoodie-07-trust-rojo.jpg",
+    "soldCount": 20,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-024",
+    "name": "Hoodie Basico Monstrack",
+    "slug": "hoodie-basico-monstrack-ntf",
+    "description": "Hoodie Basico de NTF, color monstrack. Streetwear de Gamarra con corte urbano.",
+    "price": 99.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "hoodie",
+      "capucha",
+      "monstrack",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/hoodie-08-basico-monstrack.jpg",
+    "soldCount": 61,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-025",
+    "name": "Hoodie Basico Negro",
+    "slug": "hoodie-basico-negro-ntf",
+    "description": "Hoodie Basico de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 99.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "hoodie",
+      "capucha",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/hoodie-09-basico-negro.jpg",
+    "soldCount": 28,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-026",
+    "name": "Hoodie Basico Rojo",
+    "slug": "hoodie-basico-rojo-ntf",
+    "description": "Hoodie Basico de NTF, color rojo. Streetwear de Gamarra con corte urbano.",
+    "price": 99.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "hoodie",
+      "capucha",
+      "rojo",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/hoodie-10-basico-rojo.jpg",
+    "soldCount": 69,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-027",
+    "name": "Hoodie Basico Verde",
+    "slug": "hoodie-basico-verde-ntf",
+    "description": "Hoodie Basico de NTF, color verde. Streetwear de Gamarra con corte urbano.",
+    "price": 99.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "hoodie",
+      "capucha",
+      "verde",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/hoodie-11-basico-verde.jpg",
+    "soldCount": 36,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-028",
+    "name": "Hoodie Basico Melange",
+    "slug": "hoodie-basico-melange-ntf",
+    "description": "Hoodie Basico de NTF, color melange. Streetwear de Gamarra con corte urbano.",
+    "price": 99.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "hoodie",
+      "capucha",
+      "melange",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/hoodie-12-basico-melange.jpg",
+    "soldCount": 77,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-029",
+    "name": "Hoodie Just A Game Coffee",
+    "slug": "hoodie-just-a-game-coffee-ntf",
+    "description": "Hoodie Just A Game de NTF, color coffee. Streetwear de Gamarra con corte urbano.",
+    "price": 99.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "hoodie",
+      "capucha",
+      "coffee",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/hoodie-13-just-a-game-coffee.jpg",
+    "soldCount": 44,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-030",
+    "name": "Hoodie Just A Game Gargoly",
+    "slug": "hoodie-just-a-game-gargoly-ntf",
+    "description": "Hoodie Just A Game de NTF, color gargoly. Streetwear de Gamarra con corte urbano.",
+    "price": 99.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "hoodie",
+      "capucha",
+      "gargoly",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/hoodie-14-just-a-game-gargoly.jpg",
+    "soldCount": 11,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-031",
+    "name": "Hoodie Just A Game Verde",
+    "slug": "hoodie-just-a-game-verde-ntf",
+    "description": "Hoodie Just A Game de NTF, color verde. Streetwear de Gamarra con corte urbano.",
+    "price": 99.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "hoodie",
+      "capucha",
+      "verde",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/hoodie-15-just-a-game-verde.jpg",
+    "soldCount": 52,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-032",
+    "name": "Polera Nonstop Coffee",
+    "slug": "polera-nonstop-coffee-ntf",
+    "description": "Polera Nonstop de NTF, color coffee. Streetwear de Gamarra con corte urbano.",
+    "price": 80,
+    "categorySlug": "casacas",
+    "tags": [
+      "polera",
+      "crewneck",
+      "coffee",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/polera-01-nonstop-coffee.jpg",
+    "soldCount": 19,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-033",
+    "name": "Polera Nonstop Negro",
+    "slug": "polera-nonstop-negro-ntf",
+    "description": "Polera Nonstop de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 80,
+    "categorySlug": "casacas",
+    "tags": [
+      "polera",
+      "crewneck",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/polera-02-nonstop-negro.jpg",
+    "soldCount": 60,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-034",
+    "name": "Polera Nonstop Melange",
+    "slug": "polera-nonstop-melange-ntf",
+    "description": "Polera Nonstop de NTF, color melange. Streetwear de Gamarra con corte urbano.",
+    "price": 80,
+    "categorySlug": "casacas",
+    "tags": [
+      "polera",
+      "crewneck",
+      "melange",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/polera-03-nonstop-melange.jpg",
+    "soldCount": 27,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-035",
+    "name": "Jean Amaderado",
+    "slug": "jean-amaderado-ntf",
+    "description": "Jean de NTF, color amaderado. Streetwear de Gamarra con corte urbano.",
+    "price": 120,
+    "categorySlug": "pantalones",
+    "tags": [
+      "jean",
+      "denim",
+      "amaderado",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/jean-01-x-amaderado.jpg",
+    "soldCount": 68,
+    "sizes": [
+      "26",
+      "28",
+      "30",
+      "32",
+      "34"
+    ]
+  },
+  {
+    "sku": "NT-036",
+    "name": "Jean Verdoso",
+    "slug": "jean-verdoso-ntf",
+    "description": "Jean de NTF, color verdoso. Streetwear de Gamarra con corte urbano.",
+    "price": 120,
+    "categorySlug": "pantalones",
+    "tags": [
+      "jean",
+      "denim",
+      "verdoso",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/jean-02-x-verdoso.jpg",
+    "soldCount": 35,
+    "sizes": [
+      "26",
+      "28",
+      "30",
+      "32",
+      "34"
+    ]
+  },
+  {
+    "sku": "NT-037",
+    "name": "Jean Ice",
+    "slug": "jean-ice-ntf",
+    "description": "Jean de NTF, color ice. Streetwear de Gamarra con corte urbano.",
+    "price": 130,
+    "categorySlug": "pantalones",
+    "tags": [
+      "jean",
+      "denim",
+      "ice",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/jean-03-x-ice.jpg",
+    "soldCount": 76,
+    "sizes": [
+      "26",
+      "28",
+      "30",
+      "32",
+      "34"
+    ]
+  },
+  {
+    "sku": "NT-038",
+    "name": "Jean Negro",
+    "slug": "jean-negro-ntf",
+    "description": "Jean de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 130,
+    "categorySlug": "pantalones",
+    "tags": [
+      "jean",
+      "denim",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/jean-04-x-negro.jpg",
+    "soldCount": 43,
+    "sizes": [
+      "26",
+      "28",
+      "30",
+      "32",
+      "34"
+    ]
+  },
+  {
+    "sku": "NT-039",
+    "name": "Jean Cobre",
+    "slug": "jean-cobre-ntf",
+    "description": "Jean de NTF, color cobre. Streetwear de Gamarra con corte urbano.",
+    "price": 120,
+    "categorySlug": "pantalones",
+    "tags": [
+      "jean",
+      "denim",
+      "cobre",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/jean-05-x-cobre.jpg",
+    "soldCount": 10,
+    "sizes": [
+      "26",
+      "28",
+      "30",
+      "32",
+      "34"
+    ]
+  },
+  {
+    "sku": "NT-040",
+    "name": "Jean Dirty",
+    "slug": "jean-dirty-ntf",
+    "description": "Jean de NTF, color dirty. Streetwear de Gamarra con corte urbano.",
+    "price": 120,
+    "categorySlug": "pantalones",
+    "tags": [
+      "jean",
+      "denim",
+      "dirty",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/jean-06-x-dirty.jpg",
+    "soldCount": 51,
+    "sizes": [
+      "26",
+      "28",
+      "30",
+      "32",
+      "34"
+    ]
+  },
+  {
+    "sku": "NT-041",
+    "name": "Jean Gris",
+    "slug": "jean-gris-ntf",
+    "description": "Jean de NTF, color gris. Streetwear de Gamarra con corte urbano.",
+    "price": 120,
+    "categorySlug": "pantalones",
+    "tags": [
+      "jean",
+      "denim",
+      "gris",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/jean-07-x-gris.jpg",
+    "soldCount": 18,
+    "sizes": [
+      "26",
+      "28",
+      "30",
+      "32",
+      "34"
+    ]
+  },
+  {
+    "sku": "NT-042",
+    "name": "Jean Ice",
+    "slug": "jean-ice-2-ntf",
+    "description": "Jean de NTF, color ice. Streetwear de Gamarra con corte urbano.",
+    "price": 130,
+    "categorySlug": "pantalones",
+    "tags": [
+      "jean",
+      "denim",
+      "ice",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/jean-08-x-ice.jpg",
+    "soldCount": 59,
+    "sizes": [
+      "26",
+      "28",
+      "30",
+      "32",
+      "34"
+    ]
+  },
+  {
+    "sku": "NT-043",
+    "name": "Jean Negro",
+    "slug": "jean-negro-2-ntf",
+    "description": "Jean de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 130,
+    "categorySlug": "pantalones",
+    "tags": [
+      "jean",
+      "denim",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/jean-09-x-negro.jpg",
+    "soldCount": 26,
+    "sizes": [
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-044",
+    "name": "Jean Contaminado",
+    "slug": "jean-contaminado-ntf",
+    "description": "Jean de NTF, color contaminado. Streetwear de Gamarra con corte urbano.",
+    "price": 120,
+    "categorySlug": "pantalones",
+    "tags": [
+      "jean",
+      "denim",
+      "contaminado",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/jean-10-x-contaminado.jpg",
+    "soldCount": 67,
+    "sizes": [
+      "26",
+      "28",
+      "30",
+      "32",
+      "34"
+    ]
+  },
+  {
+    "sku": "NT-045",
+    "name": "Jean Focalizado",
+    "slug": "jean-focalizado-ntf",
+    "description": "Jean de NTF, color focalizado. Streetwear de Gamarra con corte urbano.",
+    "price": 120,
+    "categorySlug": "pantalones",
+    "tags": [
+      "jean",
+      "denim",
+      "focalizado",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/jean-11-x-focalizado.jpg",
+    "soldCount": 34,
+    "sizes": [
+      "26",
+      "28",
+      "30",
+      "32",
+      "34"
+    ]
+  },
+  {
+    "sku": "NT-046",
+    "name": "Jean Quebrado",
+    "slug": "jean-quebrado-ntf",
+    "description": "Jean de NTF, color quebrado. Streetwear de Gamarra con corte urbano.",
+    "price": 130,
+    "categorySlug": "pantalones",
+    "tags": [
+      "jean",
+      "denim",
+      "quebrado",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/jean-12-x-quebrado.jpg",
+    "soldCount": 75,
+    "sizes": [
+      "26",
+      "28",
+      "30",
+      "32",
+      "34"
+    ]
+  },
+  {
+    "sku": "NT-047",
+    "name": "Polo Sin Mangas Básico Hielo",
+    "slug": "polo-sin-mangas-basico-hielo-ntf",
+    "description": "Polo Sin Mangas Básico de NTF, color hielo. Streetwear de Gamarra con corte urbano.",
+    "price": 40,
+    "categorySlug": "polos",
+    "tags": [
+      "sin-mangas",
+      "hielo",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/manga0-01-basico-hielo.jpg",
+    "soldCount": 42,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-048",
+    "name": "Polo Sin Mangas Básico Melón",
+    "slug": "polo-sin-mangas-basico-melon-ntf",
+    "description": "Polo Sin Mangas Básico de NTF, color melón. Streetwear de Gamarra con corte urbano.",
+    "price": 40,
+    "categorySlug": "polos",
+    "tags": [
+      "sin-mangas",
+      "melon",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/manga0-02-basico-melon.jpg",
+    "soldCount": 9,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-049",
+    "name": "Polo Sin Mangas Básico Negro",
+    "slug": "polo-sin-mangas-basico-negro-ntf",
+    "description": "Polo Sin Mangas Básico de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 40,
+    "categorySlug": "polos",
+    "tags": [
+      "sin-mangas",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/manga0-03-basico-negro.jpg",
+    "soldCount": 50,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-050",
+    "name": "Polo Sin Mangas Básico Blanco",
+    "slug": "polo-sin-mangas-basico-blanco-ntf",
+    "description": "Polo Sin Mangas Básico de NTF, color blanco. Streetwear de Gamarra con corte urbano.",
+    "price": 40,
+    "categorySlug": "polos",
+    "tags": [
+      "sin-mangas",
+      "blanco",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/manga0-04-basico-blanco.jpg",
+    "soldCount": 17,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-051",
+    "name": "Polo Sin Mangas Básico Coffee",
+    "slug": "polo-sin-mangas-basico-coffee-ntf",
+    "description": "Polo Sin Mangas Básico de NTF, color coffee. Streetwear de Gamarra con corte urbano.",
+    "price": 40,
+    "categorySlug": "polos",
+    "tags": [
+      "sin-mangas",
+      "coffee",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/manga0-05-basico-coffee.jpg",
+    "soldCount": 58,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-052",
+    "name": "Polo Sin Mangas Rosas Perla",
+    "slug": "polo-sin-mangas-rosas-perla-ntf",
+    "description": "Polo Sin Mangas Rosas de NTF, color perla. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "sin-mangas",
+      "perla",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/manga0-06-rosas-perla.jpg",
+    "soldCount": 25,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-053",
+    "name": "Polo Manga Larga Bassic Heavy Cotton Blanco",
+    "slug": "polo-manga-larga-bassic-heavy-cotton-blanco-ntf",
+    "description": "Polo Manga Larga Bassic Heavy Cotton de NTF, color blanco. Streetwear de Gamarra con corte urbano.",
+    "price": 75,
+    "categorySlug": "polos",
+    "tags": [
+      "manga-larga",
+      "blanco",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/mangalarga-01-bassic-heavy-cotton-blanco.jpg",
+    "soldCount": 66,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-054",
+    "name": "Polo Manga Larga Bassic Heavy Cotton Gargoyle",
+    "slug": "polo-manga-larga-bassic-heavy-cotton-gargoyle-ntf",
+    "description": "Polo Manga Larga Bassic Heavy Cotton de NTF, color gargoyle. Streetwear de Gamarra con corte urbano.",
+    "price": 75,
+    "categorySlug": "polos",
+    "tags": [
+      "manga-larga",
+      "gargoyle",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/mangalarga-02-bassic-heavy-cotton-gargoyle.jpg",
+    "soldCount": 33,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-055",
+    "name": "Polo Manga Larga Bassic Heavy Cotton Hielo",
+    "slug": "polo-manga-larga-bassic-heavy-cotton-hielo-ntf",
+    "description": "Polo Manga Larga Bassic Heavy Cotton de NTF, color hielo. Streetwear de Gamarra con corte urbano.",
+    "price": 75,
+    "categorySlug": "polos",
+    "tags": [
+      "manga-larga",
+      "hielo",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/mangalarga-03-bassic-heavy-cotton-hielo.jpg",
+    "soldCount": 74,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-056",
+    "name": "Polo Manga Larga Naipe Negro",
+    "slug": "polo-manga-larga-naipe-negro-ntf",
+    "description": "Polo Manga Larga Naipe de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 75,
+    "categorySlug": "polos",
+    "tags": [
+      "manga-larga",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/mangalarga-04-naipe-negro.jpg",
+    "soldCount": 41,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-057",
+    "name": "Polo Manga Larga Naipe Hueso",
+    "slug": "polo-manga-larga-naipe-hueso-ntf",
+    "description": "Polo Manga Larga Naipe de NTF, color hueso. Streetwear de Gamarra con corte urbano.",
+    "price": 75,
+    "categorySlug": "polos",
+    "tags": [
+      "manga-larga",
+      "hueso",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/mangalarga-05-naipe-hueso.jpg",
+    "soldCount": 8,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-058",
+    "name": "Polo Manga Larga Naipe Monstrack",
+    "slug": "polo-manga-larga-naipe-monstrack-ntf",
+    "description": "Polo Manga Larga Naipe de NTF, color monstrack. Streetwear de Gamarra con corte urbano.",
+    "price": 75,
+    "categorySlug": "polos",
+    "tags": [
+      "manga-larga",
+      "monstrack",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/mangalarga-06-naipe-monstrack.jpg",
+    "soldCount": 49,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-059",
+    "name": "Polo Boxy Take A Risk Blacno",
+    "slug": "polo-boxy-take-a-risk-blacno-ntf",
+    "description": "Polo Boxy Take A Risk de NTF, color blacno. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "blacno",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-01-take-a-risk-blacno.jpg",
+    "soldCount": 16,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-060",
+    "name": "Polo Boxy Elegance Perla",
+    "slug": "polo-boxy-elegance-perla-ntf",
+    "description": "Polo Boxy Elegance de NTF, color perla. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "perla",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-02-elegance-perla.jpg",
+    "soldCount": 57,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-061",
+    "name": "Polo Boxy Elegance Negro",
+    "slug": "polo-boxy-elegance-negro-ntf",
+    "description": "Polo Boxy Elegance de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-03-elegance-negro.jpg",
+    "soldCount": 24,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-062",
+    "name": "Polo Boxy Elegance Monstrack",
+    "slug": "polo-boxy-elegance-monstrack-ntf",
+    "description": "Polo Boxy Elegance de NTF, color monstrack. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "monstrack",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-04-elegance-monstrack.jpg",
+    "soldCount": 65,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-063",
+    "name": "Polo Boxy We Trust Azul Sky",
+    "slug": "polo-boxy-we-trust-azul-sky-ntf",
+    "description": "Polo Boxy We Trust de NTF, color azul sky. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "azul-sky",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-05-we-trust-azul-sky.jpg",
+    "soldCount": 32,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-064",
+    "name": "Polo Boxy We Trust Verde Mineral",
+    "slug": "polo-boxy-we-trust-verde-mineral-ntf",
+    "description": "Polo Boxy We Trust de NTF, color verde mineral. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "verde-mineral",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-06-we-trust-verde-mineral.jpg",
+    "soldCount": 73,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-065",
+    "name": "Polo Boxy We Trust Negro",
+    "slug": "polo-boxy-we-trust-negro-ntf",
+    "description": "Polo Boxy We Trust de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-07-we-trust-negro.jpg",
+    "soldCount": 40,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-066",
+    "name": "Polo Boxy Castillo Marrón",
+    "slug": "polo-boxy-castillo-marron-ntf",
+    "description": "Polo Boxy Castillo de NTF, color marrón. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "marron",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-08-castillo-marron.jpg",
+    "soldCount": 7,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-067",
+    "name": "Polo Boxy Castillo Negro",
+    "slug": "polo-boxy-castillo-negro-ntf",
+    "description": "Polo Boxy Castillo de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-09-castillo-negro.jpg",
+    "soldCount": 48,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-068",
+    "name": "Polo Boxy Carro Blanco",
+    "slug": "polo-boxy-carro-blanco-ntf",
+    "description": "Polo Boxy Carro de NTF, color blanco. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "blanco",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-10-carro-blanco.jpg",
+    "soldCount": 15,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-069",
+    "name": "Polo Boxy Carro Hielo",
+    "slug": "polo-boxy-carro-hielo-ntf",
+    "description": "Polo Boxy Carro de NTF, color hielo. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "hielo",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-11-carro-hielo.jpg",
+    "soldCount": 56,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-070",
+    "name": "Polo Boxy Cadena Negro",
+    "slug": "polo-boxy-cadena-negro-ntf",
+    "description": "Polo Boxy Cadena de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-12-cadena-negro.jpg",
+    "soldCount": 23,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-071",
+    "name": "Polo Boxy Grafiti Flock Verde",
+    "slug": "polo-boxy-grafiti-flock-verde-ntf",
+    "description": "Polo Boxy Grafiti Flock de NTF, color verde. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "verde",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-13-grafiti-flock-verde.jpg",
+    "soldCount": 64,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-072",
+    "name": "Polo Boxy Grafiti Flock Negro",
+    "slug": "polo-boxy-grafiti-flock-negro-ntf",
+    "description": "Polo Boxy Grafiti Flock de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-14-grafiti-flock-negro.jpg",
+    "soldCount": 31,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-073",
+    "name": "Polo Boxy Grafiti Flock Ladrillo",
+    "slug": "polo-boxy-grafiti-flock-ladrillo-ntf",
+    "description": "Polo Boxy Grafiti Flock de NTF, color ladrillo. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "ladrillo",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-15-grafiti-flock-ladrillo.jpg",
+    "soldCount": 72,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-074",
+    "name": "Polo Boxy Grafiti Flock Azul Sky",
+    "slug": "polo-boxy-grafiti-flock-azul-sky-ntf",
+    "description": "Polo Boxy Grafiti Flock de NTF, color azul sky. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "azul-sky",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-16-grafiti-flock-azul-sky.jpg",
+    "soldCount": 39,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-075",
+    "name": "Polo Boxy Grafiti Flock Melange",
+    "slug": "polo-boxy-grafiti-flock-melange-ntf",
+    "description": "Polo Boxy Grafiti Flock de NTF, color melange. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "melange",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-17-grafiti-flock-melange.jpg",
+    "soldCount": 6,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-076",
+    "name": "Polo Boxy Grafiti Flock Perla",
+    "slug": "polo-boxy-grafiti-flock-perla-ntf",
+    "description": "Polo Boxy Grafiti Flock de NTF, color perla. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "perla",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-18-grafiti-flock-perla.jpg",
+    "soldCount": 47,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-077",
+    "name": "Polo Boxy Heaven Blanco",
+    "slug": "polo-boxy-heaven-blanco-ntf",
+    "description": "Polo Boxy Heaven de NTF, color blanco. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "blanco",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-19-heaven-blanco.jpg",
+    "soldCount": 14,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-078",
+    "name": "Polo Boxy Heaven Negro",
+    "slug": "polo-boxy-heaven-negro-ntf",
+    "description": "Polo Boxy Heaven de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-20-heaven-negro.jpg",
+    "soldCount": 55,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-079",
+    "name": "Polo Boxy Cr7 Negro",
+    "slug": "polo-boxy-cr7-negro-ntf",
+    "description": "Polo Boxy Cr7 de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-21-cr7-negro.jpg",
+    "soldCount": 22,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-080",
+    "name": "Polo Boxy Cr7 Perla",
+    "slug": "polo-boxy-cr7-perla-ntf",
+    "description": "Polo Boxy Cr7 de NTF, color perla. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "perla",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-22-cr7-perla.jpg",
+    "soldCount": 63,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-081",
+    "name": "Polo Boxy Cruz Marrón",
+    "slug": "polo-boxy-cruz-marron-ntf",
+    "description": "Polo Boxy Cruz de NTF, color marrón. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "marron",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-23-cruz-marron.jpg",
+    "soldCount": 30,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-082",
+    "name": "Polo Boxy Cruz Rojo",
+    "slug": "polo-boxy-cruz-rojo-ntf",
+    "description": "Polo Boxy Cruz de NTF, color rojo. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "rojo",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-24-cruz-rojo.jpg",
+    "soldCount": 71,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-083",
+    "name": "Polo Boxy Jesus Perla",
+    "slug": "polo-boxy-jesus-perla-ntf",
+    "description": "Polo Boxy Jesus de NTF, color perla. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "perla",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-25-jesus-perla.jpg",
+    "soldCount": 38,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-084",
+    "name": "Polo Boxy Lima Negro",
+    "slug": "polo-boxy-lima-negro-ntf",
+    "description": "Polo Boxy Lima de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-26-lima-negro.jpg",
+    "soldCount": 79,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-085",
+    "name": "Polo Boxy Lima P Exp",
+    "slug": "polo-boxy-lima-p-exp-ntf",
+    "description": "Polo Boxy Lima de NTF, color p exp. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "p-exp",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-27-lima-p-exp.jpg",
+    "soldCount": 46,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-086",
+    "name": "Polo Boxy Lima Verde Exp",
+    "slug": "polo-boxy-lima-verde-exp-ntf",
+    "description": "Polo Boxy Lima de NTF, color verde exp. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "verde-exp",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-28-lima-verde-exp.jpg",
+    "soldCount": 13,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-087",
+    "name": "Polo Boxy Living Amarillo",
+    "slug": "polo-boxy-living-amarillo-ntf",
+    "description": "Polo Boxy Living de NTF, color amarillo. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "amarillo",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-29-living-amarillo.jpg",
+    "soldCount": 54,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-088",
+    "name": "Polo Boxy Living Negro",
+    "slug": "polo-boxy-living-negro-ntf",
+    "description": "Polo Boxy Living de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-30-living-negro.jpg",
+    "soldCount": 21,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-089",
+    "name": "Polo Boxy Living Perla",
+    "slug": "polo-boxy-living-perla-ntf",
+    "description": "Polo Boxy Living de NTF, color perla. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "perla",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-31-living-perla.jpg",
+    "soldCount": 62,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-090",
+    "name": "Polo Boxy Mano Cadena Negro",
+    "slug": "polo-boxy-mano-cadena-negro-ntf",
+    "description": "Polo Boxy Mano Cadena de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-32-mano-cadena-negro.jpg",
+    "soldCount": 29,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-091",
+    "name": "Polo Boxy Messi Negro",
+    "slug": "polo-boxy-messi-negro-ntf",
+    "description": "Polo Boxy Messi de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-33-messi-negro.jpg",
+    "soldCount": 70,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-092",
+    "name": "Polo Boxy Messi Perla",
+    "slug": "polo-boxy-messi-perla-ntf",
+    "description": "Polo Boxy Messi de NTF, color perla. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "perla",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-34-messi-perla.jpg",
+    "soldCount": 37,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-093",
+    "name": "Polo Boxy Acero",
+    "slug": "polo-boxy-acero-ntf",
+    "description": "Polo Boxy de NTF, color acero. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "acero",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-35-x-acero.jpg",
+    "soldCount": 78,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-094",
+    "name": "Polo Boxy Nonstop 23 Perla",
+    "slug": "polo-boxy-nonstop-23-perla-ntf",
+    "description": "Polo Boxy Nonstop 23 de NTF, color perla. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "perla",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-36-nonstop-23-perla.jpg",
+    "soldCount": 45,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-095",
+    "name": "Polo Boxy Ntf Flores Beige",
+    "slug": "polo-boxy-ntf-flores-beige-ntf",
+    "description": "Polo Boxy Ntf Flores de NTF, color beige. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "beige",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-37-ntf-flores-beige.jpg",
+    "soldCount": 12,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-096",
+    "name": "Polo Boxy Savior Marrón",
+    "slug": "polo-boxy-savior-marron-ntf",
+    "description": "Polo Boxy Savior de NTF, color marrón. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "marron",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-38-savior-marron.jpg",
+    "soldCount": 53,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-097",
+    "name": "Polo Boxy Shakespeare Negro",
+    "slug": "polo-boxy-shakespeare-negro-ntf",
+    "description": "Polo Boxy Shakespeare de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-39-shakespeare-negro.jpg",
+    "soldCount": 20,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-098",
+    "name": "Polo Boxy Shakespeare Perla",
+    "slug": "polo-boxy-shakespeare-perla-ntf",
+    "description": "Polo Boxy Shakespeare de NTF, color perla. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "perla",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-40-shakespeare-perla.jpg",
+    "soldCount": 61,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-099",
+    "name": "Polo Boxy Shakespeare Verde Exportación",
+    "slug": "polo-boxy-shakespeare-verde-exportacion-ntf",
+    "description": "Polo Boxy Shakespeare de NTF, color verde exportación. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "verde-exportacion",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-41-shakespeare-verde-exportacion.jpg",
+    "soldCount": 28,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-100",
+    "name": "Polo Boxy Sky Is The Limit Azul Sky",
+    "slug": "polo-boxy-sky-is-the-limit-azul-sky-ntf",
+    "description": "Polo Boxy Sky Is The Limit de NTF, color azul sky. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "azul-sky",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-42-sky-is-the-limit-azul-sky.jpg",
+    "soldCount": 69,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-101",
+    "name": "Polo Boxy Sky Is The Limit Coffee",
+    "slug": "polo-boxy-sky-is-the-limit-coffee-ntf",
+    "description": "Polo Boxy Sky Is The Limit de NTF, color coffee. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "coffee",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-43-sky-is-the-limit-coffee.jpg",
+    "soldCount": 36,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-102",
+    "name": "Polo Boxy Tribal Two Plomo Colegial",
+    "slug": "polo-boxy-tribal-two-plomo-colegial-ntf",
+    "description": "Polo Boxy Tribal Two de NTF, color plomo colegial. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "plomo-colegial",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-44-tribal-two-plomo-colegial.jpg",
+    "soldCount": 77,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-103",
+    "name": "Polo Boxy Tribal Two Monstrack",
+    "slug": "polo-boxy-tribal-two-monstrack-ntf",
+    "description": "Polo Boxy Tribal Two de NTF, color monstrack. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "monstrack",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-45-tribal-two-monstrack.jpg",
+    "soldCount": 44,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-104",
+    "name": "Polo Boxy Twenty Five Marrón",
+    "slug": "polo-boxy-twenty-five-marron-ntf",
+    "description": "Polo Boxy Twenty Five de NTF, color marrón. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "marron",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-46-twenty-five-marron.jpg",
+    "soldCount": 11,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-105",
+    "name": "Polo Boxy Velas Blanco",
+    "slug": "polo-boxy-velas-blanco-ntf",
+    "description": "Polo Boxy Velas de NTF, color blanco. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "blanco",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-47-velas-blanco.jpg",
+    "soldCount": 52,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-106",
+    "name": "Polo Boxy",
+    "slug": "polo-boxy-ntf",
+    "description": "Polo Boxy de NTF. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-48-x-48.jpg",
+    "soldCount": 19,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-107",
+    "name": "Polo Boxy Nadie Sabe Perla",
+    "slug": "polo-boxy-nadie-sabe-perla-ntf",
+    "description": "Polo Boxy Nadie Sabe de NTF, color perla. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "perla",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-49-nadie-sabe-perla.jpg",
+    "soldCount": 60,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-108",
+    "name": "Polo Boxy Garabato Perla",
+    "slug": "polo-boxy-garabato-perla-ntf",
+    "description": "Polo Boxy Garabato de NTF, color perla. Streetwear de Gamarra con corte urbano.",
+    "price": 50,
+    "categorySlug": "polos",
+    "tags": [
+      "polo",
+      "boxy",
+      "perla",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/boxy-50-garabato-perla.jpg",
+    "soldCount": 27,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-109",
+    "name": "Short Cuerina Negro",
+    "slug": "short-cuerina-negro-ntf",
+    "description": "Short Cuerina de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 49.9,
+    "categorySlug": "pantalones",
+    "tags": [
+      "short",
+      "cuerina",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/short-01-x-negro.jpg",
+    "soldCount": 68,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-110",
+    "name": "Short Cuerina Marrón",
+    "slug": "short-cuerina-marron-ntf",
+    "description": "Short Cuerina de NTF, color marrón. Streetwear de Gamarra con corte urbano.",
+    "price": 49.9,
+    "categorySlug": "pantalones",
+    "tags": [
+      "short",
+      "cuerina",
+      "marron",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/short-02-x-marron.jpg",
+    "soldCount": 35,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-111",
+    "name": "Short Cuerina Arena",
+    "slug": "short-cuerina-arena-ntf",
+    "description": "Short Cuerina de NTF, color arena. Streetwear de Gamarra con corte urbano.",
+    "price": 49.9,
+    "categorySlug": "pantalones",
+    "tags": [
+      "short",
+      "cuerina",
+      "arena",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/short-03-x-arena.jpg",
+    "soldCount": 76,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-112",
+    "name": "Short Cuerina Short Rayas Negro",
+    "slug": "short-cuerina-short-rayas-negro-ntf",
+    "description": "Short Cuerina Short Rayas de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 49.9,
+    "categorySlug": "pantalones",
+    "tags": [
+      "short",
+      "cuerina",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/short-04-short-rayas-negro.jpg",
+    "soldCount": 43,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-113",
+    "name": "Casaca Gods Children Negro",
+    "slug": "casaca-gods-children-negro-ntf",
+    "description": "Casaca Gods Children de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 99.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "casaca",
+      "zip",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/casaca-01-gods-children-negro.jpg",
+    "soldCount": 10,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-114",
+    "name": "Casaca Nonstop Negro",
+    "slug": "casaca-nonstop-negro-ntf",
+    "description": "Casaca Nonstop de NTF, color negro. Streetwear de Gamarra con corte urbano.",
+    "price": 99.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "casaca",
+      "zip",
+      "negro",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/casaca-02-nonstop-negro.jpg",
+    "soldCount": 51,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  },
+  {
+    "sku": "NT-115",
+    "name": "Casaca",
+    "slug": "casaca-ntf",
+    "description": "Casaca de NTF. Streetwear de Gamarra con corte urbano.",
+    "price": 99.9,
+    "categorySlug": "casacas",
+    "tags": [
+      "casaca",
+      "zip",
+      "ntf"
+    ],
+    "imageUrl": "/media/ntf/casaca-03-x-3.jpg",
+    "soldCount": 18,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ]
+  }
+]
