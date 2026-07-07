@@ -195,6 +195,11 @@ export function createReview(productId: string, rating: number, comment?: string
   return request(`/products/${productId}/reviews`, { method: 'POST', body: JSON.stringify({ rating, comment }) });
 }
 
+/** ¿El usuario en sesión compró este producto? (para mostrar el formulario de reseña). */
+export function canReview(productId: string): Promise<{ canReview: boolean }> {
+  return request(`/products/${productId}/reviews/can-review`);
+}
+
 // --- Órdenes ---
 export function listOrders(): Promise<{ items: OrderView[]; nextCursor: string | null }> {
   return request('/orders');

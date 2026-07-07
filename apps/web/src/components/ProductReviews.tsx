@@ -4,14 +4,15 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
-import { listReviews, createReview, ClientApiError } from '@/lib/client-api';
+import { listReviews, createReview, canReview as canReviewApi, ClientApiError } from '@/lib/client-api';
 import type { Review } from '@/lib/types';
 
-/** Reseñas del producto: promedio, listado y formulario (con sesión). */
+/** Reseñas del producto: promedio, listado y formulario (solo quien compró). */
 export function ProductReviews({ productId }: { productId: string }) {
   const { user } = useAuth();
   const pathname = usePathname();
   const [reviews, setReviews] = useState<Review[] | null>(null);
+  const [canReview, setCanReview] = useState<boolean | null>(null);
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [comment, setComment] = useState('');
@@ -24,6 +25,18 @@ export function ProductReviews({ productId }: { productId: string }) {
       .catch(() => setReviews([]));
   }
   useEffect(load, [productId]);
+
+  // Solo puede reseñar quien compró el producto.
+  useEffect(() => {
+    if (!user) {
+      setCanReview(null);
+      return;
+    }
+    setCanReview(null);
+    canReviewApi(productId)
+      .then((r) => setCanReview(r.canReview))
+      .catch(() => setCanReview(false));
+  }, [user, productId]);
 
   const avg = reviews && reviews.length ? reviews.reduce((a, r) => a + r.rating, 0) / reviews.length : 0;
 
@@ -61,10 +74,19 @@ export function ProductReviews({ productId }: { productId: string }) {
         )}
       </div>
 
-      {/* Formulario */}
-      {user ? (
+      {/* Formulario: solo con sesión y compra verificada */}
+      {!user ? (
+        <p className="microcaps mt-6 text-muted">
+          <Link href={`/ingresar?next=${encodeURIComponent(pathname)}`} className="border-b border-ink pb-0.5 text-ink">
+            Inicia sesión
+          </Link>{' '}
+          para dejar una reseña.
+        </p>
+      ) : canReview === null ? (
+        <p className="microcaps mt-6 text-muted">Comprobando tu compra…</p>
+      ) : canReview ? (
         <div className="mt-6">
-          <p className="microcaps mb-2 text-muted">Deja tu reseña</p>
+          <p className="microcaps mb-2 text-muted">Deja tu reseña · compra verificada ✓</p>
           <div className="flex gap-1" onMouseLeave={() => setHover(0)}>
             {[1, 2, 3, 4, 5].map((n) => (
               <button key={n} type="button" onMouseEnter={() => setHover(n)} onClick={() => setRating(n)} aria-label={`${n} estrellas`}>
@@ -93,10 +115,7 @@ export function ProductReviews({ productId }: { productId: string }) {
         </div>
       ) : (
         <p className="microcaps mt-6 text-muted">
-          <Link href={`/ingresar?next=${encodeURIComponent(pathname)}`} className="border-b border-ink pb-0.5 text-ink">
-            Inicia sesión
-          </Link>{' '}
-          para dejar una reseña.
+          Solo quienes compraron este producto pueden reseñarlo.
         </p>
       )}
 

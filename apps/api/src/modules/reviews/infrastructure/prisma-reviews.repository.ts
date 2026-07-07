@@ -25,6 +25,21 @@ export class PrismaReviewsRepository extends ReviewsRepository {
     });
   }
 
+  async hasPurchasedProduct(userId: string, productId: string): Promise<boolean> {
+    // Cuenta ítems de ese producto en subórdenes del usuario cuyo pago pasó
+    // (cualquier estado salvo pendiente de pago o cancelado).
+    const count = await this.prisma.orderItem.count({
+      where: {
+        variant: { productId },
+        subOrder: {
+          status: { notIn: ['PENDING_PAYMENT', 'CANCELLED'] },
+          order: { userId },
+        },
+      },
+    });
+    return count > 0;
+  }
+
   async listForProduct(productId: string): Promise<ReviewView[]> {
     const rows = await this.prisma.review.findMany({
       where: { productId },
