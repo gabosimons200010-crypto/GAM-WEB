@@ -6,7 +6,10 @@ import { CouponsModule } from '../coupons/coupons.module';
 import { CheckoutController } from './interface/checkout.controller';
 import { OrderRepository } from './application/ports/order.repository';
 import { PrismaOrderRepository } from './infrastructure/prisma-order.repository';
+import { PurchasableLinesPort } from './application/ports/purchasable-lines.port';
+import { PrismaPurchasableLinesRepository } from './infrastructure/prisma-purchasable-lines.repository';
 import { CheckoutUseCase } from './application/use-cases/checkout.use-case';
+import { GuestCheckoutUseCase } from './application/use-cases/guest-checkout.use-case';
 
 /**
  * Bounded context CHECKOUT (Sprint 9, Fase 2): convierte el carrito en orden.
@@ -19,7 +22,9 @@ import { CheckoutUseCase } from './application/use-cases/checkout.use-case';
   controllers: [CheckoutController],
   providers: [
     { provide: OrderRepository, useClass: PrismaOrderRepository },
+    { provide: PurchasableLinesPort, useClass: PrismaPurchasableLinesRepository },
     CheckoutUseCase,
+    GuestCheckoutUseCase,
   ],
   exports: [OrderRepository],
 })

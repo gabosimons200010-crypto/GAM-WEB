@@ -32,6 +32,9 @@ class FakePayments extends PaymentRepository {
   getPayableOrder(): never {
     throw new Error('n/a');
   }
+  getPayableGuestOrder(): never {
+    throw new Error('n/a');
+  }
   hasConfirmedPayment(): never {
     throw new Error('n/a');
   }

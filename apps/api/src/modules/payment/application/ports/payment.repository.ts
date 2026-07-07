@@ -46,6 +46,9 @@ export abstract class PaymentRepository {
   /** Orden pagable del usuario (debe pertenecerle). null si no existe/no es suya. */
   abstract getPayableOrder(orderId: string, userId: string): Promise<PayableOrder | null>;
 
+  /** Orden pagable de invitado (sin userId). null si no existe o pertenece a un usuario. */
+  abstract getPayableGuestOrder(orderId: string): Promise<PayableOrder | null>;
+
   /** True si la orden ya tiene un pago confirmado (evita doble cobro). */
   abstract hasConfirmedPayment(orderId: string): Promise<boolean>;
 

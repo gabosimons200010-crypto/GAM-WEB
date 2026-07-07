@@ -4,7 +4,7 @@ import { PaymentGatewayPort } from '../ports/payment-gateway.port';
 import { PaymentMethod } from '../../domain/payment';
 
 export interface CreatePaymentInput {
-  userId: string;
+  userId: string | null; // null = pago de una orden de invitado
   orderId: string;
   method: PaymentMethod;
   cardToken?: string | null;
@@ -24,7 +24,9 @@ export class CreatePaymentUseCase {
   ) {}
 
   async execute(input: CreatePaymentInput): Promise<PaymentView> {
-    const order = await this.payments.getPayableOrder(input.orderId, input.userId);
+    const order = input.userId
+      ? await this.payments.getPayableOrder(input.orderId, input.userId)
+      : await this.payments.getPayableGuestOrder(input.orderId);
     if (!order) {
       throw new NotFoundException('Orden no encontrada');
     }

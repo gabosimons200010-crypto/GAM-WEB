@@ -120,6 +120,24 @@ export function createPayment(orderId: string, method: string): Promise<PaymentV
   return request<PaymentView>('/payments', { method: 'POST', body: JSON.stringify({ orderId, method }) });
 }
 
+// --- Checkout de invitado (sin cuenta) ---
+export interface GuestCheckoutBody {
+  items: { variantId: string; quantity: number }[];
+  address: ShippingAddressInput;
+  email: string;
+  name?: string;
+  phone?: string;
+  couponCode?: string;
+}
+
+export function guestCheckout(body: GuestCheckoutBody): Promise<OrderView> {
+  return request<OrderView>('/checkout/guest', { method: 'POST', body: JSON.stringify(body), auth: false });
+}
+
+export function createGuestPayment(orderId: string, method: string): Promise<PaymentView> {
+  return request<PaymentView>('/payments/guest', { method: 'POST', body: JSON.stringify({ orderId, method }), auth: false });
+}
+
 /**
  * DEMO: simula el webhook del proveedor confirmando el pago. En producción
  * lo llama Yape/Plin, no el cliente. El provider del stub es `stub-<metodo>`.

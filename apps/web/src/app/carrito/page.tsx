@@ -54,7 +54,7 @@ function GuestCart() {
         <div className="border border-line p-4">
           <p className="microcaps text-ink">Estás comprando como invitado</p>
           <p className="microcaps mt-1 text-[10px] text-muted">
-            Puedes ver y armar tu cesta sin cuenta. Crea una para guardarla y completar la compra.
+            Puedes comprar sin cuenta. Crea una para guardar tu cesta, tus pedidos y comprar más rápido.
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             <Link href="/registrarse?next=/carrito" className="microcaps bg-ink px-4 py-2.5 text-paper hover:opacity-80">
@@ -110,13 +110,13 @@ function GuestCart() {
         </div>
         <p className="microcaps mt-2 text-[10px] text-muted">Envío calculado en el pago · gratis desde S/ 200</p>
         <Link
-          href="/registrarse?next=/checkout"
+          href="/checkout"
           className="microcaps mt-6 block bg-ink px-4 py-3.5 text-center text-paper transition hover:opacity-80"
         >
           Ir a pagar →
         </Link>
         <p className="microcaps mt-3 text-center text-[10px] text-muted">
-          Crea tu cuenta al pagar — tu cesta se guarda sola.
+          Puedes pagar como invitado, sin crear cuenta.
         </p>
       </aside>
     </div>

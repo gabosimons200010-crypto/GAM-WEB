@@ -5,8 +5,18 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState, FormEvent } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useCart } from '@/lib/cart-context';
-import { checkout, createPayment, simulatePaymentConfirmation, getCart, validateCoupon, ClientApiError } from '@/lib/client-api';
+import {
+  checkout,
+  createPayment,
+  guestCheckout,
+  createGuestPayment,
+  simulatePaymentConfirmation,
+  getCart,
+  validateCoupon,
+  ClientApiError,
+} from '@/lib/client-api';
 import type { CouponResult } from '@/lib/client-api';
+import { getGuestCart, guestSubtotal, clearGuestCart } from '@/lib/guest-cart';
 import type { OrderView, PaymentView, ShippingAddressInput } from '@/lib/types';
 import { money } from '@/lib/format';
 
@@ -25,19 +35,26 @@ export default function CheckoutPage() {
 
   const [addr, setAddr] = useState<ShippingAddressInput>({ department: 'Lima', province: 'Lima', district: '', line: '', reference: '', phone: '' });
   const [buyerName, setBuyerName] = useState('');
+  const [guestEmail, setGuestEmail] = useState('');
 
   const [subtotal, setSubtotal] = useState(0);
   const [coupon, setCoupon] = useState('');
   const [couponResult, setCouponResult] = useState<CouponResult | null>(null);
   const [checkingCoupon, setCheckingCoupon] = useState(false);
 
-  useEffect(() => {
-    if (ready && !user) router.replace('/ingresar?next=/checkout');
-  }, [ready, user, router]);
+  const isGuest = ready && !user;
 
+  // Subtotal: del servidor (con sesión) o de la cesta de invitado (localStorage).
   useEffect(() => {
-    if (ready && user) getCart().then((c) => setSubtotal(c.total)).catch(() => {});
-  }, [ready, user]);
+    if (!ready) return;
+    if (user) {
+      getCart().then((c) => setSubtotal(c.total)).catch(() => {});
+    } else {
+      const items = getGuestCart();
+      if (items.length === 0) router.replace('/carrito');
+      else setSubtotal(guestSubtotal());
+    }
+  }, [ready, user, router]);
 
   async function onApplyCoupon() {
     const code = coupon.trim();
@@ -58,9 +75,25 @@ export default function CheckoutPage() {
     setBusy(true);
     try {
       const couponCode = couponResult?.valid ? coupon.trim() : undefined;
-      const created = await checkout({ address: addr, buyerName: buyerName || undefined, couponCode });
+      let created: OrderView;
+      let pay: PaymentView;
+      if (user) {
+        created = await checkout({ address: addr, buyerName: buyerName || undefined, couponCode });
+        pay = await createPayment(created.id, 'YAPE');
+      } else {
+        // Invitado: los ítems vienen de la cesta local; el pago va por el flujo público.
+        const items = getGuestCart().map((i) => ({ variantId: i.variantId, quantity: i.quantity }));
+        created = await guestCheckout({
+          items,
+          address: addr,
+          email: guestEmail.trim(),
+          name: buyerName || undefined,
+          couponCode,
+        });
+        pay = await createGuestPayment(created.id, 'YAPE');
+        clearGuestCart();
+      }
       setOrder(created);
-      const pay = await createPayment(created.id, 'YAPE');
       setPayment(pay);
       await refresh(); // la cesta quedó vacía
       setStep('pay');
@@ -85,7 +118,7 @@ export default function CheckoutPage() {
     }
   }
 
-  if (!ready || !user) return null;
+  if (!ready) return null;
 
   return (
     <div className="mx-auto max-w-xl">
@@ -95,6 +128,20 @@ export default function CheckoutPage() {
 
       {step === 'address' && (
         <form onSubmit={onPlaceOrder} className="space-y-6">
+          {isGuest && (
+            <div className="border border-line p-4">
+              <p className="microcaps text-ink">Compra como invitado</p>
+              <p className="microcaps mt-1 text-[10px] text-muted">
+                No necesitas cuenta. Te enviaremos la confirmación al correo que dejes.{' '}
+                <Link href="/ingresar?next=/checkout" className="text-ink hover:underline hover:underline-offset-4">
+                  ¿Prefieres ingresar?
+                </Link>
+              </p>
+              <div className="mt-3">
+                <Field label="Correo" type="email" value={guestEmail} onChange={setGuestEmail} placeholder="tu@correo.com" />
+              </div>
+            </div>
+          )}
           <h2 className="microcaps text-muted">Dirección de envío</h2>
           <div className="grid grid-cols-2 gap-6">
             <Field label="Departamento" value={addr.department} onChange={(v) => setAddr({ ...addr, department: v })} />
@@ -219,17 +266,20 @@ function Field({
   onChange,
   placeholder,
   required = true,
+  type = 'text',
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
   required?: boolean;
+  type?: string;
 }) {
   return (
     <label className="block">
       <span className="microcaps mb-2 block text-muted">{label}</span>
       <input
+        type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}

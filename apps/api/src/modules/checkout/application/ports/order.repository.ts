@@ -17,7 +17,7 @@ export interface BuyerInfo {
 }
 
 export interface PlaceOrderData {
-  userId: string;
+  userId: string | null; // null = compra de invitado (usa los datos de buyer)
   buyer: BuyerInfo;
   address: ShippingAddress;
   draft: OrderDraft;

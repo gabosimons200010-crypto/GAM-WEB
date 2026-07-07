@@ -14,6 +14,9 @@ class FakePayments extends PaymentRepository {
   async getPayableOrder() {
     return this.order;
   }
+  async getPayableGuestOrder() {
+    return this.order;
+  }
   async hasConfirmedPayment() {
     return this.confirmed;
   }

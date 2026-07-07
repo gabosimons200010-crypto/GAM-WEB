@@ -26,6 +26,15 @@ export class PrismaPaymentRepository extends PaymentRepository {
     return { id: order.id, number: order.number, status: order.status, grandTotal: Number(order.grandTotal) };
   }
 
+  async getPayableGuestOrder(orderId: string): Promise<PayableOrder | null> {
+    const order = await this.prisma.order.findFirst({
+      where: { id: orderId, userId: null },
+      select: { id: true, number: true, status: true, grandTotal: true },
+    });
+    if (!order) return null;
+    return { id: order.id, number: order.number, status: order.status, grandTotal: Number(order.grandTotal) };
+  }
+
   async hasConfirmedPayment(orderId: string): Promise<boolean> {
     return (await this.prisma.payment.count({ where: { orderId, status: 'CONFIRMED' } })) > 0;
   }

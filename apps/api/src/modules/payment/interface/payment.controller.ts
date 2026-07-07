@@ -33,6 +33,19 @@ export class PaymentController {
     });
   }
 
+  /** Cobro de una orden de invitado (sin sesión). Público. */
+  @Post('guest')
+  @Public()
+  @ApiCreatedResponse({ description: 'Cobro de invitado creado (QR para Yape/Plin).' })
+  createGuest(@Body() dto: CreatePaymentDto) {
+    return this.createPayment.execute({
+      userId: null,
+      orderId: dto.orderId,
+      method: dto.method,
+      cardToken: dto.cardToken,
+    });
+  }
+
   @Post('webhook/:provider')
   @Public()
   @ApiOkResponse({ description: 'Confirmación del proveedor. Idempotente. Simula Yape/Plin en dev.' })
