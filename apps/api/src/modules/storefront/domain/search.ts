@@ -63,4 +63,5 @@ export interface PublicStore {
   rating: number;
   salesCount: number;
   verified: boolean;
+  socials: { platform: string; url: string }[];
 }

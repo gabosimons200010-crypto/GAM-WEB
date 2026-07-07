@@ -22,6 +22,16 @@ export interface UpdateStoreData {
   description?: string | null;
   socials?: StoreSocial[];
   categoryIds?: string[];
+  // Datos de empresa/contacto editables por el vendedor.
+  commercialName?: string;
+  legalName?: string | null;
+  ruc?: string | null;
+  contactName?: string | null;
+  phone?: string;
+  email?: string;
+  address?: string | null;
+  floor?: string | null;
+  stand?: string | null;
 }
 
 export interface UpdateSettingsData {

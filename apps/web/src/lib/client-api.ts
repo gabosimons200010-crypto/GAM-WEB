@@ -290,6 +290,27 @@ export function getMyStores(): Promise<SellerStore[]> {
   return request<SellerStore[]>('/seller/stores');
 }
 
+export interface UpdateStoreBody {
+  commercialName?: string;
+  legalName?: string;
+  ruc?: string;
+  contactName?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  floor?: string;
+  stand?: string;
+  description?: string;
+  logoUrl?: string;
+  bannerUrl?: string;
+  socials?: { platform: string; url: string }[];
+}
+
+/** Actualiza el perfil de la tienda (datos, logo, portada, descripción, redes). */
+export function updateStore(storeId: string, body: UpdateStoreBody): Promise<SellerStore> {
+  return request<SellerStore>(`/seller/stores/${storeId}`, { method: 'PATCH', body: JSON.stringify(body) });
+}
+
 export function registerStore(body: RegisterStoreBody): Promise<SellerStore> {
   return request<SellerStore>('/seller/stores', { method: 'POST', body: JSON.stringify(body) });
 }

@@ -109,6 +109,7 @@ export interface PublicStore {
   rating: number;
   salesCount: number;
   verified: boolean;
+  socials: StoreSocial[];
 }
 
 export interface StorePage {
@@ -227,6 +228,11 @@ export interface ShippingAddressInput {
 }
 
 // --- Vendedor ---
+export interface StoreSocial {
+  platform: string;
+  url: string;
+}
+
 export interface SellerStore {
   id: string;
   slug: string;
@@ -234,8 +240,17 @@ export interface SellerStore {
   status: string;
   verified: boolean;
   logoUrl: string | null;
+  bannerUrl: string | null;
+  description: string | null;
+  legalName: string | null;
+  ruc: string | null;
+  contactName: string | null;
+  email: string;
+  phone: string;
+  address: string | null;
   floor: string | null;
   stand: string | null;
+  socials: StoreSocial[];
   salesCount: number;
 }
 

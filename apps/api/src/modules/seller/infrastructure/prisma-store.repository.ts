@@ -88,6 +88,15 @@ export class PrismaStoreRepository extends StoreRepository {
           logoUrl: data.logoUrl ?? undefined,
           bannerUrl: data.bannerUrl ?? undefined,
           description: data.description ?? undefined,
+          commercialName: data.commercialName ?? undefined,
+          legalName: data.legalName === undefined ? undefined : data.legalName,
+          ruc: data.ruc === undefined ? undefined : data.ruc,
+          contactName: data.contactName === undefined ? undefined : data.contactName,
+          phone: data.phone ?? undefined,
+          email: data.email ?? undefined,
+          address: data.address === undefined ? undefined : data.address,
+          floor: data.floor === undefined ? undefined : data.floor,
+          stand: data.stand === undefined ? undefined : data.stand,
         },
       });
 

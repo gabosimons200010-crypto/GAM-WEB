@@ -33,9 +33,16 @@ export default async function StorePage({
 
   const { store, products } = data;
   const brand = getBrandBySlug(slug);
-  const socials = brand ? brandSocials(brand) : [];
-  const editorial = brand?.editorialUrl ?? null;
-  const logo = brand?.logoUrl ?? null;
+  // Prioriza lo que el vendedor subió/editó; cae a los datos curados de brands.ts.
+  const nice: Record<string, string> = { instagram: 'Instagram', tiktok: 'TikTok', facebook: 'Facebook', web: 'Web' };
+  const socials =
+    store.socials?.length > 0
+      ? store.socials.map((s) => ({ label: nice[s.platform] ?? s.platform, href: s.url }))
+      : brand
+        ? brandSocials(brand)
+        : [];
+  const editorial = store.bannerUrl ?? brand?.editorialUrl ?? null;
+  const logo = store.logoUrl ?? brand?.logoUrl ?? null;
 
   return (
     <div>

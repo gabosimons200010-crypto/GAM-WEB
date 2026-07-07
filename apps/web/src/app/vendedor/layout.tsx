@@ -11,6 +11,7 @@ const NAV = [
   { href: '/vendedor/pedidos', label: 'Pedidos' },
   { href: '/vendedor/ventas', label: 'Ventas' },
   { href: '/vendedor/pagos', label: 'Pagos' },
+  { href: '/vendedor/tienda', label: 'Mi tienda' },
   { href: '/vendedor/ia', label: 'Cargar con IA' },
 ];
 

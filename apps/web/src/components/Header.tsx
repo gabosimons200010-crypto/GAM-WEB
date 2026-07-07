@@ -100,6 +100,9 @@ export function Header() {
       <Link href="/vendedor/pagos" className="hover:underline hover:underline-offset-4">
         Pagos
       </Link>
+      <Link href="/vendedor/tienda" className="hover:underline hover:underline-offset-4">
+        Mi tienda
+      </Link>
       <Link href="/" className="text-muted hover:text-ink" title="Ver la tienda como cliente">
         Ver tienda
       </Link>

@@ -57,6 +57,7 @@ export class GetStorePageUseCase {
       rating: store.rating,
       salesCount: store.salesCount,
       verified: store.verified,
+      socials: store.socials,
     };
   }
 }

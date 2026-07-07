@@ -96,6 +96,58 @@ export class RegisterStoreDto {
 export class UpdateStoreDto {
   @ApiPropertyOptional()
   @IsOptional()
+  @IsString()
+  @MinLength(2)
+  @MaxLength(120)
+  commercialName?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MaxLength(160)
+  legalName?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @Matches(RUC_REGEX, { message: 'El RUC debe tener 11 dígitos' })
+  ruc?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MaxLength(120)
+  contactName?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @Matches(PHONE_REGEX, { message: 'Número de celular peruano inválido' })
+  phone?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsEmail()
+  email?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  address?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MaxLength(20)
+  floor?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MaxLength(20)
+  stand?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
   @IsUrl()
   logoUrl?: string;
 
