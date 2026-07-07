@@ -31,9 +31,11 @@ export class PrismaOrderRepository extends OrderRepository {
 
   private async runTransaction(data: PlaceOrderData, number: string): Promise<OrderSummaryView> {
     return this.prisma.$transaction(async (tx) => {
+      // La dirección del pedido NO va a la libreta del usuario (userId null);
+      // esa la gestiona el comprador aparte (guardar/elegir en /cuenta/direcciones).
       const address = await tx.address.create({
         data: {
-          userId: data.userId,
+          userId: null,
           department: data.address.department,
           province: data.address.province,
           district: data.address.district,

@@ -13,9 +13,11 @@ import {
   simulatePaymentConfirmation,
   getCart,
   validateCoupon,
+  listAddresses,
+  createAddress,
   ClientApiError,
 } from '@/lib/client-api';
-import type { CouponResult } from '@/lib/client-api';
+import type { CouponResult, Address } from '@/lib/client-api';
 import { getGuestCart, guestSubtotal, clearGuestCart } from '@/lib/guest-cart';
 import type { OrderView, PaymentView, ShippingAddressInput } from '@/lib/types';
 import { money } from '@/lib/format';
@@ -36,6 +38,9 @@ export default function CheckoutPage() {
   const [addr, setAddr] = useState<ShippingAddressInput>({ department: 'Lima', province: 'Lima', district: '', line: '', reference: '', phone: '' });
   const [buyerName, setBuyerName] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
+  const [savedAddresses, setSavedAddresses] = useState<Address[]>([]);
+  const [selectedAddr, setSelectedAddr] = useState<string | null>(null);
+  const [saveAddr, setSaveAddr] = useState(true);
 
   const [subtotal, setSubtotal] = useState(0);
   const [coupon, setCoupon] = useState('');
@@ -55,6 +60,32 @@ export default function CheckoutPage() {
       else setSubtotal(guestSubtotal());
     }
   }, [ready, user, router]);
+
+  // Direcciones guardadas (con sesión): carga y precarga la predeterminada.
+  useEffect(() => {
+    if (!ready || !user) return;
+    listAddresses()
+      .then((list) => {
+        setSavedAddresses(list);
+        const def = list.find((a) => a.isDefault) ?? list[0];
+        if (def) applyAddress(def);
+      })
+      .catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, user]);
+
+  function applyAddress(a: Address) {
+    setSelectedAddr(a.id);
+    setSaveAddr(false); // ya está en la libreta
+    setAddr({
+      department: a.department,
+      province: a.province,
+      district: a.district,
+      line: a.line,
+      reference: a.reference ?? '',
+      phone: a.phone ?? '',
+    });
+  }
 
   async function onApplyCoupon() {
     const code = coupon.trim();
@@ -79,6 +110,17 @@ export default function CheckoutPage() {
       let pay: PaymentView;
       if (user) {
         created = await checkout({ address: addr, buyerName: buyerName || undefined, couponCode });
+        // Guarda la dirección en la libreta si el comprador lo pidió (no bloquea el pedido).
+        if (saveAddr && !selectedAddr) {
+          createAddress({
+            department: addr.department,
+            province: addr.province,
+            district: addr.district,
+            line: addr.line,
+            reference: addr.reference || undefined,
+            phone: addr.phone || undefined,
+          }).catch(() => {});
+        }
         pay = await createPayment(created.id, 'YAPE');
       } else {
         // Invitado: los ítems vienen de la cesta local; el pago va por el flujo público.
@@ -142,6 +184,42 @@ export default function CheckoutPage() {
               </div>
             </div>
           )}
+          {/* Direcciones guardadas (con sesión) */}
+          {!isGuest && savedAddresses.length > 0 && (
+            <div className="space-y-2">
+              <p className="microcaps text-muted">Tus direcciones</p>
+              <div className="flex flex-wrap gap-2">
+                {savedAddresses.map((a) => (
+                  <button
+                    key={a.id}
+                    type="button"
+                    onClick={() => applyAddress(a)}
+                    className={`microcaps max-w-full truncate border px-3 py-2 text-left transition ${
+                      selectedAddr === a.id ? 'border-ink text-ink' : 'border-line text-muted hover:border-ink'
+                    }`}
+                    title={`${a.line}, ${a.district}`}
+                  >
+                    {a.district} · {a.line}
+                    {a.isDefault && ' ★'}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedAddr(null);
+                    setSaveAddr(true);
+                    setAddr({ department: 'Lima', province: 'Lima', district: '', line: '', reference: '', phone: '' });
+                  }}
+                  className={`microcaps border px-3 py-2 transition ${
+                    selectedAddr === null ? 'border-ink text-ink' : 'border-line text-muted hover:border-ink'
+                  }`}
+                >
+                  + Nueva dirección
+                </button>
+              </div>
+            </div>
+          )}
+
           <h2 className="microcaps text-muted">Dirección de envío</h2>
           <div className="grid grid-cols-2 gap-6">
             <Field label="Departamento" value={addr.department} onChange={(v) => setAddr({ ...addr, department: v })} />
@@ -154,6 +232,14 @@ export default function CheckoutPage() {
             <Field label="Celular (opcional)" value={addr.phone ?? ''} onChange={(v) => setAddr({ ...addr, phone: v })} required={false} placeholder="987654321" />
           </div>
           <Field label="Nombre de quien recibe (opcional)" value={buyerName} onChange={setBuyerName} required={false} />
+
+          {/* Guardar en la libreta (solo con sesión y dirección nueva) */}
+          {!isGuest && !selectedAddr && (
+            <label className="flex cursor-pointer items-center gap-2">
+              <input type="checkbox" checked={saveAddr} onChange={(e) => setSaveAddr(e.target.checked)} className="accent-black" />
+              <span className="microcaps text-muted">Guardar esta dirección para la próxima</span>
+            </label>
+          )}
 
           {/* Cupón de descuento */}
           <div className="border-t border-line pt-5">

@@ -255,6 +255,39 @@ export function canReview(productId: string): Promise<{ canReview: boolean }> {
   return request(`/products/${productId}/reviews/can-review`);
 }
 
+// --- Direcciones (libreta del comprador) ---
+export interface Address {
+  id: string;
+  department: string;
+  province: string;
+  district: string;
+  line: string;
+  reference: string | null;
+  phone: string | null;
+  isDefault: boolean;
+}
+export interface CreateAddressBody {
+  department: string;
+  province: string;
+  district: string;
+  line: string;
+  reference?: string;
+  phone?: string;
+  isDefault?: boolean;
+}
+export function listAddresses(): Promise<Address[]> {
+  return request<Address[]>('/addresses');
+}
+export function createAddress(body: CreateAddressBody): Promise<Address> {
+  return request<Address>('/addresses', { method: 'POST', body: JSON.stringify(body) });
+}
+export function deleteAddress(id: string): Promise<unknown> {
+  return request(`/addresses/${id}`, { method: 'DELETE' });
+}
+export function setDefaultAddress(id: string): Promise<Address> {
+  return request<Address>(`/addresses/${id}/default`, { method: 'POST' });
+}
+
 // --- Órdenes ---
 export function listOrders(): Promise<{ items: OrderView[]; nextCursor: string | null }> {
   return request('/orders');

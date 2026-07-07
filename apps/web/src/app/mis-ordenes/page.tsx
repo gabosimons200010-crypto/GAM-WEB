@@ -67,7 +67,10 @@ export default function MyOrdersPage() {
     <div className="space-y-10">
       <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-line pb-3">
         <h1 className="font-display text-3xl text-ink">Mis pedidos</h1>
-        <Link href="/rastrear" className="microcaps text-muted hover:text-ink">Rastrear un pedido</Link>
+        <span className="flex gap-4">
+          <Link href="/cuenta/direcciones" className="microcaps text-muted hover:text-ink">Direcciones</Link>
+          <Link href="/rastrear" className="microcaps text-muted hover:text-ink">Rastrear un pedido</Link>
+        </span>
       </div>
       {orders.map((o, oi) => (
         <OrderCard key={o.id} order={o} delay={oi * 80} onCancel={onCancel} canceling={canceling === o.id} />
