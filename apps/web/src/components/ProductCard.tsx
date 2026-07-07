@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react';
 import type { ProductCard as ProductCardType } from '@/lib/types';
 import { SPIN_VIDEOS } from '@/lib/drop';
 import { Price } from './Price';
+import { FavoriteHeart } from './FavoriteHeart';
 
 /** Tarjeta de producto editorial. Si el producto tiene clip 360°, se reproduce al hacer hover. */
 export function ProductCard({ product }: { product: ProductCardType }) {
@@ -34,44 +35,52 @@ export function ProductCard({ product }: { product: ProductCardType }) {
   }, [spin]);
 
   return (
-    <Link ref={cardRef} href={`/producto/${product.slug}`} className="group flex flex-col">
-      <div className="relative aspect-[3/4] overflow-hidden bg-[#f4f4f4]">
-        {product.thumbnailUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={product.thumbnailUrl}
-            alt={product.name}
-            className="h-full w-full object-cover"
-            loading="lazy"
-          />
-        ) : (
-          <div className="microcaps flex h-full w-full items-center justify-center text-muted">
-            {product.name}
-          </div>
-        )}
-        {spin && (
-          <>
-            <video
-              ref={videoRef}
-              src={spin}
-              muted
-              playsInline
-              loop
-              preload="metadata"
-              className="absolute inset-0 h-full w-full object-cover"
+    // El corazón va como hermano del enlace (no anidado en el <a>) para no invalidar el HTML.
+    <div className="group relative flex flex-col">
+      <Link ref={cardRef} href={`/producto/${product.slug}`} className="flex flex-col">
+        <div className="relative aspect-[3/4] overflow-hidden bg-[#f4f4f4]">
+          {product.thumbnailUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={product.thumbnailUrl}
+              alt={product.name}
+              className="h-full w-full object-cover"
+              loading="lazy"
             />
-            <span className="microcaps absolute bottom-2 right-2 bg-paper/85 px-1.5 py-0.5 text-[9px] text-ink">
-              360°
-            </span>
-          </>
-        )}
-      </div>
+          ) : (
+            <div className="microcaps flex h-full w-full items-center justify-center text-muted">
+              {product.name}
+            </div>
+          )}
+          {spin && (
+            <>
+              <video
+                ref={videoRef}
+                src={spin}
+                muted
+                playsInline
+                loop
+                preload="metadata"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <span className="microcaps absolute bottom-2 right-2 bg-paper/85 px-1.5 py-0.5 text-[9px] text-ink">
+                360°
+              </span>
+            </>
+          )}
+        </div>
 
-      <div className="flex flex-1 flex-col gap-1 pt-3">
-        <p className="microcaps text-ink group-hover:underline group-hover:underline-offset-4">{product.name}</p>
-        <Price price={product.price} salePrice={product.salePrice} />
-        <p className="microcaps text-[10px] text-muted">{product.storeName}</p>
-      </div>
-    </Link>
+        <div className="flex flex-1 flex-col gap-1 pt-3">
+          <p className="microcaps text-ink group-hover:underline group-hover:underline-offset-4">{product.name}</p>
+          <Price price={product.price} salePrice={product.salePrice} />
+          <p className="microcaps text-[10px] text-muted">{product.storeName}</p>
+        </div>
+      </Link>
+
+      <FavoriteHeart
+        productId={product.id}
+        className="absolute right-2 top-2 z-10 opacity-0 shadow-sm transition-opacity duration-200 group-hover:opacity-100 focus:opacity-100 aria-pressed:opacity-100 max-md:opacity-100"
+      />
+    </div>
   );
 }

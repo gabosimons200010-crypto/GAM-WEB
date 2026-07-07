@@ -1,52 +1,28 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { useAuth } from '@/lib/auth-context';
-import { addFavorite, removeFavorite, listFavoriteIds } from '@/lib/client-api';
+import { useState } from 'react';
+import { useFavorites } from '@/lib/favorites-context';
 
-/** Corazón para guardar/quitar un producto de favoritos. Requiere sesión. */
+/** Corazón grande (detalle de producto) para guardar/quitar de favoritos. Requiere sesión. */
 export function FavoriteButton({ productId }: { productId: string }) {
-  const { user } = useAuth();
+  const { isFavorite, toggle } = useFavorites();
   const router = useRouter();
   const pathname = usePathname();
-  const [fav, setFav] = useState(false);
   const [busy, setBusy] = useState(false);
+  const fav = isFavorite(productId);
 
-  useEffect(() => {
-    if (!user) {
-      setFav(false);
-      return;
-    }
-    listFavoriteIds()
-      .then((ids) => setFav(ids.includes(productId)))
-      .catch(() => {});
-  }, [user, productId]);
-
-  async function toggle() {
-    if (!user) {
-      router.push(`/ingresar?next=${encodeURIComponent(pathname)}`);
-      return;
-    }
+  async function onClick() {
+    if (busy) return;
     setBusy(true);
-    try {
-      if (fav) {
-        await removeFavorite(productId);
-        setFav(false);
-      } else {
-        await addFavorite(productId);
-        setFav(true);
-      }
-    } catch {
-      /* noop */
-    } finally {
-      setBusy(false);
-    }
+    const hadSession = await toggle(productId);
+    setBusy(false);
+    if (!hadSession) router.push(`/ingresar?next=${encodeURIComponent(pathname)}`);
   }
 
   return (
     <button
-      onClick={toggle}
+      onClick={onClick}
       disabled={busy}
       aria-pressed={fav}
       className="microcaps flex items-center justify-center gap-2 border border-line px-6 py-3.5 text-ink transition hover:border-ink disabled:opacity-50"
