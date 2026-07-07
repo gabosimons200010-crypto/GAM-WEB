@@ -84,7 +84,10 @@ describe('CheckoutUseCase', () => {
     const orders = new FakeOrders();
     const res = await new CheckoutUseCase(cart, orders).execute({ userId: 'u1', address: ADDRESS, buyer: {} });
 
-    expect(orders.received?.draft.grandTotal).toBe(100);
+    // Subtotal 100 (< 200) con envío a Lima → S/10 de envío. Total 110.
+    expect(orders.received?.draft.subtotal).toBe(100);
+    expect(orders.received?.draft.shippingTotal).toBe(10);
+    expect(orders.received?.draft.grandTotal).toBe(110);
     expect(orders.received?.reservationExpiresAt).toBeInstanceOf(Date);
     expect(res.status).toBe('PENDING_PAYMENT');
     expect(cart.cleared).toBe(true);

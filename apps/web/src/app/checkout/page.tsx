@@ -107,7 +107,15 @@ export default function CheckoutPage() {
             <span className="mt-1 break-all text-[9px] text-line">{payment.providerRef}</span>
           </div>
 
-          <p className="text-2xl text-ink">{money(payment.amount)}</p>
+          <div className="mx-auto max-w-xs space-y-1 border-t border-line pt-4 text-left">
+            <Row k="Subtotal" v={money(order.subtotal)} />
+            <Row k="Envío" v={order.shippingTotal > 0 ? money(order.shippingTotal) : 'Gratis'} />
+            {order.discountTotal > 0 && <Row k="Descuento" v={`− ${money(order.discountTotal)}`} />}
+            <div className="flex items-baseline justify-between border-t border-line pt-2 text-[15px] text-ink">
+              <span className="microcaps">Total</span>
+              <span>{money(order.grandTotal)}</span>
+            </div>
+          </div>
           <p className="microcaps mx-auto max-w-sm text-muted">
             En producción escanearías este QR con tu app de Yape. Aquí lo simulamos con el botón de abajo.
           </p>
@@ -139,6 +147,15 @@ export default function CheckoutPage() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function Row({ k, v }: { k: string; v: string }) {
+  return (
+    <div className="flex items-baseline justify-between text-[13px] text-muted">
+      <span className="microcaps">{k}</span>
+      <span className="text-ink">{v}</span>
     </div>
   );
 }

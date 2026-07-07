@@ -6,6 +6,22 @@ export const COMMISSION_RATE = 0.1; // 10 %
 /** Minutos que se mantiene la reserva de stock antes de liberarse si no se paga. */
 export const RESERVATION_TTL_MINUTES = 30;
 
+/** Envío gratis por tienda a partir de este subtotal (S/). */
+export const FREE_SHIPPING_THRESHOLD = 200;
+const SHIPPING_LIMA = 10;
+const SHIPPING_PROVINCIA = 20;
+
+/**
+ * Costo de envío por suborden (tienda). Gratis si el subtotal alcanza el umbral;
+ * tarifa plana Lima vs. provincia según el departamento de envío. Sin
+ * departamento (ej. al armar el borrador sin dirección) devuelve 0.
+ */
+export function shippingFor(subtotal: number, department?: string): number {
+  if (!department) return 0;
+  if (subtotal >= FREE_SHIPPING_THRESHOLD) return 0;
+  return department.trim().toLowerCase() === 'lima' ? SHIPPING_LIMA : SHIPPING_PROVINCIA;
+}
+
 export interface OrderItemDraft {
   variantId: string;
   productName: string;
@@ -60,10 +76,10 @@ export function findUnavailable(lines: RawCartLine[]): UnavailableLine[] {
 
 /**
  * Arma el borrador de la orden a partir de las líneas del carrito: una
- * suborden por tienda, con subtotal, comisión del marketplace y envío. El
- * envío se deja en 0 en esta fase (cálculo logístico es un sprint posterior).
+ * suborden por tienda, con subtotal, comisión del marketplace y envío (según el
+ * departamento de destino; ver shippingFor).
  */
-export function buildOrderDraft(lines: RawCartLine[]): OrderDraft {
+export function buildOrderDraft(lines: RawCartLine[], department?: string): OrderDraft {
   const byStore = new Map<string, SubOrderDraft>();
 
   for (const l of lines) {
@@ -87,6 +103,7 @@ export function buildOrderDraft(lines: RawCartLine[]): OrderDraft {
   const subOrders = [...byStore.values()];
   for (const s of subOrders) {
     s.commission = round2(s.subtotal * COMMISSION_RATE);
+    s.shippingCost = shippingFor(s.subtotal, department);
   }
 
   const subtotal = round2(subOrders.reduce((acc, s) => acc + s.subtotal, 0));

@@ -44,6 +44,17 @@ describe('buildOrderDraft', () => {
     expect(draft.subOrders[0].items[0].unitPrice).toBe(70);
     expect(draft.subtotal).toBe(70);
   });
+
+  it('cobra envío por tienda: Lima S/10, provincia S/20, gratis desde 200', () => {
+    // Lima, subtotal 100 (< 200) → S/10
+    expect(buildOrderDraft([line({ productPrice: 50, quantity: 2 })], 'Lima').shippingTotal).toBe(10);
+    // Provincia (Cusco), subtotal 100 → S/20
+    expect(buildOrderDraft([line({ productPrice: 50, quantity: 2 })], 'Cusco').shippingTotal).toBe(20);
+    // Subtotal 200 → envío gratis
+    expect(buildOrderDraft([line({ productPrice: 100, quantity: 2 })], 'Lima').shippingTotal).toBe(0);
+    // Sin departamento → 0 (borrador sin dirección)
+    expect(buildOrderDraft([line({ productPrice: 50, quantity: 2 })]).shippingTotal).toBe(0);
+  });
 });
 
 describe('findUnavailable', () => {

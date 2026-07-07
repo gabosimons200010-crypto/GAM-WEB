@@ -38,7 +38,7 @@ export class CheckoutUseCase {
       });
     }
 
-    const draft = buildOrderDraft(lines);
+    const draft = buildOrderDraft(lines, input.address.department);
     const order = await this.orders.placeOrder({
       userId: input.userId,
       buyer: input.buyer,

@@ -108,6 +108,7 @@ function GuestCart() {
           <span className="microcaps">Total</span>
           <span>{money(subtotal)}</span>
         </div>
+        <p className="microcaps mt-2 text-[10px] text-muted">Envío calculado en el pago · gratis desde S/ 200</p>
         <Link
           href="/registrarse?next=/checkout"
           className="microcaps mt-6 block bg-ink px-4 py-3.5 text-center text-paper transition hover:opacity-80"
@@ -243,6 +244,7 @@ function ServerCart() {
           <span className="microcaps">Total</span>
           <span>{money(cart.total)}</span>
         </div>
+        <p className="microcaps mt-2 text-[10px] text-muted">Envío calculado en el pago · gratis desde S/ 200</p>
         <Link
           href="/checkout"
           className={`microcaps mt-6 block px-4 py-3.5 text-center ${
