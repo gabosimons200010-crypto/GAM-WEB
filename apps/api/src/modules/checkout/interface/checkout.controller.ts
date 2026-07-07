@@ -25,6 +25,7 @@ export class CheckoutController {
       userId: user.sub,
       address: dto.address,
       buyer: { name: dto.buyerName, email: dto.buyerEmail, phone: dto.buyerPhone, dni: dto.buyerDni },
+      couponCode: dto.couponCode,
     });
   }
 }

@@ -22,6 +22,7 @@ import { PaymentModule } from './modules/payment/payment.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { FavoritesModule } from './modules/favorites/favorites.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
+import { CouponsModule } from './modules/coupons/coupons.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { ReviewsModule } from './modules/reviews/reviews.module';
     OrdersModule, // Sprint 11 (Fase 2): órdenes (comprador) + postventa (vendedor)
     FavoritesModule, // Fase 2+: lista de deseos del comprador
     ReviewsModule, // Fase 2+: reseñas y calificación de productos
+    CouponsModule, // Fase 2+: cupones de descuento
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

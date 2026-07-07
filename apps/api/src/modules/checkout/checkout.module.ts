@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { IdentityModule } from '../identity/identity.module';
 import { CartModule } from '../cart/cart.module';
+import { CouponsModule } from '../coupons/coupons.module';
 
 import { CheckoutController } from './interface/checkout.controller';
 import { OrderRepository } from './application/ports/order.repository';
@@ -14,7 +15,7 @@ import { CheckoutUseCase } from './application/use-cases/checkout.use-case';
  * en una transacción. Exporta OrderRepository para Pagos (Sprint 10).
  */
 @Module({
-  imports: [IdentityModule, CartModule],
+  imports: [IdentityModule, CartModule, CouponsModule],
   controllers: [CheckoutController],
   providers: [
     { provide: OrderRepository, useClass: PrismaOrderRepository },

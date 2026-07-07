@@ -95,6 +95,21 @@ export interface CheckoutBody {
   buyerName?: string;
   buyerPhone?: string;
   buyerDni?: string;
+  couponCode?: string;
+}
+
+export interface CouponResult {
+  valid: boolean;
+  discount: number;
+  message: string;
+}
+
+export function validateCoupon(code: string, subtotal: number): Promise<CouponResult> {
+  return request<CouponResult>('/coupons/validate', {
+    method: 'POST',
+    body: JSON.stringify({ code, subtotal }),
+    auth: false,
+  });
 }
 
 export function checkout(body: CheckoutBody): Promise<OrderView> {

@@ -714,6 +714,20 @@ async function main(): Promise<void> {
   }
   console.log('Tienda demo lista: Prueba Studio (3 productos)');
 
+  // ── Cupones de descuento demo ──
+  const coupons: { code: string; scope: 'GLOBAL'; type: 'PERCENT' | 'FIXED'; value: number; minPurchase: number | null }[] = [
+    { code: 'BIENVENIDA10', scope: 'GLOBAL', type: 'PERCENT', value: 10, minPurchase: null },
+    { code: 'GAMARRA20', scope: 'GLOBAL', type: 'FIXED', value: 20, minPurchase: 100 },
+  ];
+  for (const c of coupons) {
+    await prisma.coupon.upsert({
+      where: { code: c.code },
+      update: { active: true, type: c.type, value: c.value, minPurchase: c.minPurchase },
+      create: { code: c.code, scope: c.scope, type: c.type, value: c.value, minPurchase: c.minPurchase, active: true },
+    });
+  }
+  console.log('Cupones demo: BIENVENIDA10 (10%), GAMARRA20 (S/20, mín. S/100)');
+
   console.log('Semilla demo aplicada.');
   console.log('  Vendedor (marcas):  vendedor@gamarra.go / Vendedor123');
   console.log('  Vendedor de prueba: vendedor.demo@emporio.pe / Vendedor123 (tienda Prueba Studio)');

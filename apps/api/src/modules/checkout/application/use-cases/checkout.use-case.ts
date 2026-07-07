@@ -1,12 +1,15 @@
 import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { CartRepository } from '../../../cart/application/ports/cart.repository';
+import { CouponsRepository } from '../../../coupons/application/ports/coupons.repository';
+import { evaluateCoupon } from '../../../coupons/domain/coupon';
 import { OrderRepository, OrderSummaryView, ShippingAddress, BuyerInfo } from '../ports/order.repository';
-import { buildOrderDraft, findUnavailable, reservationExpiry } from '../../domain/order';
+import { buildOrderDraft, findUnavailable, reservationExpiry, round2 } from '../../domain/order';
 
 export interface CheckoutInput {
   userId: string;
   address: ShippingAddress;
   buyer: BuyerInfo;
+  couponCode?: string;
 }
 
 /**
@@ -20,6 +23,7 @@ export class CheckoutUseCase {
   constructor(
     private readonly carts: CartRepository,
     private readonly orders: OrderRepository,
+    private readonly coupons: CouponsRepository,
   ) {}
 
   async execute(input: CheckoutInput): Promise<OrderSummaryView> {
@@ -39,6 +43,17 @@ export class CheckoutUseCase {
     }
 
     const draft = buildOrderDraft(lines, input.address.department);
+
+    // Cupón de descuento (opcional): se aplica a nivel de orden.
+    if (input.couponCode) {
+      const coupon = await this.coupons.findByCode(input.couponCode);
+      const result = evaluateCoupon(coupon, draft.subtotal, new Date());
+      if (result.valid && result.discount > 0) {
+        draft.discountTotal = result.discount;
+        draft.grandTotal = round2(draft.subtotal + draft.shippingTotal - result.discount);
+      }
+    }
+
     const order = await this.orders.placeOrder({
       userId: input.userId,
       buyer: input.buyer,

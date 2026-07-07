@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState, FormEvent } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useCart } from '@/lib/cart-context';
-import { checkout, createPayment, simulatePaymentConfirmation, ClientApiError } from '@/lib/client-api';
+import { checkout, createPayment, simulatePaymentConfirmation, getCart, validateCoupon, ClientApiError } from '@/lib/client-api';
+import type { CouponResult } from '@/lib/client-api';
 import type { OrderView, PaymentView, ShippingAddressInput } from '@/lib/types';
 import { money } from '@/lib/format';
 
@@ -25,16 +26,39 @@ export default function CheckoutPage() {
   const [addr, setAddr] = useState<ShippingAddressInput>({ department: 'Lima', province: 'Lima', district: '', line: '', reference: '', phone: '' });
   const [buyerName, setBuyerName] = useState('');
 
+  const [subtotal, setSubtotal] = useState(0);
+  const [coupon, setCoupon] = useState('');
+  const [couponResult, setCouponResult] = useState<CouponResult | null>(null);
+  const [checkingCoupon, setCheckingCoupon] = useState(false);
+
   useEffect(() => {
     if (ready && !user) router.replace('/ingresar?next=/checkout');
   }, [ready, user, router]);
+
+  useEffect(() => {
+    if (ready && user) getCart().then((c) => setSubtotal(c.total)).catch(() => {});
+  }, [ready, user]);
+
+  async function onApplyCoupon() {
+    const code = coupon.trim();
+    if (!code) return;
+    setCheckingCoupon(true);
+    try {
+      setCouponResult(await validateCoupon(code, subtotal));
+    } catch {
+      setCouponResult({ valid: false, discount: 0, message: 'No se pudo validar el cupón' });
+    } finally {
+      setCheckingCoupon(false);
+    }
+  }
 
   async function onPlaceOrder(e: FormEvent) {
     e.preventDefault();
     setError(null);
     setBusy(true);
     try {
-      const created = await checkout({ address: addr, buyerName: buyerName || undefined });
+      const couponCode = couponResult?.valid ? coupon.trim() : undefined;
+      const created = await checkout({ address: addr, buyerName: buyerName || undefined, couponCode });
       setOrder(created);
       const pay = await createPayment(created.id, 'YAPE');
       setPayment(pay);
@@ -83,6 +107,35 @@ export default function CheckoutPage() {
             <Field label="Celular (opcional)" value={addr.phone ?? ''} onChange={(v) => setAddr({ ...addr, phone: v })} required={false} placeholder="987654321" />
           </div>
           <Field label="Nombre de quien recibe (opcional)" value={buyerName} onChange={setBuyerName} required={false} />
+
+          {/* Cupón de descuento */}
+          <div className="border-t border-line pt-5">
+            <span className="microcaps mb-2 block text-muted">Cupón de descuento (opcional)</span>
+            <div className="flex items-baseline gap-3 border-b border-ink pb-1">
+              <input
+                value={coupon}
+                onChange={(e) => {
+                  setCoupon(e.target.value);
+                  setCouponResult(null);
+                }}
+                placeholder="EJ. BIENVENIDA10"
+                className="microcaps w-full bg-transparent uppercase text-ink placeholder:text-line focus:outline-none"
+              />
+              <button
+                type="button"
+                onClick={onApplyCoupon}
+                disabled={checkingCoupon || !coupon.trim()}
+                className="microcaps shrink-0 text-ink hover:underline hover:underline-offset-4 disabled:opacity-40"
+              >
+                {checkingCoupon ? '…' : 'Aplicar'}
+              </button>
+            </div>
+            {couponResult && (
+              <p className={`microcaps mt-2 ${couponResult.valid ? 'text-ink' : 'text-sale'}`}>
+                {couponResult.valid ? `− ${money(couponResult.discount)} aplicado ✓` : couponResult.message}
+              </p>
+            )}
+          </div>
 
           <button
             type="submit"

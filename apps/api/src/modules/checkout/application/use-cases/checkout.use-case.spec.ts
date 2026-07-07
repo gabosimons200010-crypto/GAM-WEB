@@ -1,6 +1,8 @@
 import { BadRequestException, ConflictException } from '@nestjs/common';
 import { CheckoutUseCase } from './checkout.use-case';
 import { CartRepository } from '../../../cart/application/ports/cart.repository';
+import { CouponsRepository } from '../../../coupons/application/ports/coupons.repository';
+import { CouponData } from '../../../coupons/domain/coupon';
 import { OrderRepository, PlaceOrderData, OrderSummaryView } from '../ports/order.repository';
 import { RawCartLine } from '../../../cart/domain/cart';
 
@@ -76,13 +78,22 @@ class FakeOrders extends OrderRepository {
   }
 }
 
+class FakeCoupons extends CouponsRepository {
+  constructor(private readonly coupon: CouponData | null = null) {
+    super();
+  }
+  async findByCode(): Promise<CouponData | null> {
+    return this.coupon;
+  }
+}
+
 const ADDRESS = { department: 'Lima', province: 'Lima', district: 'La Victoria', line: 'Jr. Gamarra 123' };
 
 describe('CheckoutUseCase', () => {
   it('crea la orden con el draft del carrito y luego vacía el carrito', async () => {
     const cart = new FakeCart([line({ storeId: 's1', productPrice: 50, quantity: 2 })]);
     const orders = new FakeOrders();
-    const res = await new CheckoutUseCase(cart, orders).execute({ userId: 'u1', address: ADDRESS, buyer: {} });
+    const res = await new CheckoutUseCase(cart, orders, new FakeCoupons()).execute({ userId: 'u1', address: ADDRESS, buyer: {} });
 
     // Subtotal 100 (< 200) con envío a Lima → S/10 de envío. Total 110.
     expect(orders.received?.draft.subtotal).toBe(100);
@@ -93,10 +104,34 @@ describe('CheckoutUseCase', () => {
     expect(cart.cleared).toBe(true);
   });
 
+  it('aplica el descuento de un cupón válido', async () => {
+    const cart = new FakeCart([line({ storeId: 's1', productPrice: 50, quantity: 2 })]); // subtotal 100
+    const orders = new FakeOrders();
+    const coupon: CouponData = {
+      code: 'BIENVENIDA10',
+      scope: 'GLOBAL',
+      type: 'PERCENT',
+      value: 10,
+      minPurchase: null,
+      active: true,
+      startsAt: null,
+      expiresAt: null,
+    };
+    await new CheckoutUseCase(cart, orders, new FakeCoupons(coupon)).execute({
+      userId: 'u1',
+      address: ADDRESS,
+      buyer: {},
+      couponCode: 'BIENVENIDA10',
+    });
+    // subtotal 100 + envío Lima 10 − descuento 10% (10) = 100
+    expect(orders.received?.draft.discountTotal).toBe(10);
+    expect(orders.received?.draft.grandTotal).toBe(100);
+  });
+
   it('rechaza el carrito vacío', async () => {
     const orders = new FakeOrders();
     await expect(
-      new CheckoutUseCase(new FakeCart([]), orders).execute({ userId: 'u1', address: ADDRESS, buyer: {} }),
+      new CheckoutUseCase(new FakeCart([]), orders, new FakeCoupons()).execute({ userId: 'u1', address: ADDRESS, buyer: {} }),
     ).rejects.toBeInstanceOf(BadRequestException);
     expect(orders.received).toBeUndefined();
   });
@@ -105,7 +140,7 @@ describe('CheckoutUseCase', () => {
     const cart = new FakeCart([line({ variantId: 'agotado', quantity: 9, available: 2 })]);
     const orders = new FakeOrders();
     await expect(
-      new CheckoutUseCase(cart, orders).execute({ userId: 'u1', address: ADDRESS, buyer: {} }),
+      new CheckoutUseCase(cart, orders, new FakeCoupons()).execute({ userId: 'u1', address: ADDRESS, buyer: {} }),
     ).rejects.toBeInstanceOf(ConflictException);
     expect(orders.received).toBeUndefined();
     expect(cart.cleared).toBe(false);

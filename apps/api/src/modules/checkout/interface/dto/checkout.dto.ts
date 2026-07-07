@@ -67,4 +67,10 @@ export class CheckoutDto {
   @IsOptional()
   @Matches(/^\d{8}$/, { message: 'El DNI debe tener 8 dígitos' })
   buyerDni?: string;
+
+  @ApiPropertyOptional({ example: 'BIENVENIDA10', description: 'Código de cupón de descuento.' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(40)
+  couponCode?: string;
 }
