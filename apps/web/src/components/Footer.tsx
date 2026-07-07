@@ -64,6 +64,12 @@ export function Footer() {
             <Link href="/marcas" className="block w-fit hover:text-ink">
               Marcas
             </Link>
+            <Link href="/terminos" className="block w-fit hover:text-ink">
+              Términos y condiciones
+            </Link>
+            <Link href="/privacidad" className="block w-fit hover:text-ink">
+              Privacidad
+            </Link>
             <p>Perú</p>
           </div>
         </div>

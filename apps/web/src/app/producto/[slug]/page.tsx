@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getProduct } from '@/lib/api';
+import { getProduct, getStorePage } from '@/lib/api';
 import { Price } from '@/components/Price';
 import { Gallery } from '@/components/Gallery';
 import { ProductPurchase } from '@/components/ProductPurchase';
 import { FavoriteButton } from '@/components/FavoriteButton';
 import { ProductReviews } from '@/components/ProductReviews';
+import { ProductGrid } from '@/components/ProductGrid';
 import { genderLabel } from '@/lib/format';
 
 export const dynamic = 'force-dynamic';
@@ -14,13 +15,32 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProduct(slug).catch(() => null);
-  return { title: product ? `${product.name} — Emporio` : 'Producto — Emporio' };
+  if (!product) return { title: 'Producto — Emporio' };
+  const description =
+    product.description?.replace(/\s+/g, ' ').trim().slice(0, 160) ||
+    `${product.name} de ${product.storeName} en Emporio. Moda peruana online, envíos a todo el Perú.`;
+  const image = product.media?.[0]?.url;
+  return {
+    title: `${product.name} — ${product.storeName} | Emporio`,
+    description,
+    openGraph: {
+      title: product.name,
+      description,
+      type: 'website',
+      images: image ? [{ url: image }] : [],
+    },
+  };
 }
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const product = await getProduct(slug);
   if (!product) notFound();
+
+  // Relacionados: otras piezas de la misma tienda.
+  const related = await getStorePage(product.storeSlug, { pageSize: 6 })
+    .then((d) => (d?.products.items ?? []).filter((p) => p.slug !== product.slug).slice(0, 4))
+    .catch(() => []);
 
   return (
     <div>
@@ -92,6 +112,18 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       </div>
 
       <ProductReviews productId={product.id} />
+
+      {related.length > 0 && (
+        <section className="mt-14 border-t border-line pt-8">
+          <div className="mb-6 flex items-baseline justify-between border-b border-line pb-3">
+            <h2 className="font-display text-2xl text-ink">Más de {product.storeName}</h2>
+            <Link href={`/tienda/${product.storeSlug}`} className="microcaps text-muted hover:text-ink">
+              Ver tienda →
+            </Link>
+          </div>
+          <ProductGrid products={related} />
+        </section>
+      )}
     </div>
   );
 }
