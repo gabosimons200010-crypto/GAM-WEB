@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useState, FormEvent } from 'react';
 import { useAuth } from '@/lib/auth-context';
+import { getStoredUser } from '@/lib/session';
 import { ClientApiError } from '@/lib/client-api';
 
 function LoginForm() {
@@ -22,7 +23,10 @@ function LoginForm() {
     setLoading(true);
     try {
       await login(mail.trim(), pass);
-      router.push(next);
+      // Al admin lo llevamos a su panel (salvo que venga con un next explícito).
+      const roles = getStoredUser()?.roles ?? [];
+      const isAdmin = roles.includes('ADMIN') || roles.includes('SUPER_ADMIN');
+      router.push(isAdmin && next === '/' ? '/admin/tiendas' : next);
       router.refresh();
     } catch (err) {
       setError(err instanceof ClientApiError ? err.message : 'No pudimos iniciar sesión');

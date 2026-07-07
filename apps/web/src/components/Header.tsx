@@ -18,12 +18,14 @@ export function Header() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   const authed = mounted && !!user;
+  // Header consciente del rol: el admin ve su panel, no la tienda.
+  const isAdmin = authed && !!user && (user.roles.includes('ADMIN') || user.roles.includes('SUPER_ADMIN'));
 
   const [open, setOpen] = useState(false);
   // Cierra el menú móvil al navegar.
   useEffect(() => setOpen(false), [pathname]);
 
-  const links = (
+  const customerLinks = (
     <>
       <Link href="/" className="hover:underline hover:underline-offset-4">
         Inicio
@@ -62,6 +64,28 @@ export function Header() {
     </>
   );
 
+  const adminLinks = (
+    <>
+      <Link href="/admin/tiendas" className="hover:underline hover:underline-offset-4">
+        Tiendas
+      </Link>
+      <Link href="/admin/moderacion" className="hover:underline hover:underline-offset-4">
+        Moderación
+      </Link>
+      <Link href="/admin/tendencias" className="hover:underline hover:underline-offset-4">
+        Tendencias
+      </Link>
+      <Link href="/" className="text-muted hover:text-ink" title="Ver la tienda como cliente">
+        Ver tienda
+      </Link>
+      <button onClick={logout} className="microcaps text-left text-muted hover:text-ink" title="Cerrar sesión">
+        Salir
+      </button>
+    </>
+  );
+
+  const links = isAdmin ? adminLinks : customerLinks;
+
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-paper">
       <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-4">
@@ -69,9 +93,13 @@ export function Header() {
           Emporio
         </Link>
 
-        {/* Buscador (desktop) */}
+        {/* Buscador (desktop) — el admin no compra, así que ve una etiqueta */}
         <div className="hidden flex-1 sm:block sm:px-10">
-          <SearchBar />
+          {isAdmin ? (
+            <span className="microcaps text-muted">Panel de administración</span>
+          ) : (
+            <SearchBar />
+          )}
         </div>
 
         {/* Nav (desktop) */}
@@ -93,7 +121,11 @@ export function Header() {
       {/* Menú desplegable (móvil) */}
       {open && (
         <div className="border-t border-line px-4 py-4 sm:hidden">
-          <SearchBar />
+          {isAdmin ? (
+            <p className="microcaps text-muted">Panel de administración</p>
+          ) : (
+            <SearchBar />
+          )}
           <nav className="microcaps mt-5 flex flex-col gap-4 text-ink">{links}</nav>
         </div>
       )}
