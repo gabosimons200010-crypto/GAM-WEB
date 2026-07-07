@@ -9,6 +9,10 @@ import {
   pauseProduct,
   updateProduct,
   adjustInventory,
+  addProductMedia,
+  removeProductMedia,
+  requestUploadUrl,
+  uploadToStorage,
   ClientApiError,
 } from '@/lib/client-api';
 import type { UpdateProductInput } from '@/lib/client-api';
@@ -201,6 +205,10 @@ export default function SellerProductsPage() {
                 {open && (
                   <div className="space-y-6 border-t border-line bg-[#fafafa] px-2 pb-6 pt-4 sm:px-9">
                     <div>
+                      <p className="microcaps mb-3 text-muted">Fotos</p>
+                      <ProductPhotos storeId={storeId} product={p} onChanged={() => loadProducts(storeId)} />
+                    </div>
+                    <div>
                       <p className="microcaps mb-3 text-muted">Editar producto</p>
                       <EditProductForm storeId={storeId} product={p} onSaved={() => loadProducts(storeId)} />
                     </div>
@@ -225,6 +233,88 @@ export default function SellerProductsPage() {
           })}
         </div>
       )}
+    </div>
+  );
+}
+
+function ProductPhotos({
+  storeId,
+  product,
+  onChanged,
+}: {
+  storeId: string;
+  product: ProductDetail;
+  onChanged: () => void | Promise<void>;
+}) {
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const photos = product.media.filter((m) => m.kind === 'ORIGINAL' || m.kind === 'OPTIMIZED');
+
+  async function onAdd(file: File) {
+    setBusy(true);
+    setErr(null);
+    try {
+      const { uploadUrl, publicUrl } = await requestUploadUrl(storeId, file.type);
+      await uploadToStorage(uploadUrl, file);
+      await addProductMedia(storeId, product.id, publicUrl);
+      await onChanged();
+    } catch (e) {
+      setErr(e instanceof ClientApiError ? e.message : 'No se pudo subir la foto');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onRemove(mediaId: string) {
+    setBusy(true);
+    setErr(null);
+    try {
+      await removeProductMedia(storeId, product.id, mediaId);
+      await onChanged();
+    } catch (e) {
+      setErr(e instanceof ClientApiError ? e.message : 'No se pudo quitar la foto');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div>
+      <div className="flex flex-wrap gap-3">
+        {photos.map((m) => (
+          <div key={m.id} className="group relative h-24 w-20 overflow-hidden border border-line bg-[#f4f4f4]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={m.url} alt="" className="h-full w-full object-cover" />
+            <button
+              onClick={() => onRemove(m.id)}
+              disabled={busy}
+              aria-label="Quitar foto"
+              className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-ink/80 text-[11px] text-paper opacity-0 transition group-hover:opacity-100 disabled:opacity-40"
+            >
+              ×
+            </button>
+          </div>
+        ))}
+        {photos.length < 8 && (
+          <label className="flex h-24 w-20 cursor-pointer flex-col items-center justify-center border border-dashed border-line text-muted hover:border-ink hover:text-ink">
+            <span className="text-lg leading-none">+</span>
+            <span className="microcaps mt-1 text-[9px]">{busy ? '…' : 'Foto'}</span>
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              disabled={busy}
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) onAdd(f);
+                e.target.value = '';
+              }}
+            />
+          </label>
+        )}
+      </div>
+      {err && <p className="microcaps mt-2 text-sale">{err}</p>}
+      {photos.length === 0 && <p className="microcaps mt-2 text-[10px] text-muted">Sin fotos. Sube al menos una.</p>}
     </div>
   );
 }

@@ -164,6 +164,11 @@ export class PrismaProductRepository extends ProductRepository {
     });
   }
 
+  async deleteMedia(productId: string, mediaId: string): Promise<void> {
+    // Scoped por productId para que no se pueda borrar media de otro producto.
+    await this.prisma.productMedia.deleteMany({ where: { id: mediaId, productId } });
+  }
+
   async getVariantContext(variantId: string): Promise<VariantContext | null> {
     const v = await this.prisma.productVariant.findUnique({
       where: { id: variantId },

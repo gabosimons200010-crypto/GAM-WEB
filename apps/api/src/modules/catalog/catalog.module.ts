@@ -19,6 +19,7 @@ import { CreateProductDraftUseCase } from './application/use-cases/create-produc
 import { UpdateProductUseCase } from './application/use-cases/update-product.use-case';
 import { ArchiveProductUseCase } from './application/use-cases/archive-product.use-case';
 import { PauseProductUseCase } from './application/use-cases/pause-product.use-case';
+import { ManageProductMediaUseCase } from './application/use-cases/manage-product-media.use-case';
 import { PublishProductUseCase } from './application/use-cases/publish-product.use-case';
 import { ListMyProductsUseCase } from './application/use-cases/list-my-products.use-case';
 import { GetProductUseCase } from './application/use-cases/get-product.use-case';
@@ -52,6 +53,7 @@ import { ProductModerationActions } from './application/use-cases/product-modera
     UpdateProductUseCase,
     ArchiveProductUseCase,
     PauseProductUseCase,
+    ManageProductMediaUseCase,
     PublishProductUseCase,
     ListMyProductsUseCase,
     GetProductUseCase,

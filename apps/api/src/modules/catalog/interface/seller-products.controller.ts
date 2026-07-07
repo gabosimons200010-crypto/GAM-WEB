@@ -28,7 +28,9 @@ import { PublishProductUseCase } from '../application/use-cases/publish-product.
 import { ListMyProductsUseCase } from '../application/use-cases/list-my-products.use-case';
 import { AdjustInventoryUseCase } from '../application/use-cases/adjust-inventory.use-case';
 import { RequestUploadUrlUseCase } from '../application/use-cases/request-upload-url.use-case';
+import { ManageProductMediaUseCase } from '../application/use-cases/manage-product-media.use-case';
 import {
+  AddMediaDto,
   AdjustInventoryDto,
   CreateProductDto,
   UpdateProductDto,
@@ -50,6 +52,7 @@ export class SellerProductsController {
     private readonly listMyProducts: ListMyProductsUseCase,
     private readonly adjustInventory: AdjustInventoryUseCase,
     private readonly requestUploadUrl: RequestUploadUrlUseCase,
+    private readonly manageMedia: ManageProductMediaUseCase,
   ) {}
 
   @Post()
@@ -131,5 +134,23 @@ export class SellerProductsController {
     @Body() dto: UploadUrlDto,
   ) {
     return this.requestUploadUrl.execute(user.sub, storeId, dto.contentType);
+  }
+
+  /** Agrega una foto (ya subida al storage) a un producto existente. */
+  @Post(':productId/media')
+  @HttpCode(201)
+  addMedia(@CurrentUser() user: AuthUser, @Param('productId') productId: string, @Body() dto: AddMediaDto) {
+    return this.manageMedia.add(user.sub, productId, dto.url).then(() => ({ ok: true }));
+  }
+
+  /** Quita una foto de un producto. */
+  @Delete(':productId/media/:mediaId')
+  @HttpCode(200)
+  removeMedia(
+    @CurrentUser() user: AuthUser,
+    @Param('productId') productId: string,
+    @Param('mediaId') mediaId: string,
+  ) {
+    return this.manageMedia.remove(user.sub, productId, mediaId).then(() => ({ ok: true }));
   }
 }

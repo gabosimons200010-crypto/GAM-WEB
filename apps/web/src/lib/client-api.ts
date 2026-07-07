@@ -351,6 +351,16 @@ export function pauseProduct(storeId: string, productId: string): Promise<Produc
   return request<ProductDetail>(`/seller/stores/${storeId}/products/${productId}/pause`, { method: 'POST' });
 }
 
+/** Agrega una foto (ya subida al storage) a un producto existente. */
+export function addProductMedia(storeId: string, productId: string, url: string): Promise<unknown> {
+  return request(`/seller/stores/${storeId}/products/${productId}/media`, { method: 'POST', body: JSON.stringify({ url }) });
+}
+
+/** Quita una foto de un producto. */
+export function removeProductMedia(storeId: string, productId: string, mediaId: string): Promise<unknown> {
+  return request(`/seller/stores/${storeId}/products/${productId}/media/${mediaId}`, { method: 'DELETE' });
+}
+
 /** Ajusta el stock disponible de una variante (se refleja de inmediato en la tienda). */
 export function adjustInventory(
   storeId: string,

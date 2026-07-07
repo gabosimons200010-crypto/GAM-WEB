@@ -49,6 +49,9 @@ class FakeProducts extends ProductRepository {
   addMedia(): never {
     throw new Error('n/a');
   }
+  deleteMedia(): never {
+    throw new Error('n/a');
+  }
 }
 
 class FakeStores extends StoreRepository {

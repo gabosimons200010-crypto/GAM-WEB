@@ -9,6 +9,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  IsUrl,
   Matches,
   MaxLength,
   Min,
@@ -166,4 +167,10 @@ export class UploadUrlDto {
   @ApiProperty({ example: 'image/webp' })
   @IsString()
   contentType!: string;
+}
+
+export class AddMediaDto {
+  @ApiProperty({ example: 'http://localhost:9000/gamarra-media/stores/…/foto.jpg' })
+  @IsUrl({ require_tld: false })
+  url!: string;
 }

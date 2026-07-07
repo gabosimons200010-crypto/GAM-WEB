@@ -66,6 +66,7 @@ export abstract class ProductRepository {
   abstract archive(id: string): Promise<void>;
   abstract delete(id: string): Promise<void>;
   abstract addMedia(productId: string, media: AddMediaData): Promise<void>;
+  abstract deleteMedia(productId: string, mediaId: string): Promise<void>;
   abstract getVariantContext(variantId: string): Promise<VariantContext | null>;
   abstract setVariantAvailable(variantId: string, available: number): Promise<void>;
 }
