@@ -19,7 +19,15 @@ export interface MediaView {
   id: string;
   kind: MediaKind;
   url: string;
+  label: string | null;
   position: number;
+}
+
+/** Fila de la guía de tallas de una marca (medidas de la prenda en cm). */
+export interface SizeRow {
+  size: string;
+  chest: number;
+  length: number;
 }
 
 export interface ProductView {
@@ -31,6 +39,8 @@ export interface ProductView {
   sku: string;
   name: string;
   description: string | null;
+  composition: string | null;
+  care: string[];
   categoryId: string | null;
   gender: Gender | null;
   price: number;
@@ -43,6 +53,8 @@ export interface ProductView {
   createdAt: Date;
   variants: VariantView[];
   media: MediaView[];
+  /** Guía de tallas de la marca (o null si la marca no la definió). */
+  sizeChart: SizeRow[] | null;
 }
 
 export interface VariantContext {

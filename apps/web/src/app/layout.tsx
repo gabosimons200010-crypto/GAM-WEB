@@ -16,8 +16,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${bodoni.variable} ${instrument.variable}`}>
-      <body className="flex min-h-screen flex-col font-sans">
+    <html lang="es" className={`${bodoni.variable} ${instrument.variable}`} suppressHydrationWarning>
+      <body className="flex min-h-screen flex-col font-sans" suppressHydrationWarning>
         <Providers>
           <Suspense fallback={<div className="h-16 border-b border-line bg-paper" />}>
             <Header />

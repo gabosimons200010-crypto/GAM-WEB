@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getProduct, getStorePage } from '@/lib/api';
+import { getProduct, getStorePage, searchProducts } from '@/lib/api';
+import { productExtras, sizeChartFor } from '@/lib/product-extras';
 import { Price } from '@/components/Price';
 import { Gallery } from '@/components/Gallery';
 import { ProductPurchase } from '@/components/ProductPurchase';
@@ -41,6 +42,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const related = await getStorePage(product.storeSlug, { pageSize: 6 })
     .then((d) => (d?.products.items ?? []).filter((p) => p.slug !== product.slug).slice(0, 4))
     .catch(() => []);
+
+  // "Completa el look": piezas de otras marcas que combinan.
+  const completeLook = await searchProducts({ sort: 'best_selling', pageSize: 12 })
+    .then((r) => r.items.filter((p) => p.storeSlug !== product.storeSlug).slice(0, 4))
+    .catch(() => []);
+
+  const extras = productExtras(product);
+  const sizeChart = sizeChartFor(product);
 
   return (
     <div>
@@ -90,6 +99,41 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </div>
           )}
 
+          <details className="border-t border-line pt-6">
+            <summary className="microcaps cursor-pointer list-none text-ink">Composición y cuidados</summary>
+            <div className="mt-3 space-y-1 text-sm text-ink">
+              <p>{extras.composition}</p>
+              <ul className="mt-2 space-y-1 text-muted">
+                {extras.care.map((c) => (
+                  <li key={c}>· {c}</li>
+                ))}
+              </ul>
+            </div>
+          </details>
+
+          <details className="border-t border-line pt-6">
+            <summary className="microcaps cursor-pointer list-none text-ink">Guía de tallas · {product.storeName}</summary>
+            <table className="mt-3 w-full text-sm text-ink">
+              <thead>
+                <tr className="microcaps border-b border-ink text-left text-[10px] text-muted">
+                  <th className="py-2 font-normal">Talla</th>
+                  <th className="py-2 font-normal">Pecho (cm)</th>
+                  <th className="py-2 font-normal">Largo (cm)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sizeChart.map((r) => (
+                  <tr key={r.size} className="border-b border-line">
+                    <td className="py-2">{r.size}</td>
+                    <td className="py-2">{r.chest}</td>
+                    <td className="py-2">{r.length}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="mt-2 text-xs text-muted">Medidas de referencia de la prenda. Cada marca define su propio tallaje.</p>
+          </details>
+
           {product.tags.length > 0 && (
             <div className="microcaps flex flex-wrap gap-x-5 gap-y-2 text-muted">
               {product.tags.map((t) => (
@@ -122,6 +166,16 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </Link>
           </div>
           <ProductGrid products={related} />
+        </section>
+      )}
+
+      {completeLook.length > 0 && (
+        <section className="mt-14 border-t border-line pt-8">
+          <div className="mb-6 flex items-baseline justify-between border-b border-line pb-3">
+            <h2 className="font-display text-2xl text-ink">Completa el look</h2>
+            <span className="microcaps text-muted">Otras marcas que combinan</span>
+          </div>
+          <ProductGrid products={completeLook} />
         </section>
       )}
     </div>

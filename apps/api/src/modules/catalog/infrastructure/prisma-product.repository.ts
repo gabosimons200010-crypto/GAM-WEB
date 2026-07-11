@@ -13,7 +13,7 @@ import { ProductStatus, ProductView, VariantContext } from '../domain/product';
 const productInclude = {
   variants: { include: { inventory: true }, orderBy: { sku: 'asc' } },
   media: { orderBy: { position: 'asc' } },
-  store: { select: { commercialName: true, slug: true } },
+  store: { select: { commercialName: true, slug: true, sizeChart: true } },
 } satisfies Prisma.ProductInclude;
 
 type ProductRow = Prisma.ProductGetPayload<{ include: typeof productInclude }>;
@@ -201,6 +201,8 @@ export class PrismaProductRepository extends ProductRepository {
       sku: row.sku,
       name: row.name,
       description: row.description,
+      composition: row.composition,
+      care: row.care,
       categoryId: row.categoryId,
       gender: row.gender,
       price: Number(row.price),
@@ -221,7 +223,18 @@ export class PrismaProductRepository extends ProductRepository {
         available: v.inventory?.available ?? 0,
         reserved: v.inventory?.reserved ?? 0,
       })),
-      media: row.media.map((m) => ({ id: m.id, kind: m.kind, url: m.url, position: m.position })),
+      media: row.media.map((m) => ({ id: m.id, kind: m.kind, url: m.url, label: m.label, position: m.position })),
+      sizeChart: parseSizeChart(row.store.sizeChart),
     };
   }
+}
+
+/** Valida el JSON de la guía de tallas de la tienda; null si no es una tabla válida. */
+function parseSizeChart(raw: unknown): { size: string; chest: number; length: number }[] | null {
+  if (!Array.isArray(raw)) return null;
+  const rows = raw
+    .filter((r): r is Record<string, unknown> => typeof r === 'object' && r !== null)
+    .map((r) => ({ size: String(r.size ?? ''), chest: Number(r.chest), length: Number(r.length) }))
+    .filter((r) => r.size !== '' && Number.isFinite(r.chest) && Number.isFinite(r.length));
+  return rows.length > 0 ? rows : null;
 }

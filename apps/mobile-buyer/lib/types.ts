@@ -1,4 +1,5 @@
-// Tipos espejo de las respuestas de la API (apps/api). Solo lo que la web usa.
+// Tipos espejo de las respuestas de la API (apps/api). Solo lo que la app usa.
+// Mantener alineado con apps/web/src/lib/types.ts.
 
 export type Gender = 'HOMBRE' | 'MUJER' | 'NINO' | 'NINA' | 'UNISEX';
 export type SortOption = 'relevance' | 'newest' | 'price_asc' | 'price_desc' | 'best_selling';
@@ -106,6 +107,11 @@ export interface ProductDetail {
   sizeChart: SizeRow[] | null;
 }
 
+export interface StoreSocial {
+  platform: string;
+  url: string;
+}
+
 export interface PublicStore {
   id: string;
   slug: string;
@@ -153,6 +159,89 @@ export interface LoginResponse {
   user: AuthUserInfo;
 }
 
+// --- Órdenes ---
+export interface OrderItemView {
+  variantId: string;
+  productName: string;
+  size: string | null;
+  color: string | null;
+  unitPrice: number;
+  quantity: number;
+}
+
+export interface OrderSubView {
+  id: string;
+  storeId: string;
+  storeName?: string;
+  status: string;
+  subtotal: number;
+  shippingCost: number;
+  trackingCode: string | null;
+  items: OrderItemView[];
+}
+
+export interface OrderView {
+  id: string;
+  number: string;
+  status: string;
+  subtotal: number;
+  shippingTotal: number;
+  discountTotal: number;
+  grandTotal: number;
+  createdAt: string;
+  subOrders: OrderSubView[];
+}
+
+// --- Vendedor ---
+export interface StoreSocialInput {
+  platform: string;
+  url: string;
+}
+
+export interface SellerStore {
+  id: string;
+  slug: string;
+  commercialName: string;
+  status: string;
+  verified: boolean;
+  logoUrl: string | null;
+  bannerUrl: string | null;
+  description: string | null;
+  legalName: string | null;
+  ruc: string | null;
+  contactName: string | null;
+  email: string;
+  phone: string;
+  address: string | null;
+  floor: string | null;
+  stand: string | null;
+  socials: StoreSocial[];
+  salesCount: number;
+}
+
+export interface SellerSubOrder {
+  id: string;
+  orderId: string;
+  orderNumber: string;
+  storeId: string;
+  status: string;
+  subtotal: number;
+  shippingCost: number;
+  commission: number;
+  trackingCode: string | null;
+  createdAt: string;
+  buyerName: string | null;
+  shipTo: {
+    department: string;
+    province: string;
+    district: string;
+    line: string;
+    reference: string | null;
+    phone: string | null;
+  } | null;
+  items: OrderItemView[];
+}
+
 // --- Carrito ---
 export interface CartLineView {
   variantId: string;
@@ -183,40 +272,7 @@ export interface CartView {
   total: number;
 }
 
-// --- Órdenes y pagos ---
-export interface OrderItemView {
-  variantId: string;
-  productName: string;
-  size: string | null;
-  color: string | null;
-  unitPrice: number;
-  quantity: number;
-}
-
-export interface OrderSubView {
-  id: string;
-  storeId: string;
-  storeName?: string;
-  status: string;
-  subtotal: number;
-  shippingCost: number;
-  commission?: number;
-  trackingCode: string | null;
-  items: OrderItemView[];
-}
-
-export interface OrderView {
-  id: string;
-  number: string;
-  status: string;
-  subtotal: number;
-  shippingTotal: number;
-  discountTotal: number;
-  grandTotal: number;
-  createdAt: string;
-  subOrders: OrderSubView[];
-}
-
+// --- Pagos y checkout ---
 export interface PaymentView {
   id: string;
   orderId: string;
@@ -237,108 +293,8 @@ export interface ShippingAddressInput {
   phone?: string;
 }
 
-// --- Vendedor ---
-export interface StoreSocial {
-  platform: string;
-  url: string;
-}
-
-export interface SellerStore {
-  id: string;
-  slug: string;
-  commercialName: string;
-  status: string;
-  verified: boolean;
-  logoUrl: string | null;
-  bannerUrl: string | null;
-  description: string | null;
-  legalName: string | null;
-  ruc: string | null;
-  contactName: string | null;
-  email: string;
-  phone: string;
-  address: string | null;
-  floor: string | null;
-  stand: string | null;
-  socials: StoreSocial[];
-  salesCount: number;
-}
-
-export interface NewVariantInput {
-  size?: string;
-  color?: string;
-  colorHex?: string;
-  price?: number;
-  stock: number;
-}
-
-export interface CreateProductInput {
-  name: string;
-  description?: string;
-  gender?: Gender;
-  price: number;
-  salePrice?: number;
-  tags?: string[];
-  imageUrls?: string[];
-  variants: NewVariantInput[];
-}
-
-// --- IA / carga de fotos ---
-export interface UploadUrlResult {
-  uploadUrl: string;
-  key: string;
-  publicUrl: string;
-  expiresIn: number;
-}
-
-export interface AIBatch {
-  id: string;
-  storeId: string;
-  status: 'QUEUED' | 'PROCESSING' | 'DONE' | 'FAILED';
-  total: number;
-  processed: number;
-  failed: number;
-  source: string;
-  createdAt: string;
-}
-
-// --- Admin ---
-export interface AdminStore {
-  id: string;
-  slug: string;
-  commercialName: string;
-  legalName: string | null;
-  ruc: string | null;
-  contactName: string | null;
-  email: string;
-  phone: string;
-  status: string;
-  verified: boolean;
-  floor: string | null;
-  stand: string | null;
-  address: string | null;
-  createdAt: string;
-}
-
-export interface SellerSubOrder {
-  id: string;
-  orderId: string;
-  orderNumber: string;
-  storeId: string;
-  status: string;
-  subtotal: number;
-  shippingCost: number;
-  commission: number;
-  trackingCode: string | null;
-  createdAt: string;
-  buyerName: string | null;
-  shipTo: {
-    department: string;
-    province: string;
-    district: string;
-    line: string;
-    reference: string | null;
-    phone: string | null;
-  } | null;
-  items: OrderItemView[];
+export interface CouponResult {
+  valid: boolean;
+  discount: number;
+  message: string;
 }

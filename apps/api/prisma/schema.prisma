@@ -219,6 +219,7 @@ model Store {
   logoUrl        String?
   bannerUrl      String?
   description    String?
+  sizeChart      Json? // guía de tallas de la marca: [{ size, chest, length }] — lo da la marca
   status         StoreStatus @default(DRAFT)
   verified       Boolean     @default(false)
   rating         Decimal     @default(0) @db.Decimal(3, 2)
@@ -312,6 +313,8 @@ model Product {
   name        String
   slug        String                       @unique
   description String?
+  composition String? // p.ej. "80% algodón · 20% poliéster" — lo da la marca
+  care        String[]                     @default([]) // instrucciones de cuidado — lo da la marca
   gender      Gender?
   price       Decimal                      @db.Decimal(12, 2)
   salePrice   Decimal?                     @db.Decimal(12, 2)
@@ -378,6 +381,7 @@ model ProductMedia {
   productId String
   kind      MediaKind
   url       String
+  label     String? // tipo de toma: "Frente" | "Espalda" | "Detalle" | "Con modelo"
   width     Int?
   height    Int?
   bytes     Int?

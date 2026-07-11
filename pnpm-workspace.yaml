@@ -1,3 +1,6 @@
 packages:
   - "apps/*"
   - "packages/*"
+  # La app móvil (Expo/React Native) se instala de forma aislada con npm:
+  # Metro no convive bien con los symlinks de pnpm. Ver apps/mobile-buyer/README.
+  - "!apps/mobile-buyer"
